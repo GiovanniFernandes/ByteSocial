@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+
 body {
   background-color: #F3F7FB;
 }
@@ -9,6 +11,6 @@ body {
 
 #root > main.container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   min-height: 100vh;
 }

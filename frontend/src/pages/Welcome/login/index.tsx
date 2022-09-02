@@ -1,20 +1,19 @@
-import styles from './Login.module.scss'
-import { ReactComponent as Logo } from '../../assets/logo.svg'
+import styles from '../Welcome.module.scss'
+import { Link } from 'react-router-dom'
 
 export default function Login() {
   return(
-    <>
-      <div className={styles.logo}>
-        <Logo/>
-      </div>
       <form className={styles.formulario}>
         <h1 className={styles.formulario__title}>Faça seu login</h1>
         <p>Para entrar na maior comunidade dev do Ramo</p>
         <input type="email" className={styles.formulario__input} id="" placeholder='Digite seu email' required/>
         <input type="password" className={styles.formulario__input} id="" placeholder='Digite sua senha' required/>
-        <button className={styles.formulario__register}>Cadastre-se</button>
-        <button type="submit" className={styles.formulario__login}>Login</button>
+        <button className={styles.formulario__register}>
+          <Link to='/register' className={styles.formulario__register}>Cadastre-se</Link>
+        </button>
+        <button type="submit" className={styles.formulario__login}>
+          Login
+        </button>
       </form>
-    </>
   )
 }

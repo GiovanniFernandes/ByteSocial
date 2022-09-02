@@ -1,5 +1,7 @@
+import Welcome from 'pages/Welcome';
+import Cadastro from 'pages/Welcome/cadastro';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import Login from './pages/login/login';
+import Login from 'pages/Welcome/login';
 
 export default function AppRouter() {
   return (
@@ -7,8 +9,10 @@ export default function AppRouter() {
       <Router>
         
         <Routes>
-          <Route path='/' element={<Login />} />
-          {/* <Route path='/register' element={<Cadastro />} /> */}
+          <Route path='/' element={<Welcome />}>
+            <Route path='login' element={<Login />} />
+            <Route path='register' element={<Cadastro />} />
+          </Route>
         </Routes>
 
       </Router>

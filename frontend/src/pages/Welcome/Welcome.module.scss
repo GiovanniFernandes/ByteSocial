@@ -1,23 +1,32 @@
 @import 'styles/variaveis';
 
-.logo {
-  background: #0068df linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0) 100%);
-  width: 57%;
-  height: 100vh;
+.welcome {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  &__logo {
+    background: $azul-destaque linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0) 100%);
+    width: 57%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__form {
+    background: $branco-fundo;
+    width: 43%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .formulario {
-  background-color: #f6f6f6;
-  width: 43%;
-  display: flex;
+  background-color: $branco-fundo;
+  width: 364px;
+  
   flex-direction: column;
 
   &__title {
-    color: #1F2942;
-    font-family: Poppins;
+    color: $azul-escuro-texto;
     font-size: 28px;
     font-weight: 700;
     line-height: 42px;
@@ -31,32 +40,29 @@
 
     border: 1px solid #AAAAAA;
     border-radius: 8px;
+    margin: 10.5px 0;
   }
 
   &__register {
-
     background: $branco-fundo;
     border: none;
     border-radius: 8px;
-    color: $azul-destaque;
-
     width: 183px;
     height: 40px;
-
     cursor: pointer;
+    a {
+      color: $azul-destaque;
+      text-decoration: none;
+    }
   }
 
   &__login {
-    
     background: $azul-destaque;
     border: none;
     border-radius: 8px;
     color: $branco-fundo;
-
     width: 158px;
     height: 40px;
-
     cursor: pointer;
-
   }
 }
