@@ -5,15 +5,15 @@ export default function Cadastro() {
   return(
       <form className={styles.formulario}>
         <h1 className={styles.formulario__title}>Faça seu cadastro</h1>
-        <p>Para entrar na maior comunidade dev do Ramo</p>
-        <input type="email" className={styles.formulario__input} id="" placeholder='Digite seu nome de usuário' required/>
-        <input type="password" className={styles.formulario__input} id="" placeholder='Digite seu email' required/>
+        <p className={styles.formulario__texto}>Para entrar na maior comunidade dev do Ramo</p>
+        <input type="text" className={styles.formulario__input} id="" placeholder='Digite seu nome de usuário' required/>
+        <input type="email" className={styles.formulario__input} id="" placeholder='Digite seu email' required/>
         <input type="password" className={styles.formulario__input} id="" placeholder='Digite sua senha' required/>
         <input type="password" className={styles.formulario__input} id="" placeholder='Confirme sua senha' required/>
         <button className={styles.formulario__register}>
           <Link to='/login'>Cancelar</Link>
         </button>
-        <button type="submit" className={styles.formulario__login}>
+        <button type="submit" className={styles.formulario__submit}>
           Cadastre-se
         </button>
       </form>

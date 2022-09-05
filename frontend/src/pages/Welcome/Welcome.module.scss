@@ -32,37 +32,50 @@
     line-height: 42px;
     letter-spacing: 0em;
     text-align: left;
+    margin: 0;
+  }
+
+  &__texto {
+    color: $azul-escuro-texto;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
+    margin: 10px 0 30px 0;
   }
 
   &__input {
     width: 363px;
     height: 48px;
-
     border: 1px solid #AAAAAA;
     border-radius: 8px;
     margin: 10.5px 0;
+    padding: 13px 16px;
   }
 
   &__register {
     background: $branco-fundo;
     border: none;
     border-radius: 8px;
-    width: 183px;
+    width: 171px;
     height: 40px;
-    cursor: pointer;
+    padding: 13px auto;
+    margin-top: 30px;
     a {
+      cursor: pointer;
       color: $azul-destaque;
       text-decoration: none;
     }
   }
 
-  &__login {
+  &__submit {
     background: $azul-destaque;
     border: none;
     border-radius: 8px;
     color: $branco-fundo;
-    width: 158px;
+    width: 171px;
     height: 40px;
+    padding: 13px auto;
+    margin: 30px 0 0 21px;
     cursor: pointer;
   }
 }

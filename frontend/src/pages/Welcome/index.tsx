@@ -3,7 +3,7 @@ import styles from './Welcome.module.scss'
 import { ReactComponent as Logo } from 'assets/logo.svg'
 import React from 'react'
 
-export default function WelcomeCover({ children }: {children?: React.ReactNode}) {
+export default function Welcome({ children }: {children?: React.ReactNode}) {
   return(
     <div className={styles.welcome}>
       <div className={styles.welcome__logo}>
