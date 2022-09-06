@@ -1,0 +1,14 @@
+
+Verificar uma boa forma para modelar o banco de dados;
+
+Rotas PUT: 
+Alterações de e-mail e de perfil único, caso venha a ter, 
+precisarão de rotas específicas para serem tratadas, ou tudo em uma só, fazendo verificações com if/else
+
+
+Rota de Criação de usuário: 
+Verificar a frente se senhas precisão ter alguma exigência minima, tirando o bcrypt,
+ex: minimo de caractéres
+
+
+        
