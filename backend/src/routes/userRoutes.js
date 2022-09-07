@@ -1,11 +1,12 @@
 const {Router} = require('express');
 const UserController = require('../controllers/UserController');
+const auth = require('../middlewares/auth')
 
 const router = Router();
 
 router
-.get('/user/:id',UserController.pegaUsuarioEspecifico)
-.get('/Users',UserController.pegaTodosUsuarios)
+.get('/user/:id',auth,UserController.pegaUsuarioEspecifico)
+.get('/Users', UserController.pegaTodosUsuarios)
 
 .post('/cadastro', UserController.criaUsuario)
 .post('/login', UserController.login)

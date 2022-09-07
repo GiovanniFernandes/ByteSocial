@@ -1,6 +1,8 @@
 const database = require ("../database/models");
-//const us = database.Users;
+const Users = database.Users;
 const bcrypt = require('bcrypt');
+const jwt = require ('jsonwebtoken');
+require('dotenv').config();
 
 class UserController {
 
@@ -9,33 +11,21 @@ class UserController {
 
         const {nome,senha,email} = req.body;
 
-        //const hash = UserController.hashDaSenha(senha);
-        
-        /*
-        Melhor procurar, fazer a verificação, e criar o usuario
-        ou deixar assim com um único acesso ao BD.
-    
-        não sei o por quê, mas ele entra no default, mesmo localizando um usuario, 
-        então a função de hash fora dou dentro do default da no mesmo. 
-        
-        Decisão pode ser verificada observando o tempo 
-        */
+        const hash = UserController.hashDaSenha(senha);        
 
         try{ 
 
-            const usuario = await database.Users.findOne({where: {email:email}})
-
-            const novoUsuario = await database.Users.findOrCreate({
-                where:{email:email},
+            const usuario = await Users.findOne({where: {email:email}});
+            const novoUsuario = await Users.findOrCreate({where:{email},
                 defaults: {
-                    nome, email, senha:UserController.hashDaSenha(senha)
+                    nome, email, senha:hash
                 }
-            })
+            });
             
             return res.status(201).json(novoUsuario);
 
         } catch (errors){
-            return res.status(500).json(errors.message)
+            return res.status(500).json(errors.message);
         }
 
     }
@@ -45,7 +35,7 @@ class UserController {
         const {id} = req.params;
 
         try{
-            const usuario = await database.Users.findOne(
+            const usuario = await Users.findOne(
                 { where: { id: Number(id) }})
 
             if(usuario)
@@ -60,7 +50,7 @@ class UserController {
     static async pegaTodosUsuarios (req,res){
         
         try{
-            const usuarios = await database.Users.findAll();
+            const usuarios = await Users.findAll();
             return res.status(200).json(usuarios);
         }catch (errors){
             return res.status(500).json(errors.message)
@@ -73,10 +63,10 @@ class UserController {
         const novosDados = req.body;
 
         try{
-            const atualizou = await database.Users.update(novosDados, 
+            const atualizou = await Users.update(novosDados, 
                 { where: { id : Number(id)} });
 
-            const usuarioAtualizado = await database.Users.findOne 
+            const usuarioAtualizado = await Users.findOne 
             ({ where: { id : Number(id)} });   
 
             return res.status(200).json({usuarioAtualizado, atualizou})
@@ -93,19 +83,17 @@ class UserController {
 
         try{
 
-            const usuario = await database.Users.findOne({where:{id: Number(id)}});
-            
+            const usuario = await Users.findOne({where:{id: Number(id)}});
             const verificaSenha = bcrypt.compareSync(senha,usuario.senha);  
             
             if(!verificaSenha)
                 return res.status(300).json({msg:"senha atual incorreta", verificaSenha});
             
             const hash = UserController.hashDaSenha(novaSenha);
-
-            const atualizou = await database.Users.update({senha:hash}, 
+            const atualizou = await Users.update({senha:hash}, 
                 { where: { id : Number(id)} });
 
-            const usuarioAtualizado = await database.Users.findOne 
+            const usuarioAtualizado = await Users.findOne 
             ({ where: { id : Number(id)} });   
 
             return res.status(200).json({usuarioAtualizado, atualizou})
@@ -120,7 +108,7 @@ class UserController {
         const {id} = req.params;
 
         try{
-            const deletou = await database.Users.destroy({where:{id:Number(id)}});
+            const deletou = await Users.destroy({where:{id:Number(id)}});
             return res.status(200).json({msg:`id ${id} removido`});
 
         } catch (errors){
@@ -134,9 +122,12 @@ class UserController {
     static async login (req,res) {
         const {email,senha} = req.body;
 
-        try{
+        try{  
 
-            const usuario = await database.Users.findOne({where:{email}});
+            if(!email || !senha )
+                return res.status(300).json({msg: "Email e senha são obrigatórios"});
+
+            const usuario = await Users.findOne({where:{email}});
             
             if(!usuario)
                 return res.status(404).json({msg: "usuario não encontrado", usuario });
@@ -145,17 +136,24 @@ class UserController {
             
             if(!verificaSenha)
                 return res.status(300).json({msg:"senha incorreta", verificaSenha});
+
+            jwt.sign({id: usuario.id},process.env.JWT_SECRET, (err,token)=> {
+
+                    if(err)
+                        return res.status(500).json({error: err}, {msg: "Erro interno"});
+
+                    return res.status(200).json({token:token}); 
+                })    
                     
-            return res.status(200).json(usuario);
 
         }catch(error){
             return res.status(500).json(error.message);
         }
     }
+
     
     static hashDaSenha(senha){
-        const salt = bcrypt.genSaltSync(10); // deixei em 1 para deixar rápido - não recomendado
-        //const salt = 12; - tempo grande para um i5
+        const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(senha, salt);
         return hash;
     }
