@@ -8,7 +8,7 @@ export default function Login() {
         <p className={styles.formulario__texto}>Para entrar na maior comunidade dev do Ramo</p>
         <input type="email" className={styles.formulario__input} id="" placeholder='Digite seu email' required/>
         <input type="password" className={styles.formulario__input} id="" placeholder='Digite sua senha' required/>
-        <button className={styles.formulario__register}>
+        <button className={styles.formulario__register} onClick={() => {}}>
           <Link to='/register'>Cadastre-se</Link>
         </button>
         <button type="submit" className={styles.formulario__submit}>
