@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Users.init({
-    nome: {
+    username: {
       type: DataTypes.STRING,
       allowNull : false,
       validate: {
         notEmpty:true
       }
     },
-    senha: {
+    password: {
       type: DataTypes.STRING,
       allowNull:false,
       validate: {
@@ -30,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull:false,
-      
       validate: {
         isEmail: {
           args: true,

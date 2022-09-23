@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 
-
 function auth (req, res, next){
 
     const authToken = req.headers.authorization;
@@ -13,8 +12,7 @@ function auth (req, res, next){
         
     const bearerCompleto = authToken.split(' ');
     const token = bearerCompleto[1];
-    
-    
+
     jwt.verify(token, process.env.JWT_SECRET, (err,data) => {
 
         if(err){

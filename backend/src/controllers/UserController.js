@@ -9,19 +9,17 @@ class UserController {
 
     static async criaUsuario (req,res){
 
-        const {nome,senha,email} = req.body;
+        const {username,password,email} = req.body;
 
-        const hash = UserController.hashDaSenha(senha);        
+        const hash = UserController.hashDaSenha(password);        
 
         try{ 
 
-            const usuario = await Users.findOne({where: {email:email}});
             const novoUsuario = await Users.findOrCreate({where:{email},
                 defaults: {
-                    nome, email, senha:hash
+                    username, email, password:hash
                 }
             });
-            
             return res.status(201).json(novoUsuario);
 
         } catch (errors){
@@ -36,7 +34,7 @@ class UserController {
 
         try{
             const usuario = await Users.findOne(
-                { where: { id: Number(id) }})
+                { where: { id   : Number(id) }})
 
             if(usuario)
                 return res.status(200).json(usuario);
@@ -79,18 +77,18 @@ class UserController {
     static async alteraSenha (req, res){ 
 
         const {id} = req.params;
-        const {senha, novaSenha} = req.body;
+        const {password, newPassword} = req.body;
 
         try{
 
             const usuario = await Users.findOne({where:{id: Number(id)}});
-            const verificaSenha = bcrypt.compareSync(senha,usuario.senha);  
+            const verificaSenha = bcrypt.compareSync(senha,usuario.password);  
             
             if(!verificaSenha)
                 return res.status(300).json({msg:"senha atual incorreta", verificaSenha});
             
-            const hash = UserController.hashDaSenha(novaSenha);
-            const atualizou = await Users.update({senha:hash}, 
+            const hash = UserController.hashDaSenha(newPassword);
+            const atualizou = await Users.update({password:hash}, 
                 { where: { id : Number(id)} });
 
             const usuarioAtualizado = await Users.findOne 
@@ -108,7 +106,7 @@ class UserController {
         const {id} = req.params;
 
         try{
-            const deletou = await Users.destroy({where:{id:Number(id)}});
+            const deletou = await Users.destroy({where:{ id: Number(id) }});
             return res.status(200).json({msg:`id ${id} removido`});
 
         } catch (errors){
@@ -120,22 +118,22 @@ class UserController {
 
 
     static async login (req,res) {
-        const {email,senha} = req.body;
+        const {email,password} = req.body;
 
         try{  
 
-            if(!email || !senha )
-                return res.status(300).json({msg: "Email e senha são obrigatórios"});
+            if(!email || !password )
+                return res.status(300).json({msg: "Email e password são obrigatórios"});
 
             const usuario = await Users.findOne({where:{email}});
             
             if(!usuario)
                 return res.status(404).json({msg: "usuario não encontrado", usuario });
             
-            const verificaSenha = bcrypt.compareSync(senha,usuario.senha);  
+            const verificaPassword = bcrypt.compareSync(password,usuario.password);  
             
-            if(!verificaSenha)
-                return res.status(300).json({msg:"senha incorreta", verificaSenha});
+            if(!verificaPassword)
+                return res.status(300).json({msg:"senha incorreta", verificaPassword});
 
             jwt.sign({id: usuario.id},process.env.JWT_SECRET, (err,token)=> {
 
