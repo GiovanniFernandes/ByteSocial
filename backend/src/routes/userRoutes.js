@@ -12,7 +12,7 @@ router
 .post('/login', UserController.login)
 
 .put('/user/:id', UserController.alteraUsuario)
-.put('/user/senha/:id', UserController.alteraSenha)
+.put('/user/pass/:id', UserController.alteraSenha)
 
 .delete('/user/:id', UserController.deletaUsuario)
 

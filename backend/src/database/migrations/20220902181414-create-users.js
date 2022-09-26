@@ -11,7 +11,8 @@ module.exports = {
       },
       username: {
         allowNull:false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       password: {
         allowNull:false,
@@ -19,7 +20,20 @@ module.exports = {
       },
       email: {
         allowNull:false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
+      },
+      qtd_posts: { //Gabriel 
+        defaultValue:0,
+        allowNull:false,
+        type: Sequelize.INTEGER,
+        
+      },
+      qtd_friends: { //Gabriel
+        defaultValue:0,
+        allowNull:false,
+        type: Sequelize.INTEGER,
+          
       },
       createdAt: {
         allowNull: false,

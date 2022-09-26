@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull : false,
+      unique: true,
       validate: {
         notEmpty:true
       }
@@ -23,19 +24,30 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len:{
           args:[6],
-          msg:"Senha tem que 6 digitos no minímo"
+          msg:"Sua senha precisa ter no mínimo 6 digitos."
         }
       }
     },
     email: {
       type: DataTypes.STRING,
       allowNull:false,
+      unique: true,
       validate: {
         isEmail: {
           args: true,
-          msg: "e-mail invalido"
+          msg: "E-mail inválido."
         }
       }
+    },
+    qtd_friends: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
+      defaultValue:0
+    },
+    qtd_posts: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
+      defaultValue:0
     }
   }, {
     sequelize,
