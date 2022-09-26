@@ -37,9 +37,9 @@ class UserController {
                 return res.status(201).json(novoUsuario);
             }
 
-        }catch (errors)
+        }catch (error)
         {
-            return res.status(500).json(errors.message);
+            return res.status(500).json(error.message);
         }
 
     }
