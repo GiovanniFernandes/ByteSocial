@@ -175,14 +175,14 @@ class UserController {
                 return res.status(300).json({msg:"senha incorreta", verificaPassword});
             }
 
-            jwt.sign({id: usuario.id},process.env.JWT_SECRET, (err,token)=> {
+            jwt.sign({id: usuario.id},process.env.JWT_SECRET, (err,token)=>{
 
                     if(err)
                     {
                         return res.status(500).json({error: err}, {msg: "Erro no servidor."});
                     }
                     return res.status(200).json({token:token}); 
-                })    
+            })    
                 
         }catch(error){
             return res.status(500).json(error.message);
