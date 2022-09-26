@@ -156,31 +156,34 @@ class UserController {
 
     static async login (req,res) {
         const {email,password} = req.body;
-
         try{  
 
-            if(!email || !password )
-                return res.status(300).json({msg: "Email e password são obrigatórios"});
-
-            const usuario = await Users.findOne({where:{email}});
+            if(!email || !password)
+            {
+                return res.status(300).json({msg: "Preencha todos os campos obrigatórios"});
+            }
+            const usuario = await Users.findOne({where:{email:email}}); 
             
             if(!usuario)
-                return res.status(404).json({msg: "usuario não encontrado", usuario });
-            
+            {
+                return res.status(404).json({msg: "Usuário não existe!", usuario});
+            }
             const verificaPassword = bcrypt.compareSync(password,usuario.password);  
-            
+
             if(!verificaPassword)
+            {
                 return res.status(300).json({msg:"senha incorreta", verificaPassword});
+            }
 
             jwt.sign({id: usuario.id},process.env.JWT_SECRET, (err,token)=> {
 
                     if(err)
-                        return res.status(500).json({error: err}, {msg: "Erro interno"});
-
+                    {
+                        return res.status(500).json({error: err}, {msg: "Erro no servidor."});
+                    }
                     return res.status(200).json({token:token}); 
                 })    
-                    
-
+                
         }catch(error){
             return res.status(500).json(error.message);
         }
