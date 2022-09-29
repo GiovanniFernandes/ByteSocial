@@ -4,27 +4,31 @@ require('dotenv').config();
 
 function auth (req, res, next){
 
-    const authToken = req.headers.authorization;
+    const authHeader = req.headers.authorization;
     
-    if(authToken === undefined){
-        return res.status(400).json({msg: "token não identificado"});
+    if(!authHeader){
+        return res.status(401).json({msg: "Token não identificado"});
     }
         
-    const bearerCompleto = authToken.split(' ');
-    const token = bearerCompleto[1];
+    const [,token] = authHeader.split(" ");
 
-    jwt.verify(token, process.env.JWT_SECRET, (err,data) => {
-
-        if(err){
-            return res.status(401).json({err:"falha na autenticação do token"});
-        }
-        else{
+    try {
+        const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET, (error,data)=>{
+            if(error)
+            {
+                return res.status(401).json({msg:"Falha na autenticação do token"});
+            }
+            else{
             
-            req.user_id = data.id;
-            req.token = token;
-            return next();
-        }  
-    })
+                req.user_id = data.id;
+                req.token = token;
+                console.log(data, req.token, req.user)
+                return next();
+            } 
+        } )
+    } catch (error) {
+        return res.status(500).json("Erro no servidor");
+    }
 }
 
 
