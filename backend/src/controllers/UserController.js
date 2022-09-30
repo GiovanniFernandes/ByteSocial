@@ -20,7 +20,7 @@ class UserController {
                     username, email, password:hash
                 }
             });
-            return res.status(201).json(novoUsuario[0]);
+            return res.status(201).json(novoUsuario);
 
         } catch (errors){
             return res.status(500).json(errors.message);

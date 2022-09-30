@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const cors = require ('cors')
 const user = require("./userRoutes");
 
 module.exports = app => {
@@ -8,6 +9,7 @@ module.exports = app => {
     })
     .use(
         bodyParser.json(),
+        cors(),
         user
         
     )
