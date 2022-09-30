@@ -15,8 +15,7 @@ export default function Menu() {
   }
 
   function onHideBtnClick() {
-    if (openState) setOpenState(false)
-    else setOpenState(true)
+    setOpenState(!openState)
   }
 
   if (openState) {
