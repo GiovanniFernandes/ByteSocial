@@ -1,7 +1,10 @@
 import styles from '../Welcome.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import axios from 'axios'
+import Cookies from '../../../browseStorage/Cookies'
+
+
 
 interface IValidacao {
   token: string
@@ -11,6 +14,11 @@ export default function Login() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
+
+  let navigate = useNavigate();
+
+
 
   const realizarLogin = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -22,7 +30,9 @@ export default function Login() {
       }).then(resposta => {
 
         if (resposta.data.token) {
-          console.log("Resposta do TOKEN: ", resposta.data.token)
+        
+        Cookies.setCookie('token', resposta.data.token, {expires:1})
+        navigate('/home')
         }
       }).catch(erro => {
         console.log(erro)
