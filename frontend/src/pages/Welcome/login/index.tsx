@@ -1,8 +1,9 @@
 import styles from '../Welcome.module.scss'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios'
 import Cookies from '../../../browseStorage/Cookies'
+import { AuthContext } from 'contexts/Auth/AuthContexts'
 
 
 
@@ -15,15 +16,30 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  let navigate = useNavigate();
 
 
 
-  const realizarLogin = (event:React.FormEvent<HTMLFormElement>) => {
+  const realizarLogin = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    axios.post<IValidacao>('http://localhost:3021/login',
+    const isLogged = await auth.signin(email,password)
+
+    if(isLogged===true){
+      navigate('/home')
+    }
+    else {
+      alert("Opa deu merda ! ")
+    
+    }
+   
+  }
+
+
+/*
+   axios.post<IValidacao>('http://localhost:3021/login',
       {
         email,
         password
@@ -31,13 +47,12 @@ export default function Login() {
 
         if (resposta.data.token) {
         
-        Cookies.setCookie('token', resposta.data.token, {expires:1})
         navigate('/home')
         }
       }).catch(erro => {
         console.log(erro)
       })
-  }
+*/
 
 
   

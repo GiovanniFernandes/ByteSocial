@@ -128,19 +128,19 @@ class UserController {
             const usuario = await Users.findOne({where:{email}});
             
             if(!usuario)
-                return res.status(404).json({msg: "usuario não encontrado", usuario });
+                return res.status(404).json({msg: "usuario não encontrado" });
             
             const verificaPassword = bcrypt.compareSync(password,usuario.password);  
             
             if(!verificaPassword)
-                return res.status(300).json({msg:"senha incorreta", verificaPassword});
+                return res.status(300).json({msg:"senha incorreta" });
 
             jwt.sign({id: usuario.id},process.env.JWT_SECRET, (err,token)=> {
 
                     if(err)
                         return res.status(500).json({error: err}, {msg: "Erro interno"});
 
-                    return res.status(200).json({token:token}); 
+                    return res.status(200).json({token, user:usuario.id}); 
                 })    
                     
 
@@ -148,6 +148,39 @@ class UserController {
             return res.status(500).json(error.message);
         }
     }
+
+
+    static async validateToken (req,res) {
+        const {token} = req.body;
+
+        try{  
+
+            if(token === undefined){
+                return res.status(203).json({msg: "token não identificado"});
+            }
+                
+            jwt.verify(token, process.env.JWT_SECRET, async (err,data) => {
+        
+                if(err){
+                    return res.status(203).json({err:"falha na autenticação do token"});
+                }
+                else{
+                    const usuario = await Users.findOne({where:{id:data.id}});
+
+                    if(usuario){
+                        return res.status(200).json({user: usuario.id})
+                    }
+                    else {
+                        return res.status(404).json({msg: "token de acesso, mas sem usuario"})
+                    }
+                }  
+            })                    
+
+        }catch(error){
+            return res.status(500).json(error.message);
+        }
+    }
+    
 
     
     static hashDaSenha(senha){
