@@ -1,5 +1,5 @@
 import styles from '../Welcome.module.scss'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import axios from 'axios'
 
@@ -8,6 +8,8 @@ interface IValidacao {
 }
 
 export default function Login() {
+
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -51,8 +53,8 @@ export default function Login() {
         required
         onChange={event => setPassword(event.target.value)}
       />
-      <button className={styles.formulario__register}>
-        <Link to='/register'>Cadastre-se</Link>
+      <button className={styles.formulario__register} onClick={() => navigate('/register')}>
+        Cadastre-se
       </button>
       <button type="submit" className={styles.formulario__submit} >
         Login
