@@ -10,7 +10,6 @@ type IMenuItem = typeof menu[0]
 
 export default function Menu() {
 
-
   const [selectedItem, setSelectedItem] = useState<number | null>(1)
   const [openState, setOpenState] = useState(true)
   const navigate = useNavigate();
@@ -19,7 +18,6 @@ export default function Menu() {
   function selectMenuItem (item: IMenuItem) {
     setSelectedItem(item.id)
     auth.signout();
-    debugger
     navigate(item.link); //o tipo link só apareceu após eu dar commit
   }
 

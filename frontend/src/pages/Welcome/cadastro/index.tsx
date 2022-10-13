@@ -1,47 +1,33 @@
 import styles from '../Welcome.module.scss'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
+import { useApiUser } from 'hooks/useApiUser'
 
-interface IConfirmacao{
-  id:string
-}
 
 export default function Cadastro() {
-  console.log("cadastro")
-
-  useEffect(()=>{
-    console.log("CADASTRO !")
-  },[])
-
+  
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [password2, setPassword2] = useState("")
+  const apiUser = useApiUser();
 
-  const realizaCadastro = (event:React.FormEvent<HTMLFormElement>) => {
+  const realizaCadastro = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (password !== password2) {
       alert("As senhas precisam ser iguais!")
       return
     }
-
-    axios.post<IConfirmacao>('http://localhost:3021/cadastro', 
-    {
-      username,
-      email,
-      password 
-    }).then(resposta => {
-
-      if (resposta.data) {
-        console.log( resposta.data)
-      }
+    else{
+      const newUser = await apiUser.novoUsuario(username, email, password); 
+      debugger
+      /* Modificações necessárias aqui para tratar erros, Aqui o back tem que me retorna verdadeiro ou false, ou
+      um objeto para saber se é pq tinha e mail já havia sido cadastrado ou, ainda erro interno */
+      
+      alert("cadastro realizadom sucesso");
     }
-
-    ).catch(erro => {
-      console.log(erro)
-    })
+    
   }
 
   return(
