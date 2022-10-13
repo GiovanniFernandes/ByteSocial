@@ -150,7 +150,7 @@ class UserController {
     }
 
 
-    static async validateToken (req,res) {
+    static validateToken (req,res) {
         const {token} = req.body;
 
         try{  
@@ -159,22 +159,12 @@ class UserController {
                 return res.status(203).json({msg: "token não identificado"});
             }
                 
-            jwt.verify(token, process.env.JWT_SECRET, async (err,data) => {
+            jwt.verify(token, process.env.JWT_SECRET, (err,data) => {
         
-                if(err){
+                if(err)
                     return res.status(203).json({err:"falha na autenticação do token"});
-                }
-                else{
-                    const usuario = await Users.findOne({where:{id:data.id}});
-
-                    if(usuario){
-                        return res.status(200).json({user: usuario.id})
-                    }
-                    else {
-                        return res.status(404).json({msg: "token de acesso, mas sem usuario"})
-                    }
-                }  
-            })                    
+                return res.status(200).json({user: data.id})  
+            });                    
 
         }catch(error){
             return res.status(500).json(error.message);
