@@ -1,4 +1,4 @@
-import { useApi } from "hooks/useAPI";
+import { useApiAuth } from "hooks/useApiAuth";
 import { useEffect, useState } from "react"
 import { User } from "types/User";
 import { AuthContext } from "./AuthContexts"
@@ -7,48 +7,38 @@ import { AuthContext } from "./AuthContexts"
 
 export const AuthProvider = ( {children} : {children:JSX.Element} )  => {
 
-    const [user, setUser] = useState< User | null>(null);
-    const [cont, setCont] = useState(0);
-    const api = useApi();
+    const apiAuth = useApiAuth();
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(()=>{
-        validateToken();
-    },[user])
+        validateToken();           
+    }, [])
 
-    const contador = () => setCont(cont+1);
-
-    const validateToken = async () => {
+    const validateToken = async ()=> {
+        
         const storeData = localStorage.getItem('authToken');
-        if(storeData){
-             const data = await api.validateToken(storeData);
-                if(data.user){
-                    console.log("data.user ::::::: ", data.user, "cont ", cont)
-                    contador();
-                    setUser(data.user)
-                    console.log("user::::::: ", user, "cont ", cont)
-                }
-        }
-        else {
-
-        }
-
+            if(storeData){
+                 const data = await apiAuth.validateToken(storeData);
+                     if(data){
+                         console.log("data.user localizado", data)  
+                         setUser(data)           
+                     }
+            }
     }
 
-
     const signin = async (email:string, password:string) => {
-        const data = await api.signin(email,password);
+        const data = await apiAuth.signin(email,password);
 
         if(data.user && data.token) {
             setUser(data.user);
             localStorage.setItem("authToken", data.token);
-
-            console.log("data", data);
             return true;
         }
 
         return false;
     }
     const signout = () => {
+        localStorage.removeItem("authToken");
         setUser(null);
     }
 

@@ -3,17 +3,15 @@ import Cadastro from 'pages/Welcome/cadastro';
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import Login from 'pages/Welcome/login';
 import Menu from 'components/Menu';
-import Cookies from './browseStorage/Cookies';
+
 import { RequireAuth } from 'contexts/Auth/RequireAuth';
 
 
 export default function AppRouter() {
-
-
- 
+  
 
   return (
-  
+    
     <main className="container">
       <Router>
         

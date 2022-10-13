@@ -1,6 +1,6 @@
 import styles from './Menu.module.scss'
 import menu from 'data/menu.json'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
@@ -10,6 +10,7 @@ type IMenuItem = typeof menu[0]
 
 export default function Menu() {
 
+
   const [selectedItem, setSelectedItem] = useState<number | null>(1)
   const [openState, setOpenState] = useState(true)
   const navigate = useNavigate();
@@ -18,7 +19,8 @@ export default function Menu() {
   function selectMenuItem (item: IMenuItem) {
     setSelectedItem(item.id)
     auth.signout();
-    navigate('/login'); //tem que ser refatorado
+    debugger
+    navigate(item.link); //o tipo link só apareceu após eu dar commit
   }
 
   function onHideBtnClick() {

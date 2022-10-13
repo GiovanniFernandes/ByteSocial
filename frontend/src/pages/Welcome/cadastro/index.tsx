@@ -1,6 +1,6 @@
 import styles from '../Welcome.module.scss'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 interface IConfirmacao{
@@ -8,6 +8,11 @@ interface IConfirmacao{
 }
 
 export default function Cadastro() {
+  console.log("cadastro")
+
+  useEffect(()=>{
+    console.log("CADASTRO !")
+  },[])
 
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")

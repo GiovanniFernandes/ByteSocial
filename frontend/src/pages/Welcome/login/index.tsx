@@ -1,8 +1,6 @@
 import styles from '../Welcome.module.scss'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import React, { useContext, useState } from 'react'
-import axios from 'axios'
-import Cookies from '../../../browseStorage/Cookies'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 
 
@@ -32,27 +30,9 @@ export default function Login() {
     }
     else {
       alert("Opa deu merda ! ")
-    
     }
    
   }
-
-
-/*
-   axios.post<IValidacao>('http://localhost:3021/login',
-      {
-        email,
-        password
-      }).then(resposta => {
-
-        if (resposta.data.token) {
-        
-        navigate('/home')
-        }
-      }).catch(erro => {
-        console.log(erro)
-      })
-*/
 
 
   

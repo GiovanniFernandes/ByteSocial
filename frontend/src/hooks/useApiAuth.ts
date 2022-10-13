@@ -1,10 +1,7 @@
-import axios from "axios";
+import { api } from "services/api";
 
-const api = axios.create({
-    baseURL:'http://localhost:3021'
-})
 
-export const useApi = () => ({
+export const useApiAuth = () => ({
 
     validateToken: async (token:string) => {
         
