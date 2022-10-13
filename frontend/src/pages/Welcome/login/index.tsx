@@ -1,38 +1,33 @@
 import styles from '../Welcome.module.scss'
 import { useNavigate } from 'react-router-dom'
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useContext, useState } from 'react'
+import { AuthContext } from 'contexts/Auth/AuthContexts'
 
-interface IValidacao {
-  token: string
-}
 
 export default function Login() {
-
-  const navigate = useNavigate()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const realizarLogin = (event:React.FormEvent<HTMLFormElement>) => {
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+
+
+  const realizarLogin = async (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    axios.post<IValidacao>('http://localhost:3021/login',
-      {
-        email,
-        password
-      }).then(resposta => {
+    const isLogged = await auth.signin(email,password)
 
-        if (resposta.data.token) {
-          console.log("Resposta do TOKEN: ", resposta.data.token)
-        }
-      }).catch(erro => {
-        console.log(erro)
-      })
+    if(isLogged===true){
+      navigate('/home')
+    }
+    else {
+      alert("Opa deu merda ! ")
+    }
+   
   }
 
 
-  
   return (
     <form onSubmit={realizarLogin} className={styles.formulario}>
       <h1 className={styles.formulario__title}>Faça seu login</h1>

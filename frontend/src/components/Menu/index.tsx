@@ -1,7 +1,10 @@
 import styles from './Menu.module.scss'
 import menu from 'data/menu.json'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
+import { AuthContext } from 'contexts/Auth/AuthContexts'
+
 
 type IMenuItem = typeof menu[0]
 
@@ -9,9 +12,13 @@ export default function Menu() {
 
   const [selectedItem, setSelectedItem] = useState<number | null>(1)
   const [openState, setOpenState] = useState(true)
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext)
 
-  function selectMenuItem(item: IMenuItem) {
+  function selectMenuItem (item: IMenuItem) {
     setSelectedItem(item.id)
+    auth.signout();
+    navigate(item.link); //o tipo link só apareceu após eu dar commit
   }
 
   function onHideBtnClick() {
@@ -63,9 +70,13 @@ export default function Menu() {
           {menu.map((item) => (
             <li key={item.id} className={classNames({[styles.menu__item]: item.id !== selectedItem, [styles.menu__item__selected]: item.id === selectedItem})} onClick={() => selectMenuItem(item)}>
               <div className={styles.menu__item__icon__closed}>
+
                 <img src={item.id === selectedItem ? item.iconSelected : item.icon} alt={item.title} />
+              
               </div>
+
             </li>
+
           ))}
         </ul>
       </div>

@@ -10,6 +10,7 @@ router
 
 .post('/cadastro', UserController.criaUsuario)
 .post('/login', UserController.login)
+.post('/validate', UserController.validateToken)
 
 .put('/user/:id', UserController.alteraUsuario)
 .put('/user/senha/:id', UserController.alteraSenha)

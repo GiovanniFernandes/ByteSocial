@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.2",
     "sass": "^1.54.7",
     "typescript-plugin-css-modules": "^3.4.0"
   }
