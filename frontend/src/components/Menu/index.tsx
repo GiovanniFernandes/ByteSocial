@@ -45,7 +45,7 @@ export default function Menu() {
         </div>
         <ul className={styles.menu__list}>
           {menu.map((item) => (
-            <li key={item.id} className={classNames({[styles.menu__item]: true, [styles.menu__item__selected]: item.id === selectedItem})} onClick={() => selectMenuItem(item)}>
+            <li key={item.id} className={classNames({[styles.menu__item]: item.id !== selectedItem, [styles.menu__item__selected]: item.id === selectedItem})} onClick={() => selectMenuItem(item)}>
               <div className={styles.menu__item__icon}>
                 <img src={item.id === selectedItem ? item.iconSelected : item.icon} alt={item.title} />
               </div>
@@ -72,13 +72,7 @@ export default function Menu() {
         </div>
         <ul className={styles.menu__list__closed}>
           {menu.map((item) => (
-
-            <li key={item.id} className={ 
-
-              classNames({[styles.menu__item]: true, 
-              [styles.menu__item__selected]: item.id === selectedItem})} 
-              onClick={() => selectMenuItem(item)}>
-
+            <li key={item.id} className={classNames({[styles.menu__item]: item.id !== selectedItem, [styles.menu__item__selected]: item.id === selectedItem})} onClick={() => selectMenuItem(item)}>
               <div className={styles.menu__item__icon__closed}>
 
                 <img src={item.id === selectedItem ? item.iconSelected : item.icon} alt={item.title} />

@@ -1,6 +1,6 @@
 import styles from '../Welcome.module.scss'
-import { Link,  useNavigate } from 'react-router-dom'
-import React, { useContext,  useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 
 
@@ -11,8 +11,6 @@ export default function Login() {
 
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
-
-
 
 
   const realizarLogin = async (event:React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +28,6 @@ export default function Login() {
   }
 
 
-  
   return (
     <form onSubmit={realizarLogin} className={styles.formulario}>
       <h1 className={styles.formulario__title}>Faça seu login</h1>
@@ -51,8 +48,8 @@ export default function Login() {
         required
         onChange={event => setPassword(event.target.value)}
       />
-      <button className={styles.formulario__register}>
-        <Link to='/register'>Cadastre-se</Link>
+      <button className={styles.formulario__register} onClick={() => navigate('/register')}>
+        Cadastre-se
       </button>
       <button type="submit" className={styles.formulario__submit} >
         Login

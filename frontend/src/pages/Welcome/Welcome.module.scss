@@ -48,11 +48,12 @@
     height: 48px;
     border: 1px solid #AAAAAA;
     border-radius: 8px;
-    margin: 10.5px 0;
+    margin: 6px 0;
     padding: 13px 16px;
   }
 
   &__register {
+    color: $azul-destaque;
     background: $branco-fundo;
     border: none;
     border-radius: 8px;
@@ -60,11 +61,11 @@
     height: 40px;
     padding: 13px auto;
     margin-top: 30px;
-    a {
-      cursor: pointer;
-      color: $azul-destaque;
-      text-decoration: none;
-    }
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  &__register:hover {
+    background: $transparente-hover;
   }
 
   &__submit {
@@ -77,5 +78,9 @@
     padding: 13px auto;
     margin: 30px 0 0 21px;
     cursor: pointer;
+    transition: 0.3s;
+  }
+  &__submit:hover {
+    background: $azul-destaque-hover;
   }
 }

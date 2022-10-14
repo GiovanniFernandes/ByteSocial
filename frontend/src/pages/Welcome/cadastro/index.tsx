@@ -1,11 +1,13 @@
 import styles from '../Welcome.module.scss'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useApiUser } from 'hooks/useApiUser'
 
 
 export default function Cadastro() {
-  
+
+  const navigate = useNavigate()
+
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -46,8 +48,8 @@ export default function Cadastro() {
         <input type="password" className={styles.formulario__input} id="" 
           placeholder='Confirme sua senha' required
           onChange={event => setPassword2(event.target.value)}/>
-        <button className={styles.formulario__register}>
-          <Link to='/login'>Cancelar</Link>
+        <button className={styles.formulario__register} onClick={() => navigate('/login')}>
+          Cancelar
         </button>
         <button type="submit" className={styles.formulario__submit} >
           Cadastre-se

@@ -22,6 +22,10 @@
     border: none;
     border-radius: 6px 0 0 6px;
     cursor: pointer;
+    transition: 0.3s;
+  }
+  &__hideButton:hover {
+    background: $azul-destaque-hover;
   }
   &__user {
     display: flex;
@@ -52,6 +56,9 @@
       font-weight: 500;
       font-size: 14px;
       color: $preto-texto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   &__list {
@@ -65,15 +72,19 @@
   &__item {
     display: flex;
     align-items: center;
-    // width: 203px;
     height: 50px;
     border-radius: 6px;
+    margin-bottom: 11px;
     color: $azul-destaque;
     background-color: $branco-destaque;
     cursor: pointer;
-    // padding-left: 20px;
-    margin-bottom: 11px;
+    transition: 0.3s;
     &__selected {
+      display: flex;
+      align-items: center;
+      height: 50px;
+      border-radius: 6px;
+      margin-bottom: 11px;
       color: $branco-destaque;
       background-color: $azul-destaque;
     }
@@ -88,5 +99,8 @@
       font-weight: 500;
       font-size: 14px;
     }
+  }
+  &__item:hover {
+    background: $transparente-hover;
   }
 }
