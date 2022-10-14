@@ -1,21 +1,21 @@
 [
   {
     "title": "Inicio",
-    "link":"/teste",
+    "link":"/home",
     "icon": "/assets/icons/home.svg",
     "iconSelected": "/assets/icons/selected/home.svg",
     "id": 1
   },
   {
     "title": "Meu Perfil",
-    "link":"/",
+    "link":"/teste",
     "icon": "/assets/icons/profile.svg",
     "iconSelected": "/assets/icons/selected/profile.svg",
     "id": 2
   },
   {
     "title": "Configurações",
-    "link":"/",
+    "link":"/home",
     "icon": "/assets/icons/settings.svg",
     "iconSelected": "/assets/icons/selected/settings.svg",
     "id": 3

@@ -1,13 +1,8 @@
 import styles from '../Welcome.module.scss'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import React, { useContext, useEffect, useState } from 'react'
+import { Link,  useNavigate } from 'react-router-dom'
+import React, { useContext,  useState } from 'react'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 
-
-
-interface IValidacao {
-  token: string
-}
 
 export default function Login() {
 
@@ -29,7 +24,7 @@ export default function Login() {
       navigate('/home')
     }
     else {
-      alert("Opa deu merda ! ")
+      alert("Opa ! ")
     }
    
   }

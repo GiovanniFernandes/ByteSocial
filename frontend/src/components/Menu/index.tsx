@@ -1,6 +1,6 @@
 import styles from './Menu.module.scss'
 import menu from 'data/menu.json'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from 'contexts/Auth/AuthContexts'

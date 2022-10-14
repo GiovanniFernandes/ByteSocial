@@ -3,7 +3,6 @@ import Cadastro from 'pages/Welcome/cadastro';
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import Login from 'pages/Welcome/login';
 import Menu from 'components/Menu';
-
 import { RequireAuth } from 'contexts/Auth/RequireAuth';
 import { Test } from 'components/Test';
 

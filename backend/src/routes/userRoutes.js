@@ -6,7 +6,7 @@ const router = Router();
 
 router
 .get('/user/:id',auth,UserController.pegaUsuarioEspecifico)
-.get('/Users', UserController.pegaTodosUsuarios)
+.get('/Users', auth, UserController.pegaTodosUsuarios)
 
 .post('/cadastro', UserController.criaUsuario)
 .post('/login', UserController.login)
