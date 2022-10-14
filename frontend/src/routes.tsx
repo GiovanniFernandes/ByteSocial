@@ -5,6 +5,7 @@ import Login from 'pages/Welcome/login';
 import Menu from 'components/Menu';
 
 import { RequireAuth } from 'contexts/Auth/RequireAuth';
+import { Test } from 'components/Test';
 
 
 export default function AppRouter() {
@@ -22,6 +23,8 @@ export default function AppRouter() {
             <Route path='register' element={<Cadastro />} />
           </Route>
           <Route path='/home' element={<RequireAuth><Menu/></RequireAuth>} /> 
+          <Route path='/teste' element={<RequireAuth><Test/></RequireAuth>} />
+          
         </Routes>   
 
       </Router>

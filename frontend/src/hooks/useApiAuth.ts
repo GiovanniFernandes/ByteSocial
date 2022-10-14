@@ -16,6 +16,22 @@ export const useApiAuth = () => ({
         })
 
         return resposta.data;
+    },
+    authGet: async ()=> {
+        const storeData = localStorage.getItem('authToken');
+        
+        if(!storeData) return false;
+        
+        const axiosConfig = {
+            headers: {
+                Authorization: "Bearer "+storeData
+            } 
+        }
+
+        const resposta = await api.get('/users', axiosConfig);
+
+        return resposta.data    
+        
     }
 
 })

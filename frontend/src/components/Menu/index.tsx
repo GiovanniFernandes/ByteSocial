@@ -16,8 +16,12 @@ export default function Menu() {
   const auth = useContext(AuthContext)
 
   function selectMenuItem (item: IMenuItem) {
+    
     setSelectedItem(item.id)
-    auth.signout();
+
+    if(item.title === 'Sair')
+      auth.signout();
+
     navigate(item.link); //o tipo link só apareceu após eu dar commit
   }
 

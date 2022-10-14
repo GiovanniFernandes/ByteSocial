@@ -20,7 +20,6 @@ export const AuthProvider = ( {children} : {children:JSX.Element} )  => {
             if(storeData){
                  const data = await apiAuth.validateToken(storeData);
                      if(data){
-                         console.log("data.user localizado", data)  
                          setUser(data)           
                      }
             }
