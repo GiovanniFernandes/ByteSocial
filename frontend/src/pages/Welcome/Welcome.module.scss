@@ -1,38 +1,67 @@
 @import 'styles/variaveis';
 
+
 .welcome {
-  display: flex;
+  display: block;
+  
+
   &__logo {
     background: $azul-destaque linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0) 100%);
-    width: 57%;
-    height: 100vh;
+    width: 100%;
+    height: 25vh;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &__svg {
+
+      &__nome {
+        max-width: 200px;
+        width: 40%;
+        margin: 10px;
+      }
+
+      &__illustration {
+        max-width: 160px;
+        max-height: 150px;
+        width: 40%;
+        margin: 10px;
+      }
+
+      &__nome_illustration{
+        display: none; //visibility:hidden -> apenas some, mas mantém lá'
+      }
+
+    }
   }
   &__form {
     background: $branco-fundo;
-    width: 43%;
+    width: 100%;
+    
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 5px 0 5px;
   }
 }
 
 .formulario {
   background-color: $branco-fundo;
-  width: 364px;
-  
+  max-width: 364px;
+  width: 100%;
+  margin-top: 24px;
+  padding: 0px 5px 0 5px;
   flex-direction: column;
 
   &__title {
+    
     color: $azul-escuro-texto;
     font-size: 28px;
     font-weight: 700;
     line-height: 42px;
     letter-spacing: 0em;
     text-align: left;
-    margin: 0;
+    
   }
 
   &__texto {
@@ -40,47 +69,110 @@
     font-size: 15px;
     font-weight: 500;
     line-height: 22px;
-    margin: 10px 0 30px 0;
+    margin: 10px 0 30px 0px;
+
   }
 
   &__input {
-    width: 363px;
-    height: 48px;
-    border: 1px solid #AAAAAA;
-    border-radius: 8px;
-    margin: 6px 0;
-    padding: 13px 16px;
+
+    &__filho {
+      
+
+      max-width: 363px;
+      width: 100%;
+      height: 48px;
+      border: 1px solid #AAAAAA;
+      border-radius: 8px;
+      margin: 6px 0;
+      padding: 13px 16px;
+    }
+    
   }
 
-  &__register {
-    color: $azul-destaque;
-    background: $branco-fundo;
-    border: none;
-    border-radius: 8px;
-    width: 171px;
-    height: 40px;
-    padding: 13px auto;
-    margin-top: 30px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  &__register:hover {
-    background: $transparente-hover;
+  &__botoes {
+
+    display: flex;
+
+    &__register {
+      
+      color: $azul-destaque;
+      background-color: $branco-fundo;
+
+      border: none;
+      border-radius: 8px;
+      max-width: 171px;
+      width: 47%;
+      height: 40px;
+      padding: 13px auto;
+      margin-top: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    &__register:hover {
+      background: $transparente-hover;
+    }
+
+    &__submit {
+      background: $azul-destaque;
+      border: none;
+      border-radius: 8px;
+      color: $branco-fundo;
+      max-width: 171px;
+      width: 47%;
+      height: 40px;
+      padding: 13px auto;
+      margin: 30px 0px 0px 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    &__submit:hover {
+      background: $azul-destaque-hover;
+    }
+
   }
 
-  &__submit {
-    background: $azul-destaque;
-    border: none;
-    border-radius: 8px;
-    color: $branco-fundo;
-    width: 171px;
-    height: 40px;
-    padding: 13px auto;
-    margin: 30px 0 0 21px;
-    cursor: pointer;
-    transition: 0.3s;
+}
+
+
+@media screen and (min-width: 720px) {
+
+  .welcome {
+    display: flex;
+
+    &__logo {
+      width: 57%;
+      height: 100vh;
+      
+
+      &__svg {
+
+        &__nome {
+          display: none;
+        }
+  
+        &__illustration {
+          display: none;
+        }
+  
+        &__nome_illustration{
+          display:block; 
+          width: 40%;
+          min-width: 180px;
+        }
+  
+      }
+
+    }
+    &__form {
+      width: 43%;
+      
+    }
   }
-  &__submit:hover {
-    background: $azul-destaque-hover;
+  
+  .formulario {
+  
+    padding: 0px;
   }
+  
+ 
 }
