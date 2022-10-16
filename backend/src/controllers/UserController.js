@@ -2,46 +2,64 @@ const database = require ("../database/models");
 const Users = database.Users;
 const bcrypt = require('bcrypt');
 const jwt = require ('jsonwebtoken');
+const util = require('util');
+const promisify = util.promisify;
 require('dotenv').config();
 
 class UserController {
 
-
     static async criaUsuario (req,res){
 
         const {username,password,email} = req.body;
-
-        const hash = UserController.hashDaSenha(password);        
+        const userSplit = username.split(" ");        
 
         try{ 
+            if(userSplit.length>1) return res.status(400).json({msg:"Escolha um nome de usuário sem espaços.", status:false});
 
-            const novoUsuario = await Users.findOrCreate({where:{email},
-                defaults: {
+            if(!username || !email || !password) return res.status(400).json({msg:"Preencha todos os campos!",status:false});
+
+            let emailExists = await UserController.findEmail(email);
+
+            let usernameExists = await UserController.findUsername(username);
+
+            if(emailExists) return res.status(203).json({msg:"Email já cadastrado!", status:false});
+
+            if(usernameExists) return res.status(203).json({msg:"Username já cadastrado!", status:false});
+
+            if(password.length<6) return res.status(203).json({msg:"A sua senha precisa ter no mínimo 6 caracteres", status:false});
+            
+        const hash = UserController.hashDaSenha(password);
+
+        const novoUsuario = await Users.findOrCreate({where:{email},
+            defaults: {
                     username, email, password:hash
                 }
             });
             return res.status(201).json(novoUsuario);
 
-        } catch (errors){
-            return res.status(500).json(errors.message);
+        } catch (error){
+            return res.status(500).json(error.message);
         }
-
     }
 
     static async pegaUsuarioEspecifico (req,res){
 
-        const {id} = req.params;
-
+        const {usernameParam} = req.params;
         try{
-            const usuario = await Users.findOne(
-                { where: { id   : Number(id) }})
+            const usuario = await Users.findOne({where:{username:usernameParam}})
+            const {username, email, posts, connections, createdAt, updatedAt} = usuario;
+            if(usuario)return res.status(200).json
+            ({
+                username,email,posts,connections,
+                createdAt:createdAt,
+                updatedAt:updatedAt
+            });
+            
 
-            if(usuario)
-                return res.status(200).json(usuario);
-            return res.status(404).json({msg:"usuario não localizado"}); 
+            return res.status(404).json({msg:"Usuario não encontrado"}); 
 
-        } catch (errors){
-            return res.status(500).json(errors.message)
+        } catch (error){
+            return res.status(500).json(error.message)
         }
     }
 
@@ -49,50 +67,60 @@ class UserController {
         
         try{
             const usuarios = await Users.findAll();
+            usuarios.forEach(user=>
+                {
+                    if(user.password!=undefined)
+                    {
+                        user.password=undefined;
+                    }
+                })
             return res.status(200).json(usuarios);
+
         }catch (errors){
             return res.status(500).json(errors.message)
         }
     }
     
+    //Possível alteração futura
     static async alteraUsuario (req,res){
     
-        const {id} = req.params;
-        const novosDados = req.body;
+        const {username} = req.body;
+        const authHeader = req.headers.authorization;
+        const [,token] = authHeader.split(" ");
+        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
 
         try{
-            const atualizou = await Users.update(novosDados, 
-                { where: { id : Number(id)} });
+            const userExists = await Users.findOne({where:{username}});
+            const yourUser = await Users.findOne({where:{id}});
+            if(username==yourUser.username) return res.status(203).json({msg:"Esse já é o seu username"});
+            if(userExists) return res.status(203).json({msg:"Usuário já cadastrado!"});
 
-            const usuarioAtualizado = await Users.findOne 
-            ({ where: { id : Number(id)} });   
-
+            const atualizou = await Users.update({username},{where:{id}});
+            const usuarioAtualizado = await Users.findOne({where:{id}});   
             return res.status(200).json({usuarioAtualizado, atualizou})
-
-        } catch (errors){
-            return res.status(500).json(errors.message)
+        } catch (error){
+            return res.status(500).json(error.message)
         }
     }
 
     static async alteraSenha (req, res){ 
 
-        const {id} = req.params;
         const {password, newPassword} = req.body;
+        const authHeader = req.headers.authorization;
+        const [,token] = authHeader.split(" ");
+        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
 
         try{
-
-            const usuario = await Users.findOne({where:{id: Number(id)}});
-            const verificaSenha = bcrypt.compareSync(senha,usuario.password);  
+            const usuario = await Users.findOne({where:{id}});
+            const verificaSenha = bcrypt.compareSync(password,usuario.password);  
             
             if(!verificaSenha)
                 return res.status(300).json({msg:"senha atual incorreta", verificaSenha});
             
             const hash = UserController.hashDaSenha(newPassword);
-            const atualizou = await Users.update({password:hash}, 
-                { where: { id : Number(id)} });
+            const atualizou = await Users.update({password:hash},{where:{id}});
 
-            const usuarioAtualizado = await Users.findOne 
-            ({ where: { id : Number(id)} });   
+            const usuarioAtualizado = await Users.findOne({where:{id}});   
 
             return res.status(200).json({usuarioAtualizado, atualizou})
 
@@ -106,79 +134,56 @@ class UserController {
         const {id} = req.params;
 
         try{
-            const deletou = await Users.destroy({where:{ id: Number(id) }});
+            const deletou = await Users.destroy({where:{id}});
             return res.status(200).json({msg:`id ${id} removido`});
 
         } catch (errors){
             return res.status(500).json(errors.message)
         }
-
-
     }
 
-
-    static async login (req,res) {
-        const {email,password} = req.body;
-
-        try{  
-
-            if(!email || !password )
-                return res.status(300).json({msg: "Email e password são obrigatórios"});
-
-            const usuario = await Users.findOne({where:{email}});
-            
-            if(!usuario)
-                return res.status(404).json({msg: "usuario não encontrado" });
-            
-            const verificaPassword = bcrypt.compareSync(password,usuario.password);  
-            
-            if(!verificaPassword)
-                return res.status(300).json({msg:"senha incorreta" });
-
-            jwt.sign({id: usuario.id},process.env.JWT_SECRET, (err,token)=> {
-
-                    if(err)
-                        return res.status(500).json({error: err}, {msg: "Erro interno"});
-
-                    return res.status(200).json({token, user:usuario.id}); 
-                })    
-                    
-
-        }catch(error){
-            return res.status(500).json(error.message);
+    static hashDaSenha(pass){
+        if(!pass)
+        {
+            return;
         }
-    }
-
-
-    static validateToken (req,res) {
-        const {token} = req.body;
-
-        try{  
-
-            if(token === undefined){
-                return res.status(203).json({msg: "token não identificado"});
-            }
-                
-            jwt.verify(token, process.env.JWT_SECRET, (err,data) => {
-        
-                if(err)
-                    return res.status(203).json({err:"falha na autenticação do token"});
-                return res.status(200).json({user: data.id})  
-            });                    
-
-        }catch(error){
-            return res.status(500).json(error.message);
-        }
-    }
-    
-
-    
-    static hashDaSenha(senha){
         const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(senha, salt);
+        const hash = bcrypt.hashSync(pass, salt);
         return hash;
     }
 
+    static async findEmail(email)
+    {
+        try {
+            const usuarios = await Users.findAll({where:{email}});
+            if(usuarios.length>0)
+            {
+            return true;
+            }
+            return false;
+            
+        }   catch (error) 
+            {
+                return false;
+            }
+    }
+
+    static async findUsername(username)
+    {
+        try 
+        {
+            const usuarios = await Users.findAll({where:{username}});
+            if(usuarios.length>0)
+            {
+            return true;
+            }
+            return false;
+            
+        }catch (error) 
+            {
+                return false;
+            }
+    }
 }
 
 
