@@ -1,17 +1,21 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import { AuthContext } from "./AuthContexts";
 
 
 export const RequireAuth = ({ children }: { children: JSX.Element })  => {
     const auth = useContext(AuthContext);
+
+    const isLogged = (localStorage.getItem("authToken") != null) ? true : false
+    // const isLogged = auth.user != null ? true : false
     
-    if(auth.user){
+    if(isLogged){
         return children;
     }
     else {
         return (
-            <NavLink to ="/login"> Opa, rota protegida, clique aqui para ser redirecionado para o Login</NavLink>
+            // <NavLink to ="/login"> Opa, rota protegida, clique aqui para ser redirecionado para o Login</NavLink>
+            <Navigate to={'/login'}/>
         )
     }
  
