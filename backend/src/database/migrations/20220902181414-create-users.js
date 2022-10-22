@@ -11,6 +11,7 @@ module.exports = {
       },
       username: {
         allowNull:false,
+        unique:true,
         type: Sequelize.STRING
       },
       password: {
@@ -19,7 +20,23 @@ module.exports = {
       },
       email: {
         allowNull:false,
+        unique:true,
         type: Sequelize.STRING
+      },
+      posts:{
+        type: Sequelize.INTEGER,
+        defaultValue:0,
+        allowNull:false,
+      },
+      connections:{
+        type: Sequelize.INTEGER,
+        defaultValue:0,
+        allowNull:false
+      },
+      requests:{
+        type: Sequelize.INTEGER,
+        defaultValue:0,
+        allowNull:false
       },
       createdAt: {
         allowNull: false,

@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const cors = require ('cors')
-const user = require("./userRoutes");
+const user = require("./userRoutes.js");
+const auth = require("./authRoutes.js");
 
 module.exports = app => {
 
@@ -10,7 +11,7 @@ module.exports = app => {
     .use(
         bodyParser.json(),
         cors(),
-        user
-        
+        user,
+        auth,
     )
 }

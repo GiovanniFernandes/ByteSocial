@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len:{
           args:[6],
-          msg:"Senha tem que 6 digitos no minímo"
+          msg:"Senha deve possuir no mínimo 6 dígitos"
         }
       }
     },
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: {
           args: true,
-          msg: "e-mail invalido"
+          msg: "E-mail inválido"
         }
       }
     }

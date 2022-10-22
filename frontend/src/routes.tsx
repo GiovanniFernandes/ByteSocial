@@ -16,12 +16,10 @@ export default function AppRouter() {
       <Router>
         
         <Routes>
-          <Route path='/' element={<Welcome/>}>
-            <Route path='' element={<Navigate to={'/login'} />} />
-            <Route path='login' element={<Login />} />
-            <Route path='register' element={<Cadastro />} />
-          </Route>
-          <Route path='/home' element={<RequireAuth><Menu/></RequireAuth>} /> 
+          <Route path='/' element={<RequireAuth children={<Navigate to={'/home'} />}/>} />
+          <Route path='/login' element={<Welcome children={<Login/>}/>} />
+          <Route path='/register' element={<Welcome children={<Cadastro />}/>} />
+          <Route path='/home' element={<RequireAuth children={<Menu/>}/>} /> 
           <Route path='/teste' element={<RequireAuth><Test/></RequireAuth>} />
           
         </Routes>   

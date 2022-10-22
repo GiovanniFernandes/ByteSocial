@@ -1,21 +1,18 @@
 const {Router} = require('express');
-const UserController = require('../controllers/UserController');
+const UserController = require('../controllers/UserController.js');
 const auth = require('../middlewares/auth')
-
 const router = Router();
 
 router
-.get('/user/:id',auth,UserController.pegaUsuarioEspecifico)
-.get('/Users', auth, UserController.pegaTodosUsuarios)
+.get('/user/:usernameParam',auth,UserController.pegaUsuarioEspecifico)
+.get('/users', auth, UserController.pegaTodosUsuarios)
 
 .post('/cadastro', UserController.criaUsuario)
-.post('/login', UserController.login)
-.post('/validate', UserController.validateToken)
 
-.put('/user/:id', UserController.alteraUsuario)
-.put('/user/senha/:id', UserController.alteraSenha)
+.put('/user/change', auth, UserController.alteraUsuario)
+.put('/user/change/pass', auth, UserController.alteraSenha)
 
-.delete('/user/:id', UserController.deletaUsuario)
-
+//Retirar os parametros de rota
+.delete('/user/:id', auth, UserController.deletaUsuario)
 
 module.exports = router;
