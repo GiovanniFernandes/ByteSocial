@@ -5,8 +5,9 @@ export const useApiAuth = () => ({
 
     validateToken: async (token:string) => {
         
-         const resposta = await api.post('/validate', {token})
-         return resposta.data;
+        const resposta = await api.post('/validate', {token})
+        console.log(" Resposta: ", resposta);
+        return resposta.data;
         
     },
     signin: async (email:string, password: string) => {
@@ -14,6 +15,7 @@ export const useApiAuth = () => ({
         const resposta = await api.post('/login', {
             email, password
         })
+
 
         return resposta.data;
     },

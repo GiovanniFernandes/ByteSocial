@@ -23,11 +23,12 @@ export default function Cadastro() {
     }
     else{
       const newUser = await apiUser.novoUsuario(username, email, password); 
-      debugger
-      /* Modificações necessárias aqui para tratar erros, Aqui o back tem que me retorna verdadeiro ou false, ou
-      um objeto para saber se é pq tinha e mail já havia sido cadastrado ou, ainda erro interno */
       
-      alert("cadastro realizadom sucesso");
+      if(newUser.status === false)
+        alert(`ERRO: ${newUser.msg}`);
+
+      else
+        navigate('/login');
     }
     
   }

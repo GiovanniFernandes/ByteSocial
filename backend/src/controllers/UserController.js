@@ -12,16 +12,16 @@ class UserController {
 
         const {username,password,email} = req.body;
         const userSplit = username.split(" ");        
-
+        
         try{ 
-            if(userSplit.length>1) return res.status(400).json({msg:"Escolha um nome de usuário sem espaços.", status:false});
-
-            if(!username || !email || !password) return res.status(400).json({msg:"Preencha todos os campos!",status:false});
-
+            if(userSplit.length>1) return res.status(300).json({msg:"Escolha um nome de usuário sem espaços.", status:false});
+            
+            if(!username || !email || !password) return res.status(203).json({msg:"Preencha todos os campos!",status:false});
+            
             let emailExists = await UserController.findEmail(email);
-
+            
             let usernameExists = await UserController.findUsername(username);
-
+            
             if(emailExists) return res.status(203).json({msg:"Email já cadastrado!", status:false});
 
             if(usernameExists) return res.status(203).json({msg:"Username já cadastrado!", status:false});
@@ -35,7 +35,8 @@ class UserController {
                     username, email, password:hash
                 }
             });
-            return res.status(201).json(novoUsuario);
+
+        return res.status(201).json(novoUsuario);
 
         } catch (error){
             return res.status(500).json(error.message);
@@ -152,9 +153,11 @@ class UserController {
         return hash;
     }
     
-    async findEmail(email)
+    static async findEmail(email)
     {
+        
         try {
+
             const usuarios = await Users.findAll({where:{email}});
             if(usuarios.length>0)
             {
