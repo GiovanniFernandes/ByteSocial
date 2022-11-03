@@ -1,19 +1,32 @@
 import styles from './Menu.module.scss'
 import menu from 'data/menu.json'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
+import { useApiAuth } from 'hooks/useApiAuth'
 
 
 type IMenuItem = typeof menu[0]
 
-export default function Menu() {
+export default function Menu({selectedPage}: {selectedPage: number}) {
 
   const [selectedItem, setSelectedItem] = useState<number | null>(1)
   const [openState, setOpenState] = useState(true)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const auth = useContext(AuthContext)
+  const apiAuth = useApiAuth()
+  const [username, setUsername] = useState<string>('')
+
+  useEffect(()=>{
+    setSelectedItem(selectedPage)
+    getUser();
+  },[])
+
+  const getUser = async () => {
+      const response = await apiAuth.authGet();
+      setUsername(response[0].username)
+  }
 
   function selectMenuItem (item: IMenuItem) {
     
@@ -39,9 +52,9 @@ export default function Menu() {
         </div>
         <div className={styles.menu__user}>
           <div className={styles.menu__user__pic}>
-            <img src="" alt="Foto de perfil" />
+            <img src="/assets/default_profile_picture.svg" alt="Foto de perfil" />
           </div>
-          <p className={styles.menu__user__name}>Nome do usuário</p>
+          <p className={styles.menu__user__name}>{username}</p>
         </div>
         <ul className={styles.menu__list}>
           {menu.map((item) => (

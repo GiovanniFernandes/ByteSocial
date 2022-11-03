@@ -5,6 +5,7 @@ import Login from 'pages/Welcome/login';
 import Menu from 'components/Menu';
 import { RequireAuth } from 'contexts/Auth/RequireAuth';
 import { Test } from 'components/Test';
+import Profile from 'pages/profile';
 
 
 export default function AppRouter() {
@@ -19,8 +20,9 @@ export default function AppRouter() {
           <Route path='/' element={<RequireAuth children={<Navigate to={'/home'} />}/>} />
           <Route path='/login' element={<Welcome children={<Login/>}/>} />
           <Route path='/register' element={<Welcome children={<Cadastro />}/>} />
-          <Route path='/home' element={<RequireAuth children={<Menu/>}/>} /> 
+          <Route path='/home' element={<RequireAuth children={<Menu selectedPage={1}/>}/>} />
           <Route path='/teste' element={<RequireAuth><Test/></RequireAuth>} />
+          <Route path='/profile' element={<Profile />} />
           
         </Routes>   
 

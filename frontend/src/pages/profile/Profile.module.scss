@@ -1,0 +1,82 @@
+@import 'styles/variaveis';
+
+.container {
+  display: flex;
+}
+
+.profile {
+  margin: 65px 0 0 106px;
+  width: 768px;
+  
+  &__title {
+    margin: 0 0 36px;
+    font-size: 28px;
+    font-weight: 700;
+    color: $preto-texto;
+  }
+
+  &__user {
+    display: flex;
+    margin-bottom: 38px;
+  
+    &__pic {
+      width: 189px;
+      height: 189px;
+    }
+
+    &__infos {
+      margin-left: 39px;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+    }
+
+    &__name {
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 500;
+      color: $preto-texto;
+      width: fit-content;
+    }
+
+    &__edit {
+      font-size: 12px;
+      color: $azul-destaque;
+      text-decoration: none;
+      width: fit-content;
+    }
+
+    &__interactions {
+      display: flex;
+      padding: 0;
+      margin: 57px 0 0;
+    }
+
+    &__interaction {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 18px 0 0;
+
+      &__count {
+        color: $azul-destaque;
+        margin: 0;
+      }
+      &__title {
+        color: $preto-texto;
+        margin: 0;
+      }
+    }
+  }
+
+  &__newPost {
+    width: 100%;
+    border-radius: 10px;
+    padding: 14px 28px;
+    background-color: $azul-botao-transparencia;
+    border-style: none;
+  }
+  &__newPost:focus {
+    outline: none;
+  }
+}

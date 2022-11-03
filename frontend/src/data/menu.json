@@ -8,7 +8,7 @@
   },
   {
     "title": "Meu Perfil",
-    "link":"/teste",
+    "link":"/profile",
     "icon": "/assets/icons/profile.svg",
     "iconSelected": "/assets/icons/selected/profile.svg",
     "id": 2
