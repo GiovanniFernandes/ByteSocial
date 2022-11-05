@@ -1,15 +1,16 @@
 import Welcome from 'pages/Welcome';
 import Cadastro from 'pages/Welcome/cadastro';
-import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from 'pages/Welcome/login';
-import Menu from 'components/Menu';
-import { RequireAuth } from 'contexts/Auth/RequireAuth';
 import { Test } from 'components/Test';
 import Profile from 'pages/profile';
+import DefaultPage from 'components/DefaultPage';
+import { useState } from 'react';
 
 
 export default function AppRouter() {
   
+  const [selectedMenu, setSelectedMenu] = useState<number>(1)
 
   return (
     
@@ -17,12 +18,15 @@ export default function AppRouter() {
       <Router>
         
         <Routes>
-          <Route path='/' element={<RequireAuth children={<Navigate to={'/home'} />}/>} />
+
+          <Route path='/' element={<DefaultPage selectedMenu={selectedMenu}/>}>
+            <Route path='home' />
+            <Route path='profile' element={<Profile selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
+            <Route path='teste' element={<Test/>} />
+          </Route>
+
           <Route path='/login' element={<Welcome children={<Login/>}/>} />
           <Route path='/register' element={<Welcome children={<Cadastro />}/>} />
-          <Route path='/home' element={<RequireAuth children={<Menu selectedPage={1}/>}/>} />
-          <Route path='/teste' element={<RequireAuth><Test/></RequireAuth>} />
-          <Route path='/profile' element={<Profile />} />
           
         </Routes>   
 

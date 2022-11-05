@@ -1,11 +1,6 @@
 @import 'styles/variaveis';
 
-.container {
-  display: flex;
-}
-
 .profile {
-  margin: 65px 0 0 106px;
   width: 768px;
   
   &__title {
@@ -72,11 +67,19 @@
   &__newPost {
     width: 100%;
     border-radius: 10px;
-    padding: 14px 28px;
+    padding: 12px 20px;
     background-color: $azul-botao-transparencia;
-    border-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  &__newPost:focus {
+  &__newPost__input {
+    outline: none;
+    border-style: none;
+    background-color: $azul-botao-transparencia;
+    width: 100%;
+  }
+  &__newPost__input:focus {
     outline: none;
   }
 }

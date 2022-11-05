@@ -9,7 +9,7 @@ import { useApiAuth } from 'hooks/useApiAuth'
 
 type IMenuItem = typeof menu[0]
 
-export default function Menu({selectedPage}: {selectedPage: number}) {
+export default function Menu({selectedMenu}: {selectedMenu: number}) {
 
   const [selectedItem, setSelectedItem] = useState<number | null>(1)
   const [openState, setOpenState] = useState(true)
@@ -19,9 +19,9 @@ export default function Menu({selectedPage}: {selectedPage: number}) {
   const [username, setUsername] = useState<string>('')
 
   useEffect(()=>{
-    setSelectedItem(selectedPage)
+    setSelectedItem(selectedMenu)
     getUser();
-  },[])
+  },[selectedMenu])
 
   const getUser = async () => {
       const response = await apiAuth.authGet();

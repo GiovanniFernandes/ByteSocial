@@ -1,16 +1,22 @@
-import Menu from 'components/Menu';
 import { useApiAuth } from 'hooks/useApiAuth';
 import { useState, useEffect } from 'react';
 import styles from './Profile.module.scss'
 import interactions from 'data/interactions.json'
+import { IoMdSend } from 'react-icons/io'
 
-export default function Profile() {
+interface Props {
+  selectedMenu: number,
+  setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
+}
+
+export default function Profile(props: Props) {
 
   const apiAuth = useApiAuth()
   const [username, setUsername] = useState<string>('')
 
   useEffect(()=>{
     getUser();
+    props.setSelectedMenu(2)
   },[])
 
   const getUser = async () => {
@@ -19,8 +25,7 @@ export default function Profile() {
   }
 
   return(
-    <div className={styles.container}>
-    <Menu selectedPage={2} />
+
     <div className={styles.profile} id='profile'>
       <h1 className={styles.profile__title}>Seu Perfil</h1>
       <div className={styles.profile__user}>
@@ -40,8 +45,14 @@ export default function Profile() {
           </ul>
         </div>
       </div>
-      <input type="text" className={styles.profile__newPost} placeholder='O que você está pensando?' />
+      <div className={styles.profile__newPost}>
+        <input type="text" className={styles.profile__newPost__input} placeholder='O que você está pensando?' />
+        <IoMdSend 
+          size={30}
+          color='#52A3FF'
+        />
+      </div>
     </div>
-    </div>
+
   )
 }
