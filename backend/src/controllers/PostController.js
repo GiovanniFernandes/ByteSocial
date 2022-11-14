@@ -2,7 +2,6 @@ const database = require ("../database/models");
 const Posts = database.Posts;
 const jwt = require ('jsonwebtoken');
 const util = require('util');
-const { post } = require("..");
 const promisify = util.promisify;
 require('dotenv').config();
 
@@ -41,7 +40,7 @@ class PostController
         const deletingPost = await Posts.destroy({where:{id:post_id}});
         return res.status(203).json({msg:"Post deletado com sucesso!"});
       } catch (error) {
-        
+        return res.status(500).json({msg:error.message});
       }
     }
 }
