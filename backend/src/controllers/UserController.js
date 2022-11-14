@@ -54,14 +54,15 @@ class UserController {
             const {id,username, email, createdAt} = usuario;
 
             const posts = await Posts.findAll({where:{user_id:id}})
-            if(posts.length==0) {posts[0]="Esse usuário não possui postagens"};
+            let message = true;
+            if(posts.length==0) message="Esse usuário não possui postagens";
             if(usuario)return res.status(200).json
             ({
-                id,
                 username,
-                email,
-                "Criado em:": createdAt,
-                posts
+                "Criado em ": createdAt,
+                qtdPosts:posts.length,
+                posts,
+                message
             });
             return res.status(404).json({msg:"Usuario não encontrado"}); 
         } catch (error){
@@ -77,9 +78,9 @@ class UserController {
             const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
             const posts = await Posts.findAll({where:{user_id:id}});
             const {username} = await Users.findOne({where:{id}});
-            const qtdPosts = posts.length;
-            return res.status(200).json({username, posts:qtdPosts});
             
+            return res.status(200).json({username,qtdPosts:posts.length, posts });
+
         } catch (error) {
             return res.status(500).json({msg:error.message});
         }
