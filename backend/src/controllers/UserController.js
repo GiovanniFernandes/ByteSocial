@@ -1,5 +1,6 @@
 const database = require ("../database/models");
 const Users = database.Users;
+const Posts = database.Posts;
 const bcrypt = require('bcrypt');
 const jwt = require ('jsonwebtoken');
 const util = require('util');
@@ -44,16 +45,23 @@ class UserController {
     }
 
     static async pegaUsuarioEspecifico (req,res){
+        //Fazer com que os posts apareçam junto ao usuário
 
         const {usernameParam} = req.params;
+        
         try{
             const usuario = await Users.findOne({where:{username:usernameParam}})
-            const {username, email, createdAt} = usuario;
+            const {id,username, email, createdAt} = usuario;
+
+            const posts = await Posts.findAll({where:{user_id:id}})
+            if(posts.length==0) {posts[0]="Esse usuário não possui postagens"};
             if(usuario)return res.status(200).json
             ({
+                id,
                 username,
                 email,
-                "Criado em:": createdAt
+                "Criado em:": createdAt,
+                posts
             });
             return res.status(404).json({msg:"Usuario não encontrado"}); 
         } catch (error){
