@@ -69,6 +69,22 @@ class UserController {
         }
     }
 
+    static async pegaProfile(req,res)
+    {
+        try {
+            const authHeader = req.headers.authorization;
+            const [,token] = authHeader.split(" ");
+            const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+            const posts = await Posts.findAll({where:{user_id:id}});
+            const {username} = await Users.findOne({where:{id}});
+            const qtdPosts = posts.length;
+            return res.status(200).json({username, posts:qtdPosts});
+            
+        } catch (error) {
+            return res.status(500).json({msg:error.message});
+        }
+    }
+
     static async pegaTodosUsuarios (req,res){
         
         try{
