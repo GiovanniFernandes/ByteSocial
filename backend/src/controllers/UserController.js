@@ -45,7 +45,6 @@ class UserController {
     }
 
     static async pegaUsuarioEspecifico (req,res){
-        //Fazer com que os posts apareçam junto ao usuário
 
         const {usernameParam} = req.params;
         
