@@ -38,7 +38,7 @@ class PostController
         if(postProc.user_id!=id) return res.status(401).json({msg:"Você não pode apagar um post que não é seu!"});
         
         const deletingPost = await Posts.destroy({where:{id:post_id}});
-        return res.status(203).json({msg:"Post deletado com sucesso!"});
+        return res.status(200).json({msg:"Post deletado com sucesso!"});
       } catch (error) {
         return res.status(500).json({msg:error.message});
       }
