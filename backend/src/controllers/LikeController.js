@@ -33,7 +33,7 @@ class LikeController{
 
         const like = await Likes.create({user_id:id, post_id, username});
 
-        return res.status(203).json({msg:"+1 👍"});
+        return res.status(201).json({msg:"+1 👍"});
 
         } catch (error) {
             return res.status(500).json({msg:error.message});
