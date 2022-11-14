@@ -48,11 +48,12 @@ class UserController {
         const {usernameParam} = req.params;
         try{
             const usuario = await Users.findOne({where:{username:usernameParam}})
-            const {username, email, posts, connections, createdAt, updatedAt} = usuario;
+            const {username, email, createdAt} = usuario;
             if(usuario)return res.status(200).json
             ({
                 username,
                 email,
+                "Criado em:": createdAt
             });
             return res.status(404).json({msg:"Usuario não encontrado"}); 
         } catch (error){
