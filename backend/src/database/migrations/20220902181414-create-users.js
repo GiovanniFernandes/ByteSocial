@@ -23,21 +23,6 @@ module.exports = {
         unique:true,
         type: Sequelize.STRING
       },
-      posts:{
-        type: Sequelize.INTEGER,
-        defaultValue:0,
-        allowNull:false,
-      },
-      connections:{
-        type: Sequelize.INTEGER,
-        defaultValue:0,
-        allowNull:false
-      },
-      requests:{
-        type: Sequelize.INTEGER,
-        defaultValue:0,
-        allowNull:false
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
