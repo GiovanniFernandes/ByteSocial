@@ -51,14 +51,10 @@ class UserController {
             const {username, email, posts, connections, createdAt, updatedAt} = usuario;
             if(usuario)return res.status(200).json
             ({
-                username,email,posts,connections,
-                createdAt:createdAt,
-                updatedAt:updatedAt
+                username,
+                email,
             });
-            
-
             return res.status(404).json({msg:"Usuario não encontrado"}); 
-
         } catch (error){
             return res.status(500).json(error.message)
         }
