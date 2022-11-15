@@ -159,10 +159,8 @@ class UserController {
 
             const likes = await Likes.findAll({where:{user_id:id}});
 
-            for(let i=0; i<likes.length; i++)
-            {
-                const atualizaEmLike = Likes.update({username},{where:{user_id:id}});
-            }
+
+            const atualizaEmLike = Likes.update({username},{where:{user_id:id}});
 
             return res.status(200).json({usuarioAtualizado, atualizaUser})
 
