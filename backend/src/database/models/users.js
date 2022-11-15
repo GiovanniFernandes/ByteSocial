@@ -11,9 +11,22 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Users.hasMany(models.Likes,
-        {
+      {
           foreignKey:"user_id",
-        })
+      })
+      Users.belongsToMany(models.Users,
+      {
+          through:'Connections',
+          foreignKey:'user1_id',
+          as:'user1'
+      })
+      Users.belongsToMany(models.Users,
+      {
+          through:'Connections',
+          foreignKey:'user2_id',
+          as:'user2'
+      })
+
     }
   }
   Users.init({

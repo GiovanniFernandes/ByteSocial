@@ -1,6 +1,7 @@
 const database = require ("../database/models");
 const Users = database.Users;
 const Posts = database.Posts;
+const Connections = database.Connections;
 const bcrypt = require('bcrypt');
 const jwt = require ('jsonwebtoken');
 const util = require('util');
@@ -78,7 +79,37 @@ class UserController {
             const posts = await Posts.findAll({where:{user_id:id}});
             const {username} = await Users.findOne({where:{id}});
             
-            return res.status(200).json({username,qtdPosts:posts.length, posts });
+
+            const pSolicit = await Connections.findAll({where:{user2_id:id}});
+            const pSent = await Connections.findAll({where:{user1_id:id}});
+
+            let requests = [];
+            let connections = [];
+
+            for(let i=0; i<pSolicit.length; i++)
+            {
+                for(let j=0; j<pSent.length; j++)
+                {
+                    if(pSolicit[i].user1_id==pSent[j].user2_id && pSolicit[i].user2_id==pSent[j].user1_id )
+                    {
+                        connections.push(pSent[j].user2_id);
+                        pSolicit[i]=0;
+                    }
+                }
+            }
+            for(let i=0; i<pSolicit.length; i++)
+            {
+                if(pSolicit[i]!=0)
+                {
+                    requests.push(pSolicit[i])
+                }
+            }
+            return res.status(200).json({username,
+                qtdPosts:posts.length,
+                 posts,
+                  connections:connections.length,
+                   requests:requests.length
+                });
 
         } catch (error) {
             return res.status(500).json({msg:error.message});
