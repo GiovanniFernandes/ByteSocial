@@ -1,7 +1,9 @@
 const database = require ("../database/models");
 const Posts = database.Posts;
+const Likes = database.Likes;
 const jwt = require ('jsonwebtoken');
 const util = require('util');
+const { restart } = require("nodemon");
 const promisify = util.promisify;
 require('dotenv').config();
 
@@ -39,6 +41,21 @@ class PostController
         
         const deletingPost = await Posts.destroy({where:{id:post_id}});
         return res.status(200).json({msg:"Post deletado com sucesso!"});
+      } catch (error) {
+        return res.status(500).json({msg:error.message});
+      }
+    }
+
+    static async showPost(req,res)
+    {
+      try {
+        const{post_id} = req.params;
+        const likesInPost = await Likes.findAll({where:{post_id}});
+        const post = await Posts.findOne({where:{id:post_id}});
+        if(!post)return res.status(404).json({msg:"Post não encontrado, talvez esse post não exista!"});
+
+        return res.status(200).json({post, likes:likesInPost.length});
+
       } catch (error) {
         return res.status(500).json({msg:error.message});
       }
