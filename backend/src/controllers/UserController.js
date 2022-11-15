@@ -1,6 +1,7 @@
 const database = require ("../database/models");
 const Users = database.Users;
 const Posts = database.Posts;
+const Likes = database.Likes;
 const Connections = database.Connections;
 const bcrypt = require('bcrypt');
 const jwt = require ('jsonwebtoken');
@@ -139,7 +140,6 @@ class UserController {
         }
     }
     
-    //Possível alteração futura
     static async alteraUsuario (req,res){
     
         const {username} = req.body;
@@ -153,9 +153,19 @@ class UserController {
             if(username==yourUser.username) return res.status(203).json({msg:"Esse já é o seu username"});
             if(userExists) return res.status(203).json({msg:"Usuário já cadastrado!"});
 
-            const atualizou = await Users.update({username},{where:{id}});
+            
+            const atualizaUser = await Users.update({username},{where:{id}});
             const usuarioAtualizado = await Users.findOne({where:{id}});   
-            return res.status(200).json({usuarioAtualizado, atualizou})
+
+            const likes = await Likes.findAll({where:{user_id:id}});
+
+            for(let i=0; i<likes.length; i++)
+            {
+                const atualizaEmLike = Likes.update({username},{where:{user_id:id}});
+            }
+
+            return res.status(200).json({usuarioAtualizado, atualizaUser})
+
         } catch (error){
             return res.status(500).json(error.message)
         }
@@ -173,7 +183,7 @@ class UserController {
             const verificaSenha = bcrypt.compareSync(password,usuario.password);  
             
             if(!verificaSenha)
-                return res.status(300).json({msg:"senha atual incorreta", verificaSenha});
+                return res.status(300).json({msg:"Senha atual incorreta", verificaSenha});
             
             const hash = UserController.hashDaSenha(newPassword);
             const atualizou = await Users.update({password:hash},{where:{id}});
