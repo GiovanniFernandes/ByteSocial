@@ -48,7 +48,7 @@ class ConnectionController
         const pSolicit = await Connections.findAll({where:{user2_id:id}});
         const pSent = await Connections.findAll({where:{user1_id:id}});
 
-            let requests = [];
+            
             let connections = []; //array de ids dos usuários que são suas conexões
 
             for(let i=0; i<pSolicit.length; i++)
@@ -60,14 +60,6 @@ class ConnectionController
                         connections.push(pSent[j].user2_id);
                         pSolicit[i]=0;
                     }
-                }
-            }
-            
-            for(let i=0; i<pSolicit.length; i++)
-            {
-                if(pSolicit[i]!=0)
-                {   
-                    requests.push(pSolicit[i])
                 }
             }
 

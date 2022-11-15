@@ -117,6 +117,54 @@ class RequestController {
         }
     }
 
+    static async showRequests(req,res)
+    {
+        try {
+            const authHeader = req.headers.authorization;
+            const [,token] = authHeader.split(" ");
+            const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+
+            const pSolicit = await Connections.findAll({where:{user2_id:id}});
+            const pSent = await Connections.findAll({where:{user1_id:id}});
+
+            let requests = [];
+
+            for(let i=0; i<pSolicit.length; i++)
+            {
+                for(let j=0; j<pSent.length; j++)
+                {
+                    if(pSolicit[i].user1_id==pSent[j].user2_id && pSolicit[i].user2_id==pSent[j].user1_id )
+                    {
+                        pSolicit[i]=0;
+                    }
+                }
+            }
+
+            for(let i=0; i<pSolicit.length; i++)
+            {
+                if(pSolicit[i]!=0)
+                {   
+                    let usuario = await Users.findOne({where:{id:pSolicit[i].user1_id}})
+                    requests.push(usuario)
+                }
+            }
+
+            if(requests.length==0) return res.status(200).json({msg:"Você não possui nenhuma solicitação de conexão."});
+
+            requests.forEach(user=>{
+                if(user.password!=undefined || user.email!=undefined)
+                    {
+                        user.password=undefined;
+                        user.email=undefined;
+                    }
+            })
+
+            return res.status(200).json({requests});
+        } catch (error) {
+            return res.status(500).json(error.message)
+        }
+    }
+
 }
 
 module.exports = RequestController;
