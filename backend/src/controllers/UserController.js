@@ -54,9 +54,13 @@ class UserController {
             const {id,username, email, createdAt} = usuario;
 
             const posts = await Posts.findAll({where:{user_id:id}})
-            let message = true;
-            if(posts.length==0) message="Esse usuário não possui postagens";
-            if(usuario)return res.status(200).json
+            if(posts.length==0) res.status(200).json({username,
+                "Criado em ": createdAt,
+                qtdPosts:posts.length,
+                posts:"Usuário não possui posts",
+                });
+
+            if(usuario) return res.status(200).json
             ({
                 username,
                 "Criado em ": createdAt,
@@ -64,6 +68,7 @@ class UserController {
                 posts,
                 message
             });
+
             return res.status(404).json({msg:"Usuario não encontrado"}); 
         } catch (error){
             return res.status(500).json(error.message)

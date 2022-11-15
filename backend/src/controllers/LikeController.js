@@ -4,6 +4,7 @@ const Posts = database.Posts;
 const Likes = database.Likes;
 const jwt = require ('jsonwebtoken');
 const util = require('util');
+const { restart } = require("nodemon");
 const promisify = util.promisify;
 require('dotenv').config();
 
@@ -34,6 +35,23 @@ class LikeController{
         const like = await Likes.create({user_id:id, post_id, username});
 
         return res.status(201).json({msg:"+1 👍"});
+
+        } catch (error) {
+            return res.status(500).json({msg:error.message});
+        }
+    }
+
+    static async showLikes(req,res)
+    { //Mostra quem curtiu uma postagem específica.
+        try {
+            const {post_id} = req.params;
+            const listaLikes = await Likes.findAll({where:{post_id}});
+            const post = await Posts.findOne({where:{id:post_id}}); 
+            if(!post) return res.status(404).json({msg:"Postagem não existe!"});
+
+            if(listaLikes.length==0) return res.status(200).json({likes:"Nenhum usuário curtiu sua postagem!"});
+            
+            return res.status(200).json({likes:listaLikes});
 
         } catch (error) {
             return res.status(500).json({msg:error.message});
