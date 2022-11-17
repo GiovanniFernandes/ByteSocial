@@ -1,20 +1,13 @@
 const database = require ("../database/models");
 const Posts = database.Posts;
 const Likes = database.Likes;
-const jwt = require ('jsonwebtoken');
-const util = require('util');
-const { restart } = require("nodemon");
-const promisify = util.promisify;
-require('dotenv').config();
 
 class PostController
 {
     static async createPost(req,res)
     {
       try {
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+        const id = req.user_id;
         const {content} = req.body;
 
         if(!content) return res.status(400).json({msg:"Digite alguma coisa antes de postar"});
@@ -30,9 +23,7 @@ class PostController
     {
       try {
         const{post_id} = req.params;
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+        const id = req.user_id;
 
         const postProc = await Posts.findOne({where:{id:Number(post_id)}});
         if(!postProc) return res.status(404).json({msg:"Esse post não existe!"});

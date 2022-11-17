@@ -2,12 +2,6 @@ const database = require ("../database/models");
 const Users = database.Users;
 const Posts = database.Posts;
 const Likes = database.Likes;
-const jwt = require ('jsonwebtoken');
-const util = require('util');
-const { restart } = require("nodemon");
-const promisify = util.promisify;
-require('dotenv').config();
-
 
 class LikeController{
 
@@ -15,9 +9,7 @@ class LikeController{
     {
         try {
         const {post_id} = req.params;
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET); //Seu id
+        const id = req.user_id;
         const post = await Posts.findOne({where:{id:post_id}});
 
         if(!post) return res.status(400).json({msg:"Postagem não existe!"});

@@ -1,9 +1,6 @@
 const database = require ("../database/models");
 const Users = database.Users;
 const Connections = database.Connections;
-const jwt = require ('jsonwebtoken');
-const {promisify} = require('util');
-require('dotenv').config();
 
 class ConnectionController 
 {
@@ -11,9 +8,7 @@ class ConnectionController
     static async deleteFriendship(req,res)
     {
         const{username} = req.params; //Pode fazer com id se o front preferir
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+        const id = req.user_id;
         const usuarioReq = await Users.findOne({where:{username}});
 
         if(!usuarioReq) return res.status(404).json({msg:"Usuário não existe"})
@@ -41,9 +36,7 @@ class ConnectionController
     static async showConnections(req,res)
     {
 
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+        const id = req.user_id;
 
         const pSolicit = await Connections.findAll({where:{user2_id:id}});
         const pSent = await Connections.findAll({where:{user1_id:id}});

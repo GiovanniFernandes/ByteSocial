@@ -3,11 +3,6 @@ const Users = database.Users;
 const Posts = database.Posts;
 const Likes = database.Likes;
 const Connections = database.Connections;
-const bcrypt = require('bcrypt');
-const jwt = require ('jsonwebtoken');
-const util = require('util');
-const promisify = util.promisify;
-require('dotenv').config();
 
 class UserController {
 
@@ -52,10 +47,10 @@ class UserController {
         
         try{
             const usuario = await Users.findOne({where:{username:usernameParam}})
-            const {id,username, email, createdAt} = usuario;
+            const {id,username,createdAt} = usuario;
 
             const posts = await Posts.findAll({where:{user_id:id}})
-            if(posts.length==0) res.status(200).json({username,
+            if(posts.length==0) return res.status(200).json({username,
                 "Criado em ": createdAt,
                 qtdPosts:posts.length,
                 posts:"Usuário não possui posts",
@@ -67,7 +62,6 @@ class UserController {
                 "Criado em ": createdAt,
                 qtdPosts:posts.length,
                 posts,
-                message
             });
 
             return res.status(404).json({msg:"Usuario não encontrado"}); 
@@ -79,9 +73,7 @@ class UserController {
     static async pegaProfile(req,res)
     {
         try {
-            const authHeader = req.headers.authorization;
-            const [,token] = authHeader.split(" ");
-            const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+            const id = req.user_id;
             const posts = await Posts.findAll({where:{user_id:id}});
             const {username} = await Users.findOne({where:{id}});
             
@@ -143,9 +135,7 @@ class UserController {
     static async alteraUsuario (req,res){
     
         const {username} = req.body;
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+        const id = req.user_id;
 
         try{
             const userExists = await Users.findOne({where:{username}});
@@ -172,9 +162,7 @@ class UserController {
     static async alteraSenha (req, res){ 
 
         const {password, newPassword} = req.body;
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+        const id = req.user_id;
 
         try{
             const usuario = await Users.findOne({where:{id}});
