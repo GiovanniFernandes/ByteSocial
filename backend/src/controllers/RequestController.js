@@ -61,20 +61,23 @@ class RequestController {
             const id = req.user_id;
 
             const usuarioReq = await Users.findOne({where:{username}});
-            if(!usuarioReq) return res.status(404).json({msg:"Usuário não existe"})
-
+            if(!usuarioReq) return res.status(404).json({msg:"Usuário não existe"}) //check
+            if(usuarioReq.id==id) return res.status(400).json({msg:"Ooops, parece que você se equivocou..."}) 
+            
             const buscaUser = await Connections.findOne({where:{user1_id:id, user2_id:usuarioReq.id}});
             const buscaEmUser = await Connections.findOne({where:{user1_id:usuarioReq.id, user2_id:id}});
 
             if(!buscaUser&&!buscaEmUser) return res.status(400).json({msg:"Solicitação não existe"});
+            if(buscaUser&&buscaEmUser) return res.status(400).json({msg:"Esse usuário já é seu amigo!"});
 
             if(!buscaUser&&buscaEmUser){
                 const requestAccepted = await Connections.create({user1_id:id, user2_id:usuarioReq.id});
                 return res.status(201).json({msg:"Solicitação aceita!"});
             }
 
-            if(buscaUser&&buscaEmUser) return res.status(400).json({msg:"Esse usuário já é seu amigo!"});
-
+            return res.status(400).json({msg:"Você não pode aceitar solicitação por outra pessoa!"});
+        
+        
         } catch (error) {
             return res.status(500).json(error.message)
         }
