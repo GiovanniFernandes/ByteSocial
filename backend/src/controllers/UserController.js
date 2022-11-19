@@ -3,6 +3,8 @@ const Users = database.Users;
 const Posts = database.Posts;
 const Likes = database.Likes;
 const Connections = database.Connections;
+const bcrypt = require("bcrypt");
+
 
 class UserController {
 
