@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Connections.init({
-    n: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Connections',

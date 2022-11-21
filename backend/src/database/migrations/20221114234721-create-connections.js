@@ -3,19 +3,10 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Connections', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      n: {
-        allowNull:true,
-        type: Sequelize.BOOLEAN
-      },
       user1_id: {
         allowNull:false,
         type:Sequelize.INTEGER,
+        primaryKey: true, 
         references: {
           model:'Users',
           key:'id'
@@ -24,6 +15,7 @@ module.exports = {
       user2_id: {
         allowNull:false,
         type:Sequelize.INTEGER,
+        primaryKey: true, 
         references: {
           model:'Users',
           key:'id'
