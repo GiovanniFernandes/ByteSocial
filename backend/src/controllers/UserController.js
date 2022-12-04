@@ -1,10 +1,10 @@
 const database = require ("../database/models");
 const Users = database.Users;
-const bcrypt = require('bcrypt');
-const jwt = require ('jsonwebtoken');
-const util = require('util');
-const promisify = util.promisify;
-require('dotenv').config();
+const Posts = database.Posts;
+const Likes = database.Likes;
+const Connections = database.Connections;
+const bcrypt = require("bcrypt");
+
 
 class UserController {
 
@@ -46,21 +46,73 @@ class UserController {
     static async pegaUsuarioEspecifico (req,res){
 
         const {usernameParam} = req.params;
+        
         try{
             const usuario = await Users.findOne({where:{username:usernameParam}})
-            const {username, email, posts, connections, createdAt, updatedAt} = usuario;
-            if(usuario)return res.status(200).json
+            const {id,username,createdAt} = usuario;
+
+            const posts = await Posts.findAll({where:{user_id:id}})
+            if(posts.length==0) return res.status(200).json({username,
+                "Criado em ": createdAt,
+                qtdPosts:posts.length,
+                posts:"Usuário não possui posts",
+                });
+
+            if(usuario) return res.status(200).json
             ({
-                username,email,posts,connections,
-                createdAt:createdAt,
-                updatedAt:updatedAt
+                username,
+                "Criado em ": createdAt,
+                qtdPosts:posts.length,
+                posts,
             });
-            
 
             return res.status(404).json({msg:"Usuario não encontrado"}); 
-
         } catch (error){
             return res.status(500).json(error.message)
+        }
+    }
+
+    static async pegaProfile(req,res)
+    {
+        try {
+            const id = req.user_id;
+            const posts = await Posts.findAll({where:{user_id:id}});
+            const {username} = await Users.findOne({where:{id}});
+            
+
+            const pSolicit = await Connections.findAll({where:{user2_id:id}});
+            const pSent = await Connections.findAll({where:{user1_id:id}});
+
+            let requests = [];
+            let connections = [];
+
+            for(let i=0; i<pSolicit.length; i++)
+            {
+                for(let j=0; j<pSent.length; j++)
+                {
+                    if(pSolicit[i].user1_id==pSent[j].user2_id && pSolicit[i].user2_id==pSent[j].user1_id )
+                    {
+                        connections.push(pSent[j].user2_id);
+                        pSolicit[i]=0;
+                    }
+                }
+            }
+            for(let i=0; i<pSolicit.length; i++)
+            {
+                if(pSolicit[i]!=0)
+                {
+                    requests.push(pSolicit[i])
+                }
+            }
+            return res.status(200).json({username,
+                qtdPosts:posts.length,
+                 posts,
+                  connections:connections.length,
+                   requests:requests.length
+                });
+
+        } catch (error) {
+            return res.status(500).json({msg:error.message});
         }
     }
 
@@ -82,13 +134,10 @@ class UserController {
         }
     }
     
-    //Possível alteração futura
     static async alteraUsuario (req,res){
     
         const {username} = req.body;
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+        const id = req.user_id;
 
         try{
             const userExists = await Users.findOne({where:{username}});
@@ -96,9 +145,17 @@ class UserController {
             if(username==yourUser.username) return res.status(203).json({msg:"Esse já é o seu username"});
             if(userExists) return res.status(203).json({msg:"Usuário já cadastrado!"});
 
-            const atualizou = await Users.update({username},{where:{id}});
+            
+            const atualizaUser = await Users.update({username},{where:{id}});
             const usuarioAtualizado = await Users.findOne({where:{id}});   
-            return res.status(200).json({usuarioAtualizado, atualizou})
+
+            const likes = await Likes.findAll({where:{user_id:id}});
+
+
+            const atualizaEmLike = Likes.update({username},{where:{user_id:id}});
+
+            return res.status(200).json({usuarioAtualizado, atualizaUser})
+
         } catch (error){
             return res.status(500).json(error.message)
         }
@@ -107,16 +164,14 @@ class UserController {
     static async alteraSenha (req, res){ 
 
         const {password, newPassword} = req.body;
-        const authHeader = req.headers.authorization;
-        const [,token] = authHeader.split(" ");
-        const {id} = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+        const id = req.user_id;
 
         try{
             const usuario = await Users.findOne({where:{id}});
             const verificaSenha = bcrypt.compareSync(password,usuario.password);  
             
             if(!verificaSenha)
-                return res.status(300).json({msg:"senha atual incorreta", verificaSenha});
+                return res.status(300).json({msg:"Senha atual incorreta", verificaSenha});
             
             const hash = UserController.hashDaSenha(newPassword);
             const atualizou = await Users.update({password:hash},{where:{id}});

@@ -46,13 +46,13 @@ class AuthController
         try{  
 
             if(token === undefined)
-                return res.status(203).json({msg: "token não identificado", status:false});
+                return res.status(203).json({msg: "Token não identificado!", status:false});
             
                 
             jwt.verify(token, process.env.JWT_SECRET, (err,data) => {
         
                 if(err)
-                    return res.status(203).json({err:"falha na autenticação do token", status:false});
+                    return res.status(203).json({err:"Falha na autenticação do token!", status:false});
                 return res.status(200).json({user: data.id, status: true})  
             });                    
 
@@ -60,10 +60,6 @@ class AuthController
             return res.status(500).json(error.message);
         }
     }
-
-
-
-
 }
 
 module.exports = AuthController;

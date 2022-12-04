@@ -6,6 +6,26 @@ module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
 
     static associate(models) {
+      Users.hasMany(models.Posts, {
+        foreignKey:"user_id",
+      })
+
+      Users.hasMany(models.Likes,
+      {
+          foreignKey:"user_id",
+      })
+      Users.belongsToMany(models.Users,
+      {
+          through:'Connections',
+          foreignKey:'user1_id',
+          as:'user1'
+      })
+      Users.belongsToMany(models.Users,
+      {
+          through:'Connections',
+          foreignKey:'user2_id',
+          as:'user2'
+      })
 
     }
   }
