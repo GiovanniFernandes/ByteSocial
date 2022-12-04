@@ -52,7 +52,7 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
         </div>
         <div className={styles.menu__user}>
           <div className={styles.menu__user__pic}>
-            <img src="/assets/default_profile_picture.svg" alt="Foto de perfil" />
+            <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${username}`} alt="Foto de perfil" />
           </div>
           <p className={styles.menu__user__name}>{username}</p>
         </div>
@@ -80,7 +80,7 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
         </div>
         <div className={styles.menu__user__closed}>
           <div className={styles.menu__user__pic}>
-            <img src="" alt="Foto de perfil" />
+            <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${username}`} alt="Foto de perfil" />
           </div>
         </div>
         <ul className={styles.menu__list__closed}>
