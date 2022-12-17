@@ -2,6 +2,10 @@ const bodyParser = require('body-parser');
 const cors = require ('cors')
 const user = require("./userRoutes.js");
 const auth = require("./authRoutes.js");
+const post = require("./postRoutes.js");
+const like = require("./likeRoutes.js");
+const request = require("./requestRoutes.js");
+const connection = require("./connectionRoutes.js");
 
 module.exports = app => {
 
@@ -13,5 +17,9 @@ module.exports = app => {
         cors(),
         user,
         auth,
+        post,
+        like,
+        request,
+        connection
     )
 }

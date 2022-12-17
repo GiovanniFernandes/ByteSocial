@@ -13,24 +13,25 @@ export default function Profile(props: Props) {
 
   const apiAuth = useApiAuth()
   const [username, setUsername] = useState<string>('')
+  const [selectedSection, setSelectedSection] = useState<number>(0)
 
-  useEffect(()=>{
+  useEffect(() => {
     getUser();
     props.setSelectedMenu(2)
-  },[])
+  }, [])
 
   const getUser = async () => {
-      const response = await apiAuth.authGet();
-      setUsername(response[0].username)
+    const response = await apiAuth.authGet();
+    setUsername(response[0].username)
   }
 
-  return(
+  return (
 
     <div className={styles.profile} id='profile'>
       <h1 className={styles.profile__title}>Seu Perfil</h1>
       <div className={styles.profile__user}>
         <div className={styles.profile__user__pic}>
-          <img src="/assets/default_profile_picture.svg" alt="Foto de perfil" className={styles.profile__user__pic}/>
+          <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${username}`} alt="Foto de perfil" className={styles.profile__user__pic} />
         </div>
         <div className={styles.profile__user__infos}>
           <h2 className={styles.profile__user__name}>{username}</h2>
@@ -46,11 +47,24 @@ export default function Profile(props: Props) {
         </div>
       </div>
       <div className={styles.profile__newPost}>
-        <input type="text" className={styles.profile__newPost__input} placeholder='O que você está pensando?' />
-        <IoMdSend 
+        <textarea className={styles.profile__newPost__input} placeholder='O que você está pensando?' rows={1} />
+        <IoMdSend
+          className={styles.profile__newPost__send}
           size={30}
           color='#52A3FF'
         />
+      </div>
+      <div className={styles.profile__sections}>
+        <div
+          className={selectedSection !== 0 ? styles.profile__sections__item : styles.profile__sections__item__selected}
+          onClick={() => setSelectedSection(0)}>
+          <h3>Suas publicações</h3>
+        </div>
+        <div
+          className={selectedSection !== 1 ? styles.profile__sections__item : styles.profile__sections__item__selected}
+          onClick={() => setSelectedSection(1)}>
+          <h3>Solicitações de conexão</h3>
+        </div>
       </div>
     </div>
 

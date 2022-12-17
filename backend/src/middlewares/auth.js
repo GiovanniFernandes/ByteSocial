@@ -5,7 +5,7 @@ function auth (req, res, next){
 
     const authToken = req.headers.authorization;
     
-    if(!authToken) return res.status(400).json({msg: "token não identificado"});
+    if(!authToken) return res.status(400).json({msg: "Token não identificado"});
         
     const [,token] = authToken.split(" ");
 
