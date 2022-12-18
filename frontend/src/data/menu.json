@@ -15,7 +15,7 @@
   },
   {
     "title": "Configurações",
-    "link":"/teste",
+    "link":"/settings",
     "icon": "/assets/icons/settings.svg",
     "iconSelected": "/assets/icons/selected/settings.svg",
     "id": 3

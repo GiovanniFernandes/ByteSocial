@@ -57,15 +57,22 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
           <p className={styles.menu__user__name}>{username}</p>
         </div>
         <ul className={styles.menu__list}>
+
           {menu.map((item) => (
-            <li key={item.id} className={classNames({[styles.menu__item]: item.id !== selectedItem, [styles.menu__item__selected]: item.id === selectedItem})} onClick={() => selectMenuItem(item)}>
-              <div className={styles.menu__item__icon}>
-                <img src={item.id === selectedItem ? item.iconSelected : item.icon} alt={item.title} />
+
+            <li key={item.id} 
+            className={ classNames({[styles.menu__item]: item.id !== selectedItem, [styles.menu__item__selected]: item.id === selectedItem})} onClick={() => selectMenuItem(item)}>
+
+                <div className={styles.menu__item__icon}>
+                    <img src={item.id === selectedItem ? item.iconSelected : item.icon} alt={item.title} />
               </div>
+
               <p className={styles.menu__item__text}>
                 {item.title}
               </p>
             </li>
+
+
           ))}
         </ul>
       </div>

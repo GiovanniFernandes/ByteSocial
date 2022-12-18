@@ -6,7 +6,6 @@ export const useApiAuth = () => ({
     validateToken: async (token:string) => {
         
         const resposta = await api.post('/validate', {token})
-        console.log(" Resposta: ", resposta);
         return resposta.data;
         
     },

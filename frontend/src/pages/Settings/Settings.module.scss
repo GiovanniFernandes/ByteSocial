@@ -1,0 +1,109 @@
+@import 'styles/variaveis';
+
+.settings {
+  width: 768px;
+
+  &__title {
+    margin: 0 0 36px;
+    font-size: 28px;
+    font-weight: 700;
+    color: $preto-texto;
+  }
+
+  &__container{
+    display: flex;
+    
+
+    &__listTextField{
+      
+      width: 100%;
+      max-width: 464px;
+      
+    }
+  
+    &__edit_photo {
+      margin-left: 58px;
+      cursor: pointer;
+      & label {
+        display: block;
+        height: 16px;
+        margin-bottom: 16px;
+      }
+      & img {
+        width: 189px;
+        height: 189px;
+        border-radius: 13px;
+      }
+      &__camera_sobre_a_foto {
+        position: absolute;
+        top: 165px; 
+        left: 913px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        width: 189px;
+        height: 189px;
+        border: none;
+        background: rgba(63, 67, 79, 0.6);
+        border-radius: 13px;
+
+
+      }
+    }
+
+  }
+
+  &__delete_account {
+    
+    width: 100%;
+    max-width: 464px;
+    height: 100%;
+    max-height: 161px;
+    margin-top: 74px;
+
+    & h2 {
+      font-size: 20px;
+      line-height: 30px;
+      height: 30px;
+      font-weight: 700;
+      align-items: center;
+      color: $vermelho_botao;
+    }
+    & hr {
+      margin: 2px 0px 12px 0px;
+    }
+    & p {
+      display: block;
+    }
+    & button {
+      display:flex;
+      align-items: center;
+      padding: 10px 17px 10px 17px;
+      width: 100%;
+      max-width: 174px;
+      height: 100%;
+      max-height: 44px;
+      margin-top: 27px;
+      border-radius: 7px;
+      border: none;
+      background-color: #F4C7CD;
+      color: $vermelho_botao;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      cursor: pointer;
+
+      & div {
+        display: flex;
+        margin-right: 11.48px;
+      }
+    }
+
+  }
+  
+  
+
+}
+
+

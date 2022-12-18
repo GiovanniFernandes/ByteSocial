@@ -38,7 +38,7 @@ export default function Profile(props: Props) {
           <a href="#profile" className={styles.profile__user__edit}>Editar perfil</a>
           <ul className={styles.profile__user__interactions}>
             {interactions.map((item) => (
-              <li className={styles.profile__user__interaction}>
+              <li key={`interactions${item.title}`}className={styles.profile__user__interaction}>
                 <p className={styles.profile__user__interaction__count}>{item.count}</p>
                 <p className={styles.profile__user__interaction__title}>{item.title}</p>
               </li>
