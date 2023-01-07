@@ -37,16 +37,16 @@ export default function Cadastro() {
       <form onSubmit={realizaCadastro} className={styles.formulario}>
         <h1 className={styles.formulario__title}>Faça seu cadastro</h1>
         <p className={styles.formulario__texto}>Para entrar na maior comunidade dev do Ramo</p>
-        <input type="text" className={styles.formulario__input__filho} id="" 
+        <input type="text" className={styles.formulario__input__filho} id="nome" 
           placeholder='Digite seu nome de usuário' required
           onChange={event => setUsername(event.target.value)}/>
-        <input type="email" className={styles.formulario__input__filho} id="" 
+        <input type="email" className={styles.formulario__input__filho} id="email" 
           placeholder='Digite seu email' required
           onChange={event => setEmail(event.target.value)}/>
-        <input type="password" className={styles.formulario__input__filho} id="" 
+        <input type="password" className={styles.formulario__input__filho} id="senha" 
           placeholder='Digite sua senha' required
           onChange={event => setPassword(event.target.value)}/>
-        <input type="password" className={styles.formulario__input__filho} id="" 
+        <input type="password" className={styles.formulario__input__filho} id="confirmeSenha" 
           placeholder='Confirme sua senha' required
           onChange={event => setPassword2(event.target.value)}/>
         <button className={styles.formulario__botoes__register} onClick={() => navigate('/login')}>

@@ -8,26 +8,19 @@ interface ItemTextField {
     placeholder:string,
     id:string,
     fieldName:string,
+    aoClick:any
 }
-
-
+    
 
 export const ChangeTextField = (props:ItemTextField) => {
 
     const [data, setData] = useState('');
 
     const aoClick = () => {
-        /*event:React.FormEvent<HTMLFormElement>
-        event.preventDefault(); 
-        */
-        console.log("Clicou: ", data)
-    
-
-        
+        props.aoClick(data)
+        setData('');
     }
     
-
-
 
     return (
         <div className={style.container}>
@@ -39,6 +32,7 @@ export const ChangeTextField = (props:ItemTextField) => {
                 id={props.id}
                 type={props.type}
                 onChange={event => setData(event.target.value)}
+                value ={data}
                 />
                 <button type='button' onClick={aoClick}>
                     <EditBUtton/>

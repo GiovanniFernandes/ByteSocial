@@ -1,5 +1,7 @@
-import { useApiAuth } from 'hooks/useApiAuth';
-import { useState, useEffect } from 'react';
+import { AuthContext } from 'contexts/Auth/AuthContexts';
+import { useApiUser } from 'hooks/useApiUser';
+import { useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CameraSvg } from './assets/CameraSVG';
 import { DeletePersonSvg } from './assets/DeletePersonSvg';
 import { ChangeTextField } from './ChangeTextField';
@@ -11,34 +13,131 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
-const listTextField = [
+
+export default function Settings(props: Props) {
+
+    const apiUser = useApiUser();
+    const auth = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        props.setSelectedMenu(3)
+    }, [])
+
+
+
+    const changeName = async (data:String) => {
+
+   /*event:React.FormEvent<HTMLFormElement>
+   event.preventDefault(); 
+   */
+
+    if(data === '')
+        return
+
+    const response = await apiUser.changeName(data);
+
+    if(response.status === false) 
+        window.alert(`Falha: ${response.msg}`)
+        
+    else {
+        window.alert(`Sucesso: ${response.msg} \n Necessário fazer Login novamente !`)
+        auth.signout();
+        navigate("/login");
+    }
+    }
+
+    const changeEmail = async (data:String) => {
+    /*event:React.FormEvent<HTMLFormElement>
+   event.preventDefault(); 
+   */
+
+    if(data === '')
+        return
+
+    const response = await apiUser.changeEmail(data)
+
+    if(response.status === false) 
+        window.alert(`Falha: ${response.msg}`)
+        
+    else {
+        window.alert(`Sucesso: ${response.msg} \n Necessário fazer Login novamente !`)
+        auth.signout();
+        navigate("/login");
+    }
+
+    }
+ 
+    const changePassword = async (data:String) => {
+
+    if(data === '')
+        return
+
+    const oldPassword = window.prompt("Digite sua senha antiga: ");
+
+    if(oldPassword === null)
+        return
+    else if(oldPassword === ''){
+        window.alert("Se faz necessário a sua senha antiga para prosseguir com a mudança de senha !")
+        changePassword(data);
+        return
+    }
+
+    const response = await apiUser.changePassword(oldPassword,data)
+
+    if(response.status === false) 
+        window.alert(`Falha: : ${response.msg}`)
+        
+    else {
+        window.alert(`Sucesso: ${response.msg} \n Necessário fazer Login novamente !`,)
+        auth.signout();
+        navigate("/login");
+    }
+    
+    }
+
+    const deleteAccount = async () => {
+
+    const confirmation = window.confirm(("Tem certeza que deseja deletar esta conta ? ")); 
+
+    if (confirmation === true) {
+        
+        const response = await apiUser.deletaUsuario();
+        if(response.status === false) 
+            window.alert(`Falha ao deletar conta: ${response.msg}`)
+        
+        else {
+            window.alert(`Conta deletada com sucesso: ${response.msg}`)
+            auth.signout();
+            navigate("/login");
+        }
+    }
+    }
+
+    const listTextField = [
     {
         type: "text",
         placeholder:"Nome de usuário",
         id:"NomeDeUsuario",
         fieldName:"Nome",
+        aoClick: changeName
     },
     {
         type: "email",
         placeholder:"email@email",
         id:"email",
         fieldName:"Email",
+        aoClick: changeEmail
     },
     {
         type: "password",
         placeholder:"*****************",
         id:"password",
         fieldName:"Senha",
+        aoClick: changePassword
     }
-]
+    ]
 
-
-
-export default function Settings(props: Props) {
-
-  useEffect(() => {
-    props.setSelectedMenu(3)
-  }, [])
 
 
   return (
@@ -53,7 +152,10 @@ export default function Settings(props: Props) {
                 placeholder ={item.placeholder}
                 id = {item.id}
                 fieldName={item.fieldName}
-                key={`Change Text Field ${item.fieldName}`}
+                aoClick={item.aoClick}
+                key={`Change Text Field ${item.fieldName}`
+            
+            }
                 />
                 )}
             </div>
@@ -62,8 +164,7 @@ export default function Settings(props: Props) {
                 <label>
                     Imagem do Perfil
                 </label>
-                
-                <img src='https://3.bp.blogspot.com/-1ZtNZ0lkJ_Q/WrJ-ua2ZUeI/AAAAAAAAK2k/vI_Q5lCwnu0StekAyVv7RIUGz0iBORHqwCEwYBhgL/s1600/AngelinaJolie.jpg'></img>
+                <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${auth.user?.username}`} ></img>
                 <div className={styles.settings__container__edit_photo__camera_sobre_a_foto}>
                     <div>
                         <CameraSvg/>
@@ -80,7 +181,7 @@ export default function Settings(props: Props) {
             Ao deletar sua conta todas suas informações
             serão removidas do nosso site para sempre. 
             </p>
-            <button>
+            <button onClick={deleteAccount}>
                 <div>
                     <DeletePersonSvg/>
                 </div>

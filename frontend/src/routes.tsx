@@ -7,6 +7,7 @@ import Profile from 'pages/profile';
 import DefaultPage from 'components/DefaultPage';
 import { useState } from 'react';
 import Settings from 'pages/Settings';
+import Home from 'pages/Home';
 
 
 export default function AppRouter() {
@@ -21,7 +22,7 @@ export default function AppRouter() {
         <Routes>
 
           <Route path='/' element={<DefaultPage selectedMenu={selectedMenu}/>}>
-            <Route path='home' />
+            <Route path='home' element={<Home selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
             <Route path='profile' element={<Profile selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
             <Route path='settings' element={<Settings selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
           </Route>

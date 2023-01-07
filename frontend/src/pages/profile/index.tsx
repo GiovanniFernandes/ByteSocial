@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import styles from './Profile.module.scss'
 import interactions from 'data/interactions.json'
 import { IoMdSend } from 'react-icons/io'
-
+import { useContext } from 'react';
+import { AuthContext } from 'contexts/Auth/AuthContexts'
 interface Props {
   selectedMenu: number,
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
@@ -12,7 +13,8 @@ interface Props {
 export default function Profile(props: Props) {
 
   const apiAuth = useApiAuth()
-  const [username, setUsername] = useState<string>('')
+  const auth = useContext(AuthContext); 
+  const [username, setUsername] = useState<string | null>('')
   const [selectedSection, setSelectedSection] = useState<number>(0)
 
   useEffect(() => {
@@ -21,8 +23,10 @@ export default function Profile(props: Props) {
   }, [])
 
   const getUser = async () => {
-    const response = await apiAuth.authGet();
-    setUsername(response[0].username)
+    if(auth.user != null)
+        setUsername(auth.user.username) 
+      else 
+        setUsername("")
   }
 
   return (

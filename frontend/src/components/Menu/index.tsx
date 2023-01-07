@@ -16,7 +16,7 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
   const navigate = useNavigate()
   const auth = useContext(AuthContext)
   const apiAuth = useApiAuth()
-  const [username, setUsername] = useState<string>('')
+  const [username, setUsername] = useState<string | null >('')
 
   useEffect(()=>{
     setSelectedItem(selectedMenu)
@@ -24,8 +24,10 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
   },[selectedMenu])
 
   const getUser = async () => {
-      const response = await apiAuth.authGet();
-      setUsername(response[0].username)
+      if(auth.user != null)
+        setUsername(auth.user.username) 
+      else 
+        setUsername("")
   }
 
   function selectMenuItem (item: IMenuItem) {

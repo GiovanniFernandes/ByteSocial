@@ -14,21 +14,25 @@ export const AuthProvider = ( {children} : {children:JSX.Element} )  => {
         validateToken();           
     }, [])
 
+
     const validateToken = async ()=> {
         
         const storeData = localStorage.getItem('authToken');
             if(storeData){
-                 const data = await apiAuth.validateToken(storeData);
-                     if(data){
-                         setUser(data)           
-                     }
+                const data = await apiAuth.validateToken(storeData);
+                if(data.status === false)
+                    setUser(null)
+                else if(data.status === true){
+                    setUser(data.user)
+                }
+                     
             }
     }
 
     const signin = async (email:string, password:string) => {
         const data = await apiAuth.signin(email,password);
 
-        if(data.user && data.token) {
+        if(data.status === true) {
             setUser(data.user);
             localStorage.setItem("authToken", data.token);
             return true;
