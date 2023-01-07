@@ -134,51 +134,75 @@ class UserController {
         }
     }
     
-    static async alteraUsuario (req,res){
-    
+    static async alteraUsername(req,res){
         const {username} = req.body;
         const id = req.user_id;
-
+        
         try{
-            const userExists = await Users.findOne({where:{username}});
             const yourUser = await Users.findOne({where:{id}});
-            if(username==yourUser.username) return res.status(203).json({msg:"Esse já é o seu username"});
-            if(userExists) return res.status(203).json({msg:"Usuário já cadastrado!"});
-
+            if(username.trim().toLowerCase() === yourUser.username.trim().toLowerCase()) 
+                return res.status(203).json({status:false, msg:"Esse já é o seu username"});
             
             const atualizaUser = await Users.update({username},{where:{id}});
             const usuarioAtualizado = await Users.findOne({where:{id}});   
 
-            const likes = await Likes.findAll({where:{user_id:id}});
+            //const likes = await Likes.findAll({where:{user_id:id}});
+            //const atualizaEmLike = await Likes.update({username},{where:{user_id:id}});
 
-
-            const atualizaEmLike = Likes.update({username},{where:{user_id:id}});
-
-            return res.status(200).json({usuarioAtualizado, atualizaUser})
+            return res.status(200).json({
+                status:true, 
+                msg:"Nome atualizado ! ", })
 
         } catch (error){
             return res.status(500).json(error.message)
         }
     }
 
+    static async alteraEmail (req,res){
+    
+        const {email} = req.body;
+        const id = req.user_id;
+        
+        try{
+            const yourUser = await Users.findOne({where:{id}});
+            if(email==yourUser.email) return res.status(203).json({status:false, msg:"Esse já é o seu email"});
+            
+            const userExists = await Users.findOne({where:{email}});
+            if(userExists) return res.status(203).json({status:false, msg:"E mail já utilizado!"});
+
+            
+            const atualizaUser = await Users.update({email},{where:{id}});
+
+            //const atualizaEmLike = await Likes.update({email},{where:{user_id:id}});
+
+            return res.status(200).json({
+                status:true, 
+                msg:"E mail atualizado! ", 
+            })
+
+        } catch (error){
+            return res.status(500).json(error.message)
+        }
+    }
     static async alteraSenha (req, res){ 
 
         const {password, newPassword} = req.body;
         const id = req.user_id;
 
         try{
+           
             const usuario = await Users.findOne({where:{id}});
             const verificaSenha = bcrypt.compareSync(password,usuario.password);  
             
             if(!verificaSenha)
-                return res.status(300).json({msg:"Senha atual incorreta", verificaSenha});
+                return res.status(300).json({status:false, msg:"Senha atual incorreta", verificaSenha});
             
             const hash = UserController.hashDaSenha(newPassword);
             const atualizou = await Users.update({password:hash},{where:{id}});
 
             const usuarioAtualizado = await Users.findOne({where:{id}});   
 
-            return res.status(200).json({usuarioAtualizado, atualizou})
+            return res.status(200).json({status:true,msg:"Senha atualizada ", usuarioAtualizado, atualizou})
 
         } catch (errors){
             return res.status(500).json(errors.message)
@@ -187,10 +211,9 @@ class UserController {
 
     static async deletaUsuario (req,res) {
 
-        const {id} = req.params;
-
+        const id = req.user_id ;
         try{
-            const deletou = await Users.destroy({where:{id}});
+            await Users.destroy({where:{id}});
             return res.status(200).json({msg:`id ${id} removido`});
 
         } catch (errors){

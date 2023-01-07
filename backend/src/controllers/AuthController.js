@@ -27,7 +27,7 @@ class AuthController
 
         const {id, username} = usuario;
             
-        const token  = jwt.sign({id},process.env.JWT_SECRET, { expiresIn:'1h',})
+        const token  = jwt.sign({id, username},process.env.JWT_SECRET, { expiresIn:'1h',})
         
         return res.status(202).json({ 
             user: {id, username}, 
@@ -53,7 +53,13 @@ class AuthController
         
                 if(err)
                     return res.status(203).json({err:"Falha na autenticação do token!", status:false});
-                return res.status(200).json({user: data.id, status: true})  
+
+                return res.status(200).json({
+                    user: {
+                        id: data.id,
+                        username:data.username
+                    }, 
+                    status: true})  
             });                    
 
         }catch(error){

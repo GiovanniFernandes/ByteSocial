@@ -10,10 +10,10 @@ router
 
 .post('/cadastro', UserController.criaUsuario)
 
-.put('/user/change', auth, UserController.alteraUsuario)
+.put('/user/change/username', auth, UserController.alteraUsername)
 .put('/user/change/pass', auth, UserController.alteraSenha)
+.put('/user/change/email', auth, UserController.alteraEmail)
 
-//Retirar os parametros de rota
-.delete('/user/:id', auth, UserController.deletaUsuario)
+.delete('/user', auth, UserController.deletaUsuario)
 
 module.exports = router;
