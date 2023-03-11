@@ -3,6 +3,7 @@ const Users = database.Users;
 const Posts = database.Posts;
 const Likes = database.Likes;
 const Connections = database.Connections;
+const userService = require("../services/userService.js");
 const bcrypt = require("bcrypt");
 
 
@@ -119,17 +120,10 @@ class UserController {
     static async pegaTodosUsuarios (req,res){
         
         try{
-            const usuarios = await Users.findAll();
-            usuarios.forEach(user=>
-                {
-                    if(user.password!=undefined)
-                    {
-                        user.password=undefined;
-                    }
-                })
+            const usuarios = await userService.pegaTodosUsuarios();
             return res.status(200).json(usuarios);
 
-        }catch (errors){
+        } catch (errors){
             return res.status(500).json(errors.message)
         }
     }
