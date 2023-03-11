@@ -12,25 +12,26 @@ class UserController {
     static async criaUsuario (req,res){
 
         const {username,password,email} = req.body;
-        const userSplit = username.split(" ");        
-        
+             
         try{ 
-            if(userSplit.length>1) return res.status(300).json({msg:"Escolha um nome de usuário sem espaços.", status:false});
-            
+        
+            const userSplit = username.split(" ");   
+            if(userSplit.length>1) return res.status(300).json({msg:"Não é permitido espaços no seu nome de usuário", status:false});
+                
             if(!username || !email || !password) return res.status(203).json({msg:"Preencha todos os campos!",status:false});
             
-            let emailExists = await UserController.findEmail(email);
+            let emailExists = await userService.findEmail(email);
             
-            let usernameExists = await UserController.findUsername(username);
+            let usernameExists = await userService.findUsername(username);
             
             if(emailExists) return res.status(203).json({msg:"Email já cadastrado!", status:false});
-
+    
             if(usernameExists) return res.status(203).json({msg:"Username já cadastrado!", status:false});
-
+    
             if(password.length<6) return res.status(203).json({msg:"A sua senha precisa ter no mínimo 6 caracteres", status:false});
             
-        const hash = UserController.hashDaSenha(password);
-
+        const hash = userService.hashDaSenha(password);
+    
         const novoUsuario = await Users.findOrCreate({where:{email},
             defaults: {
                     username, email, password:hash
@@ -116,11 +117,18 @@ class UserController {
             return res.status(500).json({msg:error.message});
         }
     }
-
+    
     static async pegaTodosUsuarios (req,res){
         
         try{
-            const usuarios = await userService.pegaTodosUsuarios();
+            const usuarios = await Users.findAll();
+            usuarios.forEach(user=>
+                {
+                    if(user.password!=undefined)
+                    {
+                        user.password=undefined;
+                    }
+                })
             return res.status(200).json(usuarios);
 
         } catch (errors){
@@ -191,7 +199,7 @@ class UserController {
             if(!verificaSenha)
                 return res.status(300).json({status:false, msg:"Senha atual incorreta", verificaSenha});
             
-            const hash = UserController.hashDaSenha(newPassword);
+            const hash = userService.hashDaSenha(newPassword);
             const atualizou = await Users.update({password:hash},{where:{id}});
 
             const usuarioAtualizado = await Users.findOne({where:{id}});   
@@ -215,52 +223,6 @@ class UserController {
         }
     }
 
-    static hashDaSenha(pass){
-        if(!pass)
-        {
-            return;
-        }
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(pass, salt);
-        return hash;
-    }
-    
-    static async findEmail(email)
-    {
-        
-        try {
-
-            const usuarios = await Users.findAll({where:{email}});
-            if(usuarios.length>0)
-            {
-            return true;
-            }
-            return false;
-            
-        }   catch (error) 
-            {
-                return false;
-            }
-    }
-
-    static async findUsername(username)
-    {
-        try 
-        {
-            const usuarios = await Users.findAll({where:{username}});
-            if(usuarios.length>0)
-            {
-            return true;
-            }
-            return false;
-            
-        }catch (error) 
-            {
-                return false;
-            }
-    }
 }
-
-
 
 module.exports = UserController;

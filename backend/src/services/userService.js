@@ -4,19 +4,36 @@ const Users = database.Users;
 
 class userService {
 
-    static async pegaTodosUsuarios()
-    {
-        const usuarios = await Users.findAll();
-            usuarios.forEach(user=>
-                {
-                    if(user.password!=undefined)
-                    {
-                        user.password=undefined;
-                    }
-                })
-        return usuarios;
+    static hashDaSenha(pass){
+        if(!pass)
+        {
+            return;
+        }
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(pass, salt);
+        return hash;
     }
 
+    static async findEmail(email)
+    {
+        const usuarios = await Users.findAll({where:{email}});
+        if(usuarios.length>0)
+        {
+        return true;
+        }
+        return false;
+    }
+
+    static async findUsername(username)
+    {
+        const usuarios = await Users.findAll({where:{username}});
+        if(usuarios.length>0)
+        {
+        return true;
+        }
+        return false;
+            
+    }
 
 }
 
