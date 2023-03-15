@@ -23,6 +23,7 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
     getUser();
   },[selectedMenu])
 
+  
   const getUser = async () => {
       if(auth.user != null)
         setUsername(auth.user.username) 

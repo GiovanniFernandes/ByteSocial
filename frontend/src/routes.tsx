@@ -8,6 +8,7 @@ import DefaultPage from 'components/DefaultPage';
 import { useState } from 'react';
 import Settings from 'pages/Settings';
 import Home from 'pages/Home';
+import ContactList from 'pages/ContactList';
 
 
 export default function AppRouter() {
@@ -29,7 +30,12 @@ export default function AppRouter() {
 
           <Route path='/login' element={<Welcome children={<Login/>}/>} />
           <Route path='/register' element={<Welcome children={<Cadastro />}/>} />
+
+          <Route path='/contactlist' element={<ContactList/>} />
+
           
+
+
         </Routes>   
 
       </Router>
