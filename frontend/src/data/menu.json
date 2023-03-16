@@ -13,18 +13,27 @@
     "iconSelected": "/assets/icons/selected/profile.svg",
     "id": 2
   },
+
+  {
+    "title": "Mensagens",
+    "link": "/ContactList",
+    "icon": "/assets/icons/message.svg",
+    "iconSelected": "/assets/icons/selected/message.svg",
+    "id": 3
+  },
+
   {
     "title": "Configurações",
     "link":"/settings",
     "icon": "/assets/icons/settings.svg",
     "iconSelected": "/assets/icons/selected/settings.svg",
-    "id": 3
+    "id": 4
   },
   {
     "title": "Sair",
     "link":"/login",
     "icon": "/assets/icons/logout.svg",
     "iconSelected": "/assets/icons/selected/logout.svg",
-    "id": 4
+    "id": 5
   }
 ]

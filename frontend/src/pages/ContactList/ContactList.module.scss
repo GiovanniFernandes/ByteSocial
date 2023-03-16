@@ -3,20 +3,54 @@
 .principal{
   display: flex;
 
-  &__title{ // nosso ☭
-    color: black;
-    margin-left: 100px;
-    margin-top: 65px;
+  &__top{
+    display: flex;
+    align-items: center; // NÃO MEXER
+    //border: solid 3px;
+    //height: min-content;
+    margin-top: 20px;
+  }
+
+  &__inputBox{
+    width: 456px;
+    padding-bottom: 10px;
+    //border: solid 3px;
+  }
+
+  &__searchButton{
+    color: #52A3FF;
   }
   
+  &__input{
+      height: 43px;
+      border-radius: 11px;
+      padding: 22px;
+  }
+
+  &__page{
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    width: 100%;
+  }
+
+  &__title{ // nosso ☭
+    color: black;
+    margin-top: 65px;
+    //border: solid 3px;
+    width: fit-content;
+    height: min-content;
+  }
 
   &__sections { //botao da navegação
     display: flex;
-    margin-top: 178px;
+    
+    height: min-content;
+    //border: solid 3px;
 
     &__item {
       margin-right: 26px;
-      padding: 0 10px 7px 10px;
+      padding: 0px 10px 7px 10px;
       cursor: pointer;
   
       h3 {
@@ -61,5 +95,26 @@
     background-color: $azul-botao-transparencia;
     width: 100%;
     resize: vertical;
+    border-color: $azul-botao-transparencia;
   }
+}
+
+.contactList{
+  //margin: 0;   
+  
+  &__list{
+    list-style: none;
+
+  }
+  
+
+  &__ContactButton{
+    width: 740px;
+    height: 111px;
+    border-radius: 18px;
+    border: solid 1px #C7D7EC;
+    background-color: #ffffff;
+    margin: 0;
+  }
+  
 }
