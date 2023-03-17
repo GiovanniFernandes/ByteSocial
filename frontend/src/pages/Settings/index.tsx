@@ -13,7 +13,6 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
-
 export default function Settings(props: Props) {
 
     const apiUser = useApiUser();
@@ -21,8 +20,8 @@ export default function Settings(props: Props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        props.setSelectedMenu(3)
-    }, [])
+        props.setSelectedMenu(4)
+    }, [])  
 
 
 
