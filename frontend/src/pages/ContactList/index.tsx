@@ -20,6 +20,15 @@ const list = [
   {
     "username": "Isabele",
   },
+  {
+    "username": "Terencio",
+  },
+  {
+    "username": "Bianca",
+  },
+  {
+    "username": "Isabele",
+  },
 ]
 
 
@@ -64,8 +73,8 @@ export default function ContactList(props: Props){
             </div>
 
             <div className={styles.principal__inputBox}>
-              <input type="text" placeholder='Buscar conversa' className={styles.principal__input}/>
-              <FiSearch className={styles.principal__searchButton}/>
+              <input  type="text" placeholder='Buscar contato' className={styles.principal__input}/>
+              <FiSearch size="20px" className={styles.principal__searchButton}/>
             </div>
 
           </div>
