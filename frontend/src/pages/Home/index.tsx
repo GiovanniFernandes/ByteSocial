@@ -1,6 +1,6 @@
+import NewPost from "components/NewPost"
 import { useEffect } from "react"
-
-
+import styles from './Home.module.scss'
 
 interface Props {
   selectedMenu: number,
@@ -17,8 +17,18 @@ export default function Home(props: Props) {
 
 
   return (
-    <h1>
-        Bem vindo a Home temporária
-    </h1>
+    <div className={styles.home}>
+      <div className={styles.home__newPost}>
+        <NewPost/>
+      </div>
+      <div className={styles.home__posts}>
+        <div className={styles.home__posts__subtitle}>
+        </div>
+        <div className={styles.home__posts__feed}>
+
+        </div>
+      </div>
+      
+    </div>
   )
 }
