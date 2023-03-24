@@ -1,34 +1,37 @@
 'use strict';
 const { Users } = require('../models');
 const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt')
 
 
 module.exports = {
   async up (queryInterface, Sequelize) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync('123456', salt);
     await Users.bulkCreate([
       {
         username: 'user1',
-        password: '123456',
+        password: hash,
         email: 'user1@example.com'
       },
       {
         username: 'user2',
-        password: '123456',
+        password: hash,
         email: 'user2@example.com'
       },
       {
         username: 'user3',
-        password: '123456',
+        password: hash,
         email: 'user3@example.com'
       },
       {
         username: 'user4',
-        password: '123456',
+        password: hash,
         email: 'user4@example.com'
       },
       {
         username: 'user5',
-        password: '123456',
+        password: hash,
         email: 'user5@example.com'
       }
     ]);
