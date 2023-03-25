@@ -1,6 +1,6 @@
 @import 'styles/variaveis';
 
-.principal{
+.contactListPrincipal{
   display: flex;
 
   &__page{
@@ -125,6 +125,11 @@
         height: 55px;
         border-radius: 33px;
         padding: 4px 2px 2px 4px;
+      }
+
+      h2{
+        font-size: 14px;
+        font-weight: bold;
       }
     }
 

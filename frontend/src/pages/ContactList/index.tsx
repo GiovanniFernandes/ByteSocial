@@ -61,51 +61,51 @@ export default function ContactList(props: Props){
 
     return( 
     
-    <div className={styles.principal}>
+    <div className={styles.contactListPrincipal}>
         <Menu selectedMenu={0} />
-        <div className={styles.principal__page}>
-          <div className={styles.principal__title}> 
+        <div className={styles.contactListPrincipal__page}>
+          <div className={styles.contactListPrincipal__title}> 
             <h1>Mensagens</h1>
           </div> 
         
-          <div className={styles.principal__top}>
-            <div className={styles.principal__sections}>
-              <div className={selectedSection !== 1 ? styles.principal__sections__item : styles.principal__sections__item__selected}
+          <div className={styles.contactListPrincipal__top}>
+            <div className={styles.contactListPrincipal__sections}>
+              <div className={selectedSection !== 1 ? styles.contactListPrincipal__sections__item : styles.contactListPrincipal__sections__item__selected}
               onClick={() => setSelectedSection(1)}>
                 <h3>Conversas</h3>
               </div>
               
-              <div className={selectedSection !== 0 ? styles.principal__sections__item : styles.principal__sections__item__selected}
+              <div className={selectedSection !== 0 ? styles.contactListPrincipal__sections__item : styles.contactListPrincipal__sections__item__selected}
               onClick={() => setSelectedSection(0)}>
                 <h3>Lista de contatos</h3>
               </div>
             </div>
 
-            <div className={styles.principal__inputBox}>
+            <div className={styles.contactListPrincipal__inputBox}>
               <input  
               type="text" 
               placeholder='Buscar contato' 
-              className={styles.principal__input}
+              className={styles.contactListPrincipal__input}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               />
-              <FiSearch size="20px" className={styles.principal__searchButton}/>
+              <FiSearch size="20px" className={styles.contactListPrincipal__searchButton}/>
             </div>
 
           </div>
           
-          <div className={styles.principal__contactList}>
-            <ul className={styles.principal__contactList__list}>
+          <div className={styles.contactListPrincipal__contactList}>
+            <ul className={styles.contactListPrincipal__contactList__list}>
               {contactsFilter.map((item) => 
-                <li className={styles.principal__contactList__contact}>
+                <li className={styles.contactListPrincipal__contactList__contact}>
                 
                   
-                  <div className={styles.principal__contactList__contactPhoto}>
+                  <div className={styles.contactListPrincipal__contactList__contactPhoto}>
 
                     <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${item.username}`}/>
                   </div>
 
-                  <p className={styles.principal__contactList__userName}>{item.username}</p>
+                  <h2 className={styles.contactListPrincipal__contactList__userName}>{item.username}</h2>
                   
                 
               </li>

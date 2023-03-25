@@ -8,6 +8,7 @@ import { useState } from 'react';
 import Settings from 'pages/Settings';
 import Home from 'pages/Home';
 import ContactList from 'pages/ContactList';
+import ChatList from 'pages/ChatList';
 
 
 export default function AppRouter() {
@@ -32,6 +33,7 @@ export default function AppRouter() {
           <Route path='/login' element={<Welcome children={<Login/>}/>} />
           <Route path='/register' element={<Welcome children={<Cadastro />}/>} />
           <Route path='/contactlist' element={<ContactList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+          <Route path='/chatList' element={<ChatList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />}/>
           
 
 

@@ -1,0 +1,154 @@
+@import 'styles/variaveis';
+
+.chatListPrincipal{
+  display: flex;
+
+  &__page{
+    display: flex;
+    flex-direction: column;
+    margin-left: 390px;
+    width: 100%;
+  }
+  
+  &__title{ // nosso ☭
+      color: black;
+      margin-top: 65px;
+      //border: solid 3px;
+      width: fit-content;
+      height: min-content;
+  }
+
+  &__top{
+    display: flex;
+    align-items: center; // NÃO MEXER
+    //border: solid 3px;
+    //height: min-content;
+    margin-top: 20px;
+  }
+
+  &__sections { //botao da navegação
+    display: flex;
+    
+    height: min-content;
+    //border: solid 3px;
+
+    &__item {
+      margin-right: 26px;
+      padding: 0px 10px 7px 10px;
+      cursor: pointer;
+  
+      h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        color: #464646;
+      }
+  
+      &__selected {
+        margin-right: 26px;
+        padding: 0px 10px 7px 10px;
+        border-bottom: solid 3px $azul-destaque;
+  
+        h3 {
+          margin: 0;
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+
+      
+    }
+  }
+
+  &__inputBox{
+    width: 456px;
+    padding-bottom: 10px;
+    display: flex;
+    //border: solid 3px;
+    align-items: center;
+    
+  }
+  
+  &__input{
+    border-style: none;
+    border-radius: 11px;
+    background-color: $azul-botao-transparencia;
+    padding: 22px;
+    font-size: 12px;
+    width: 100%;
+    height: 43px;
+    resize: vertical;
+    border-color: $azul-botao-transparencia;
+    outline: none;
+  }
+
+
+  &__searchButton{
+    color: #52A3FF;
+    position: absolute;
+    margin-left: 422px;
+    cursor: pointer;
+  }
+  
+  &__contactList{
+    //border: solid 2px;
+    width: 740px;
+    margin-top: 55px; 
+  
+  &__list{
+    padding: 0;
+    margin: 0;
+  }
+
+  &__contact{
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    width: 745px;
+    height: 111px;
+    border-radius: 18px;
+    border: solid 1px #C7D7EC;
+    background-color: $branco-destaque;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+    &__contactPhoto{
+      width: 57px;
+      height: 57px;
+      margin: 0px 16px 0px 26px;
+      background-color: #C4C4C4;
+      border-radius: 33px;
+
+      img {
+        width: 55px;
+        height: 55px;
+        border-radius: 33px;
+        padding: 4px 2px 2px 4px;
+      }
+    }
+
+    &__userName{
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    &__contactText{
+        display: inline;
+        
+        h2{
+            font-size: 14px;
+            font-weight: bold;
+
+        }
+
+        p{
+            font-size: 12px;
+        }
+    }
+  
+}
+
+}
+
+
