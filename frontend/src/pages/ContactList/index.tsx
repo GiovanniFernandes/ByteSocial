@@ -10,29 +10,38 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
-const list = [
+interface Contact {
+  username: string;
+}
+
+const list: Contact[] = [
   {
-    "username": "Terencio",
+    username: 'Terencio'
   },
   {
-    "username": "Bianca",
+    username: 'Isabele'
   },
   {
-    "username": "Isabele",
+    username: 'Bianca'
   },
   {
-    "username": "Terencio",
+    username: 'Terencio'
   },
   {
-    "username": "Bianca",
+    username: 'Isabele'
   },
   {
-    "username": "Isabele",
-  },
-]
+    username: 'Bianca'
+  }
+];
 
 
 export default function ContactList(props: Props){
+  const [search, setSearch] = useState('')
+
+  const lowerSearch = search.toLowerCase()
+
+  const contactsFilter = list.filter((item: Contact) => item.username.toLowerCase().includes(lowerSearch));
 
     /*const apiUser = useApiUser();
     const auth = useContext(AuthContext);*/
@@ -73,7 +82,13 @@ export default function ContactList(props: Props){
             </div>
 
             <div className={styles.principal__inputBox}>
-              <input  type="text" placeholder='Buscar contato' className={styles.principal__input}/>
+              <input  
+              type="text" 
+              placeholder='Buscar contato' 
+              className={styles.principal__input}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              />
               <FiSearch size="20px" className={styles.principal__searchButton}/>
             </div>
 
@@ -81,13 +96,13 @@ export default function ContactList(props: Props){
           
           <div className={styles.principal__contactList}>
             <ul className={styles.principal__contactList__list}>
-              {list.map(item => 
+              {contactsFilter.map((item) => 
                 <li className={styles.principal__contactList__contact}>
                 
                   
                   <div className={styles.principal__contactList__contactPhoto}>
 
-                    <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${item.username}`} alt={item.username} />
+                    <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${item.username}`}/>
                   </div>
 
                   <p className={styles.principal__contactList__userName}>{item.username}</p>
