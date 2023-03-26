@@ -2,6 +2,7 @@ import styles from '../Welcome.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { useApiUser } from 'hooks/useApiUser'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 
 
 type Inputs = {
@@ -15,14 +16,26 @@ export default function Cadastro() {
 
   
   const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>()
-  
+  const [differentPassword, setDifferentPassword ] = useState<boolean>()
   const navigate = useNavigate()
   const apiUser = useApiUser();
 
-  const realizaCadastro: SubmitHandler<Inputs> = async data => {
+  useEffect(() => {
+    const twoPasswords = watch(['password', 'password2'])
     
+    if (twoPasswords[0] != twoPasswords[1]  && twoPasswords[1]!="") 
+      setDifferentPassword(true)
+    else 
+      setDifferentPassword(false)
+    
+  },[watch(['password', 'password2'])])
+
+
+
+  const realizaCadastro: SubmitHandler<Inputs> = async data => {
+        
     if (data.password !== data.password2) {
-      alert("As senhas precisam ser iguais!")
+      setDifferentPassword(true)
       return
     }
     else {
@@ -70,6 +83,7 @@ export default function Cadastro() {
         placeholder='Confirme sua senha'
         {...register('password2')}
       />
+        {(differentPassword)? <span className={styles.error}>As senhas precisam ser iguais</span>:<></>}
         <button type='reset' className={styles.formulario__botoes__register} onClick={() => navigate('/login')}>
           Cancelar
         </button>
