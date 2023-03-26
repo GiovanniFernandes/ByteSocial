@@ -5,6 +5,6 @@ const router = Router();
 
 router
 .post('/message/send/:receiver_id', MessageController.enviarMensagem)
-
+.get('/conversations', auth, MessageController.getConversations)
 
 module.exports = router;
