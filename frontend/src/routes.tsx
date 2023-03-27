@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from 'pages/Welcome/login';
 import { Test } from 'components/Test';
 import Profile from 'pages/profile';
+import OtherUser from 'pages/profile/OtherUser';
 import DefaultPage from 'components/DefaultPage';
 import { useState } from 'react';
 import Settings from 'pages/Settings';
@@ -25,6 +26,7 @@ export default function AppRouter() {
           <Route path='/' element={<DefaultPage selectedMenu={selectedMenu}/>}>
             <Route path='home' element={<Home selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
             <Route path='profile' element={<Profile selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
+	          <Route path='otheruser' element={<OtherUser selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
             <Route path='settings' element={<Settings selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
           </Route>
 

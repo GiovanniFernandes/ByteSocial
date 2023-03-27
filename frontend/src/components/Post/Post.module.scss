@@ -1,0 +1,106 @@
+@import 'styles/variaveis';
+
+.Post{
+  width: 768px;
+  &__content{
+    padding: 37px 36px;
+    margin-top: 36px;
+    width: 768px;
+    height: 261px;
+    border-radius:10px;
+    background-color: white;
+    border: 1px solid #C7D7EC;
+    &__icons{
+      display:flex;
+      background-color: white;
+      // width: 1000px;
+      &__Like{
+        width: 50%;
+        display:flex;
+        border-radius: 10px;
+        // align-items: center;
+        text-align: center;
+        justify-content:center;
+        width: 60px;
+        height: 34px;
+        background-color: $azul-destaque;
+        // display:flex;
+        border: 1px solid black;
+        &__LikeContainer{
+          width: 100%;
+          // display:inline-block;
+          // justify-content: center;
+          // align-items: center;
+          // background-color: pink;
+          &__svg{
+            // width: 50%;
+            // background-color: white;
+            justify-content: center;
+            // display:flex;
+          }
+          &__text{
+            // width: 50%;
+            // display:flex;
+            font-size: 14px;
+            color: black;
+          }
+        }
+        
+      }
+      &__Comment{
+        border-radius: 10px;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 34px;
+        margin-left: 6px;
+        // display:flex;
+        background-color: white;
+        border: 1px solid blue;
+      }
+    }
+    &__user {
+      display:flex;
+       &__img{
+        width: 46px;
+        height: 46px;
+        }
+        
+      
+      &__userInfo{
+        margin-left:13px;
+        &__name{ 
+          margin: 0 0 8px;
+          font-size: 14px;
+          font-weight:500;
+          color: $preto-texto;
+          width: fit-content;
+          align-items:center;
+          line-height:21px;
+          display:flex;
+          text-decoration: none;
+          
+        }
+        &__PostDate{
+          margin-top:1px;
+          font-size: 10px;
+          color: $azul-destaque;
+          width: fit-content;
+  
+        }
+      
+      }
+      &__text{
+      font-size: 14px;
+      line-height: 14px;
+      font-family: "Poppins";
+    }
+    
+      
+      
+  }
+    
+  }
+  
+}
