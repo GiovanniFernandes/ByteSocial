@@ -15,7 +15,7 @@ type Inputs = {
 export default function Cadastro() {
 
   
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit, watch } = useForm<Inputs>()
   const [differentPassword, setDifferentPassword ] = useState<boolean>()
   const navigate = useNavigate()
   const apiUser = useApiUser();
@@ -23,7 +23,7 @@ export default function Cadastro() {
   useEffect(() => {
     const twoPasswords = watch(['password', 'password2'])
     
-    if (twoPasswords[0] != twoPasswords[1]  && twoPasswords[1]!="") 
+    if (twoPasswords[0] !== twoPasswords[1]  && twoPasswords[1]!== "") 
       setDifferentPassword(true)
     else 
       setDifferentPassword(false)

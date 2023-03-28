@@ -12,7 +12,7 @@ type Inputs = {
 
 export default function Login() {
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit } = useForm<Inputs>()
 
   const [erroLogin, setErroLogin] = useState<string>("")
   const auth = useContext(AuthContext);
@@ -50,7 +50,7 @@ export default function Login() {
           {...register('password', { required: true })}
         />  
       </div>
-      {(erroLogin != "") ? <span className={styles.error}>{erroLogin}</span>: ""}
+      {(erroLogin !== "") ? <span className={styles.error}>{erroLogin}</span>: ""}
       <div>
         <button type='reset' className={styles.formulario__botoes__register}
           onClick={() => navigate('/register')}>
