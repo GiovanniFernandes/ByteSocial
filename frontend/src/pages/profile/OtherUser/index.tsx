@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import styles from './OtherUser.module.scss'
 import Post from '../../../components/Post/Post'
 import interactions from 'data/interactions.json'
