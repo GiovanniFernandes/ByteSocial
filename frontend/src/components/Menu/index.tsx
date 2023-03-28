@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
-import { useApiAuth } from 'hooks/useApiAuth'
+
 
 
 type IMenuItem = typeof menu[0]
@@ -13,15 +13,14 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
 
   const [selectedItem, setSelectedItem] = useState<number | null>(1)
   const [openState, setOpenState] = useState(true)
+  const [username, setUsername] = useState<string | null >('')
   const navigate = useNavigate()
   const auth = useContext(AuthContext)
-  const apiAuth = useApiAuth()
-  const [username, setUsername] = useState<string | null >('')
 
   useEffect(()=>{
     setSelectedItem(selectedMenu)
     getUser();
-  },[selectedMenu])
+  },[selectedMenu, auth.user])
 
   
   const getUser = async () => {
