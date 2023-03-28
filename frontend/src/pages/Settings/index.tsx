@@ -28,10 +28,6 @@ export default function Settings(props: Props) {
 
     const changeName = async (data:String) => {
 
-   /*event:React.FormEvent<HTMLFormElement>
-   event.preventDefault(); 
-   */
-
     if(data === '')
         return
 
@@ -48,9 +44,6 @@ export default function Settings(props: Props) {
     }
 
     const changeEmail = async (data:String) => {
-    /*event:React.FormEvent<HTMLFormElement>
-   event.preventDefault(); 
-   */
 
     if(data === '')
         return

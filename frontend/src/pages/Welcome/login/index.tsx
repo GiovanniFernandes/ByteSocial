@@ -1,6 +1,6 @@
 import styles from '../Welcome.module.scss'
 import { useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -12,8 +12,9 @@ type Inputs = {
 
 export default function Login() {
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit } = useForm<Inputs>()
 
+  const [erroLogin, setErroLogin] = useState<string>("")
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ export default function Login() {
       navigate('/home')
     }
     else {
-      alert("Opa algo de errado não está certo!")
+      setErroLogin("Usuário ou senha incorretos")
     }
 }
 
@@ -49,7 +50,7 @@ export default function Login() {
           {...register('password', { required: true })}
         />  
       </div>
-
+      {(erroLogin !== "") ? <span className={styles.error}>{erroLogin}</span>: ""}
       <div>
         <button type='reset' className={styles.formulario__botoes__register}
           onClick={() => navigate('/register')}>
