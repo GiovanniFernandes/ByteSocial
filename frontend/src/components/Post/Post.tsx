@@ -1,4 +1,4 @@
-import styles from './Post.module.scss' 
+import styles from './Post.module.scss' ;
 import {useState, useContext, useEffect} from 'react';
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 import {Heart, ChatCircle} from 'phosphor-react'
