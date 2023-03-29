@@ -3,7 +3,6 @@ import {useState, useContext, useEffect} from 'react';
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 import {Heart, ChatCircle} from 'phosphor-react'
  
- 
 
 export default function Post(){
   const [username, setUsername] = useState<string | null>('')
