@@ -11,7 +11,6 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
-
 export default function Home(props: Props) {
 
 
