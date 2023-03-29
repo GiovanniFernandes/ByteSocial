@@ -35,14 +35,13 @@ export default function Post(){
             </div>
             <div className={styles.Post__content__icons}>
               <div className={styles.Post__content__icons__Like}>
-                <div className={styles.Post__content__icons__LikeContainer}>
-                  <Heart size={16} className={styles.Post__content__icons__Like__LikeContainer__svg} color="#FFFFFF" />
-                  <p className={styles.Post__content__icons__Like__LikeContainer__text}>11</p>
-                </div>
+                  <Heart size={16}  color="#FFFFFF" weight="fill" />
+                  <p className={styles.Post__content__icons__Like__text}>11</p>
+                
               </div>
               <div className={styles.Post__content__icons__Comment}>
-                <ChatCircle size={16} color="#0068DF" />
-                <p>0</p>
+                <ChatCircle className={styles.Post__icons__Comment__svg}size={16} color="#0068DF" />
+                <p className={styles.Post__content__icons__Comment__text}>0</p>
               </div>
             </div>
 
