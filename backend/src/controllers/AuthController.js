@@ -40,7 +40,7 @@ class AuthController
             }
     } 
 
-    static validateToken (req,res) {
+    static async validateToken (req,res) {
         const {token} = req.body;
 
         try{  
@@ -49,15 +49,17 @@ class AuthController
                 return res.status(203).json({msg: "Token não identificado!", status:false});
             
                 
-            jwt.verify(token, process.env.JWT_SECRET, (err,data) => {
+            jwt.verify(token, process.env.JWT_SECRET, async (err,data) => {
         
                 if(err)
                     return res.status(203).json({err:"Falha na autenticação do token!", status:false});
-
+                
+                const usuario = await Users.findOne({where:{id:data.id}}); 
+                
                 return res.status(200).json({
                     user: {
-                        id: data.id,
-                        username:data.username
+                        id: usuario.id,
+                        username:usuario.username
                     }, 
                     status: true})  
             });                    

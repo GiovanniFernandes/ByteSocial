@@ -13,8 +13,14 @@ export const useApiAuth = () => ({
 
         const resposta = await api.post('/login', {
             email, password
-        })
-
+        },
+            {
+            validateStatus: (status:any) => {
+                return status < 500; // Resolve somente se o código de status for menor que 500
+            } 
+        }
+        )
+        console.log("msg: ", resposta)
 
         return resposta.data;
     },

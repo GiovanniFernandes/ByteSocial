@@ -21,7 +21,9 @@
     "start": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate:up": "npx sequelize-cli db:migrate",
-    "migrate:undo": "npx sequelize-cli db:migrate:undo"
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "seed:up": "npx sequelize-cli db:seed:all",
+    "seed:undo": "npx sequelize-cli db:seed:undo"
   },
   "keywords": [],
   "author": "",

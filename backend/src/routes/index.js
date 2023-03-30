@@ -6,6 +6,7 @@ const post = require("./postRoutes.js");
 const like = require("./likeRoutes.js");
 const request = require("./requestRoutes.js");
 const connection = require("./connectionRoutes.js");
+const message = require("./messageRoutes.js")
 
 module.exports = app => {
 
@@ -20,6 +21,7 @@ module.exports = app => {
         post,
         like,
         request,
-        connection
+        connection,
+        message
     )
 }
