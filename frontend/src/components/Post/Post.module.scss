@@ -12,39 +12,29 @@
     border: 1px solid #C7D7EC;
     &__icons{
       display:flex;
+      margin-top: 50px;
       background-color: white;
-      // width: 1000px;
+      
       &__Like{
-        width: 50%;
+        
         display:flex;
         border-radius: 10px;
-        // align-items: center;
+        align-items: center;
         text-align: center;
         justify-content:center;
         width: 60px;
         height: 34px;
+        
         background-color: $azul-destaque;
-        // display:flex;
-        border: 1px solid black;
-        &__LikeContainer{
-          width: 100%;
-          // display:inline-block;
-          // justify-content: center;
-          // align-items: center;
-          // background-color: pink;
-          &__svg{
-            // width: 50%;
-            // background-color: white;
-            justify-content: center;
-            // display:flex;
-          }
-          &__text{
-            // width: 50%;
-            // display:flex;
-            font-size: 14px;
-            color: black;
-          }
+        
+        border: 1px solid #0068DF;
+        
+        &__text{
+          font-size: 14px;
+          color: white;
+          margin-left: 5px;
         }
+        
         
       }
       &__Comment{
@@ -52,13 +42,20 @@
         text-align: center;
         align-items: center;
         justify-content: center;
+        display:flex;
         width: 60px;
         height: 34px;
         margin-left: 6px;
-        // display:flex;
         background-color: white;
-        border: 1px solid blue;
+        border: 1px solid #0068DF;
+        
+        &__text{
+          color: #0068DF;
+          font-size: 14px;
+          margin-left: 5px;
+        }
       }
+      
     }
     &__user {
       display:flex;
