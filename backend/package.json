@@ -12,7 +12,8 @@
     "pg": "^8.10.0",
     "save": "^2.5.0",
     "sequelize": "^6.21.4",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "sqlite3": "^5.1.6"
   },
   "name": "backend",
   "version": "1.0.0",
@@ -21,7 +22,9 @@
     "start": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate:up": "npx sequelize-cli db:migrate",
-    "migrate:undo": "npx sequelize-cli db:migrate:undo"
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "seed:up": "npx sequelize-cli db:seed:all",
+    "seed:undo": "npx sequelize-cli db:seed:undo"
   },
   "keywords": [],
   "author": "",

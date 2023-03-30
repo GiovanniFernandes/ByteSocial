@@ -1,35 +1,38 @@
 import styles from '../Welcome.module.scss'
 import { useNavigate } from 'react-router-dom'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+type Inputs = {
+  email: string,
+  password: string
+}
 
 
 export default function Login() {
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const { register, handleSubmit } = useForm<Inputs>()
 
+  const [erroLogin, setErroLogin] = useState<string>("")
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
 
-  const realizarLogin = async (event:React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const isLogged = await auth.signin(email,password)
-
-    if(isLogged===true){
+  const realizarLogin: SubmitHandler<Inputs> = async data => {
+    const isLogged = await auth.signin(data.email,data.password)
+    
+    if(isLogged === true){
       navigate('/home')
     }
     else {
-      alert("Opa ! ")
+      setErroLogin("Usuário ou senha incorretos")
     }
-   
-  }
+}
 
-
+  
   return (
-    <form onSubmit={realizarLogin} className={styles.formulario}>
+    <form onSubmit={handleSubmit(realizarLogin)} className={styles.formulario}>
       <h1 className={styles.formulario__title}>Faça seu login</h1>
       <p className={styles.formulario__texto}>Para entrar na maior comunidade dev do Ramo</p>
       
@@ -37,23 +40,20 @@ export default function Login() {
         <input
           type="email"
           className={styles.formulario__input__filho}
-          id="email"
           placeholder='Digite seu email'
-          required
-          onChange={event => setEmail(event.target.value)}
+          {...register('email', { required: true })}
         />
         <input
           type="password"
           className={styles.formulario__input__filho}
-          id="senha"
           placeholder='Digite sua senha'
-          required
-          onChange={event => setPassword(event.target.value)}
+          {...register('password', { required: true })}
         />  
       </div>
-
+      {(erroLogin !== "") ? <span className={styles.error}>{erroLogin}</span>: ""}
       <div>
-        <button className={styles.formulario__botoes__register} onClick={() => navigate('/register')}>
+        <button type='reset' className={styles.formulario__botoes__register}
+          onClick={() => navigate('/register')}>
           Cadastre-se
         </button>
         <button type="submit" className={styles.formulario__botoes__submit} >

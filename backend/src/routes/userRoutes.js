@@ -6,7 +6,7 @@ const router = Router();
 router
 .get('/user/:usernameParam',auth,UserController.pegaUsuarioEspecifico)
 .get('/users', auth, UserController.pegaTodosUsuarios)
-.get('/profile',auth, UserController.pegaProfile)
+.get('/profile', auth, UserController.pegaProfile)
 
 .post('/cadastro', UserController.criaUsuario)
 
