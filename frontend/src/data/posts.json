@@ -1,0 +1,27 @@
+[
+    {
+        "id":1,
+        "conteudo": "Eu estou colocando qualquer coisa, pois perdi a extensão que colocava loren ipsum pra mim, Boa sorte galera!",
+        "username": "Peralta",
+        "dataPostagem": "31 de mar 2022 às 21h",
+        "curtidas":15,
+        "comentario": 2
+    },
+    {
+        "id":2,
+        "conteudo": "Hello World",
+        "username": "Jiraya",
+        "dataPostagem": "31 de mar 2022 às 21h",
+        "curtidas": 200,
+        "comentario": 300
+    },
+    {
+        "id":3,
+        "conteudo": "Hello World",
+        "username": "Jiraya",
+        "dataPostagem": "31 de mar 2022 às 21h",
+        "curtidas": 200,
+        "comentario": 300
+    }
+
+]

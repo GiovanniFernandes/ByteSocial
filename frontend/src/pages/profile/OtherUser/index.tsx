@@ -62,7 +62,7 @@ export default function Home(props: Props) {
             onClick={() => setSelectedSection(0)}>
             <h3>Publicações</h3>
         </div>
-        <Post/>
+        Xuxa
       </div>
     </div>
   ) 
