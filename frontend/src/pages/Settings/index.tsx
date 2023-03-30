@@ -24,59 +24,36 @@ export default function Settings(props: Props) {
         props.setSelectedMenu(3)
     }, [])
 
-
-
     const changeName = async (data:String) => {
 
-   /*event:React.FormEvent<HTMLFormElement>
-   event.preventDefault(); 
-   */
-
-    if(data === '')
-        return
+    if(data === '') return
 
     const response = await apiUser.changeName(data);
 
     if(response.status === false) 
         window.alert(`Falha: ${response.msg}`)
-        
-    else {
-        window.alert(`Sucesso: ${response.msg} \n Necessário fazer Login novamente !`)
-        auth.signout();
-        navigate("/login");
-    }
+    else 
+        auth.validateToken();
+    
     }
 
     const changeEmail = async (data:String) => {
-    /*event:React.FormEvent<HTMLFormElement>
-   event.preventDefault(); 
-   */
 
-    if(data === '')
-        return
+    if(data === '') return
 
     const response = await apiUser.changeEmail(data)
 
     if(response.status === false) 
         window.alert(`Falha: ${response.msg}`)
-        
-    else {
-        window.alert(`Sucesso: ${response.msg} \n Necessário fazer Login novamente !`)
-        auth.signout();
-        navigate("/login");
-    }
-
     }
  
     const changePassword = async (data:String) => {
 
-    if(data === '')
-        return
+    if(data === '') return
 
     const oldPassword = window.prompt("Digite sua senha antiga: ");
 
-    if(oldPassword === null)
-        return
+    if(oldPassword === null) return
     else if(oldPassword === ''){
         window.alert("Se faz necessário a sua senha antiga para prosseguir com a mudança de senha !")
         changePassword(data);
@@ -87,13 +64,8 @@ export default function Settings(props: Props) {
 
     if(response.status === false) 
         window.alert(`Falha: : ${response.msg}`)
-        
-    else {
-        window.alert(`Sucesso: ${response.msg} \n Necessário fazer Login novamente !`,)
-        auth.signout();
-        navigate("/login");
-    }
-    
+    else 
+        window.alert(`Sucesso: ${response.msg}`,)
     }
 
     const deleteAccount = async () => {

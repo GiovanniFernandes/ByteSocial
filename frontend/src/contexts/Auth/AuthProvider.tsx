@@ -16,7 +16,6 @@ export const AuthProvider = ( {children} : {children:JSX.Element} )  => {
 
 
     const validateToken = async ()=> {
-        
         const storeData = localStorage.getItem('authToken');
             if(storeData){
                 const data = await apiAuth.validateToken(storeData);
@@ -25,8 +24,8 @@ export const AuthProvider = ( {children} : {children:JSX.Element} )  => {
                 else if(data.status === true){
                     setUser(data.user)
                 }
-                     
             }
+        
     }
 
     const signin = async (email:string, password:string) => {
@@ -46,7 +45,7 @@ export const AuthProvider = ( {children} : {children:JSX.Element} )  => {
     }
 
     return(
-        <AuthContext.Provider value={{user, signin, signout}}>
+        <AuthContext.Provider value={{user, signin, signout, validateToken}}>
             {children}
         </AuthContext.Provider>
     )

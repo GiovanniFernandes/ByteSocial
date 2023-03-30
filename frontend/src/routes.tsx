@@ -2,7 +2,6 @@ import Welcome from 'pages/Welcome';
 import Cadastro from 'pages/Welcome/cadastro';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from 'pages/Welcome/login';
-import { Test } from 'components/Test';
 import Profile from 'pages/profile';
 import OtherUser from 'pages/profile/OtherUser';
 import DefaultPage from 'components/DefaultPage';
