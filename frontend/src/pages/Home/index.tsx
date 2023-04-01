@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react"
 import styles from './Home.module.scss';
-import { IoMdSend } from 'react-icons/io'
 import posts from 'data/posts.json'
 import Post from "components/Post/Post";
-
-
-// import { useContext } from 'react';
-// import { AuthContext } from 'contexts/Auth/AuthContexts'
+import NewPost from "components/NewPost";
 
 interface Props {
   selectedMenu: number,
@@ -17,32 +13,15 @@ interface Props {
 export default function Home(props: Props) {
 
   const [selectedSection, setSelectedSection] = useState<number>(0);
-  // const [username, setUsername] = useState<string | null>('');const auth = useContext(AuthContext); 
     
   useEffect(() => {
-    // getUser();
     props.setSelectedMenu(1)
   }, [])
   
-  // const getUser = async () => {
-  //   if(auth.user != null)
-  //       setUsername(auth.user.username)
-  //     else
-  //       setUsername("")
-  // }
-    
-
-
-
   return (
     <div className={styles.Home} id='Home'>
       <div className={styles.Home__newPost}>
-        <textarea className={styles.Home__newPost__input} placeholder='O que você está pensando?' rows={1} />
-        <IoMdSend
-          className={styles.Home__newPost__send}
-          size={30}
-          color='#52A3FF'
-        />
+        <NewPost/>
       </div>
       <div className={styles.Home__sections}>
         <div
