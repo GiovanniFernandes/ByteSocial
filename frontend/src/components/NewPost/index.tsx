@@ -1,18 +1,21 @@
 import { IoMdSend } from "react-icons/io";
 import { useForm, SubmitHandler } from "react-hook-form";
-
 import styles from './NewPost.module.scss';
+import { useApiPost } from "hooks/useApiPost";
 
 type Inputs = {
     postText: string,
-  };
+};
 
 export default function NewPost() {
-    
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
 
-    const onSubmit: SubmitHandler<Inputs> = data => {
-        console.log(data);
+    const { register, handleSubmit, reset } = useForm<Inputs>();
+    const apiPost = useApiPost();
+
+
+    const onSubmit: SubmitHandler<Inputs> = async data => {
+        const response = await apiPost.newPost(data.postText);
+        reset()
     }
 
     return (
