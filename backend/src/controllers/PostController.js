@@ -51,6 +51,43 @@ class PostController
         return res.status(500).json({msg:error.message});
       }
     }
+  
+    static async showPosts(req, res)
+    {
+      try {
+        const { offset } = req.params;
+
+        const {count, rows} = await Posts.findAndCountAll ({
+          include: "User",
+          offset: Number(offset),
+          limit: 6
+        });
+        
+        const normalizationPosts = rows.map(e => {
+          
+          //const postDate = new Date(e.createdAt).toLocaleString("pt-br")
+
+          return {
+            postId: e.id,
+            postUserId: e.user_id,
+            postUsername: e.User.username,
+            postContent: e.content,
+            postDate:e.createdAt
+          }
+        
+        })
+                
+        return res.status(200).json({
+          count,
+          normalizationPosts
+        });
+        
+
+      } catch (error) {
+        return res.status(500).json({msg:error.message});
+      }
+    }
+  
 }
 
 
