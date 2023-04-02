@@ -6,12 +6,13 @@ import {Heart, ChatCircle} from 'phosphor-react'
 
 
 interface Props {
-  id?:number,
+  id?:string,
   username?: string,
   conteudo: string,
   dataPostagem: string,
   curtidas: number,
-  comentario: number
+  comentario: number,
+  userId: string
 }
 
 

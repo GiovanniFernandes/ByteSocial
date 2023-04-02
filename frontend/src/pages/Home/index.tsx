@@ -1,27 +1,57 @@
 import { useEffect, useState } from "react"
 import styles from './Home.module.scss';
-import posts from 'data/posts.json'
 import Post from "components/Post/Post";
 import NewPost from "components/NewPost";
+import { useApiPost } from "hooks/useApiPost";
 
 interface Props {
   selectedMenu: number,
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
+type post = {
+
+  "postId": string,
+	"postUserId": string,
+	"postUsername": string,
+	"postContent": string,
+	"postDate": string
+}
+
+type aboutPosts = {
+  "count": number,
+  "list" : Array<post>
+}
 
 export default function Home(props: Props) {
 
   const [selectedSection, setSelectedSection] = useState<number>(0);
-    
+  const [changeListPost, setChangeListPost] = useState<boolean>(false);
+  const [listPost, setListPost] = useState<post[]>([]);
+  const [count, setCount] = useState<number>(1)
+
+  const apiPost = useApiPost();
+
   useEffect(() => {
     props.setSelectedMenu(1)
   }, [])
+
+  useEffect(() => {
+    setChangeListPost(false);
+    effectToPosts();
+  }, [changeListPost])
+  
+  const effectToPosts = async () => {
+    const data: aboutPosts = await apiPost.showPosts(0);
+    setCount(data.count);
+    setListPost(data.list);
+  }
+
   
   return (
     <div className={styles.Home} id='Home'>
       <div className={styles.Home__newPost}>
-        <NewPost/>
+        <NewPost change={setChangeListPost}/>
       </div>
       <div className={styles.Home__sections}>
         <div
@@ -31,18 +61,19 @@ export default function Home(props: Props) {
         </div>
       </div>
       <div className={styles.Home__FeedPosts}>
-        {posts.map(e => <Post
-          username={e.username}
-          conteudo={e.conteudo}
-          curtidas={e.curtidas}
-          comentario={e.comentario}
-          dataPostagem={e.dataPostagem}
-          key={`postHome${e.id}`}
+        {listPost.map(e => <Post
+          username={e.postUsername}
+          conteudo={e.postContent}
+          curtidas={5}
+          comentario={10}
+          dataPostagem={e.postDate}
+          userId={e.postUserId}
+          key={`postHome${e.postId}`}
         ></Post>)}
         
       </div>
       <div>
-        <h2>Aqui vai o componente de paginação</h2>
+        <h2>Aqui vai o componente de paginação{`count == ${count}`}</h2>
       </div>
     </div>
   ) 

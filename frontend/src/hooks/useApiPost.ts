@@ -6,8 +6,7 @@ export const useApiPost = () => ({
 
     newPost: async (content: string) => {
 
-
-        if (content == "" || content == null)
+        if (content === "" || content === null)
             return false
         
         const settingGeneralAxios = settingAxios();
@@ -19,10 +18,21 @@ export const useApiPost = () => ({
             content
         }, settingGeneralAxios )
 
-        console.log("msg: ", resposta)
-
         return resposta.data;
     },
+
+    showPosts: async (offset:number) => {
+
+        const settingGeneralAxios = settingAxios();
+
+        if (!settingGeneralAxios)
+            return false
+        
+        const resposta = await api.get(`/posts/${offset.toString()}`,
+        settingGeneralAxios )
+
+        return resposta.data;
+    }
     
 
 })

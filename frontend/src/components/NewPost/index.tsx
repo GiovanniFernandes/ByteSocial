@@ -7,14 +7,20 @@ type Inputs = {
     postText: string,
 };
 
-export default function NewPost() {
+/*
+interface Props { //não entendi por que não fumciona
+    change: React.Dispatch<React.SetStateAction<boolean>>
+} */
+
+export default function NewPost(props: any) {
 
     const { register, handleSubmit, reset } = useForm<Inputs>();
     const apiPost = useApiPost();
 
 
     const onSubmit: SubmitHandler<Inputs> = async data => {
-        const response = await apiPost.newPost(data.postText);
+        await apiPost.newPost(data.postText);    
+        props.change(true)
         reset()
     }
 
