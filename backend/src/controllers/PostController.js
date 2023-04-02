@@ -63,17 +63,20 @@ class PostController
           offset: Number(offset),
           limit: 8
         });
+
+        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: "numeric",
+        minute: "numeric", };  
         
         const normalizationPosts = rows.map(e => {
           
-          //const postDate = new Date(e.createdAt).toLocaleString("pt-br")
-
+          const postDate = `${new Date(e.createdAt).toLocaleDateString('pt-BR', options)}h`;
+          
           return {
             postId: e.id.toString(),
             postUserId: e.user_id.toString(),
             postUsername: e.User.username,
             postContent: e.content,
-            postDate:e.createdAt
+            postDate: postDate.replace(".", " ").replace(",", " ás ")
           }
         
         })
