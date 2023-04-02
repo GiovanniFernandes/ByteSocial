@@ -59,8 +59,9 @@ class PostController
 
         const {count, rows} = await Posts.findAndCountAll ({
           include: "User",
+          order:[['createdAt', 'DESC']],
           offset: Number(offset),
-          limit: 6
+          limit: 8
         });
         
         const normalizationPosts = rows.map(e => {
@@ -68,8 +69,8 @@ class PostController
           //const postDate = new Date(e.createdAt).toLocaleString("pt-br")
 
           return {
-            postId: e.id,
-            postUserId: e.user_id,
+            postId: e.id.toString(),
+            postUserId: e.user_id.toString(),
             postUsername: e.User.username,
             postContent: e.content,
             postDate:e.createdAt
@@ -79,7 +80,7 @@ class PostController
                 
         return res.status(200).json({
           count,
-          normalizationPosts
+          list:normalizationPosts
         });
         
 
