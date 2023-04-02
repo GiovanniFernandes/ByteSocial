@@ -12,7 +12,7 @@ type Inputs = {
 
 export default function Login() {
 
-  const { register, handleSubmit } = useForm<Inputs>()
+  const { register, handleSubmit, resetField } = useForm<Inputs>()
 
   const [erroLogin, setErroLogin] = useState<string>("")
   const auth = useContext(AuthContext);
@@ -26,6 +26,7 @@ export default function Login() {
       navigate('/home')
     }
     else {
+      resetField("password")
       setErroLogin("Usuário ou senha incorretos")
     }
 }

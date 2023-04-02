@@ -1,7 +1,4 @@
 import styles from './Post.module.scss' ;
-import { useState, useContext, useEffect } from 'react';
-import { AuthContext } from 'contexts/Auth/AuthContexts';
-
 import {Heart, ChatCircle} from 'phosphor-react'
 
 
@@ -17,20 +14,6 @@ interface Props {
 
 
 export default function Post(props: Props){
-  //const [username, setUsername] = useState<string | null>('')
-  /*
-  const auth = useContext(AuthContext);
-  useEffect(() => {
-    getUser();
-
-  }, [])
-  const getUser = async() =>{
-    if(auth.user != null)
-      setUsername(auth.user.username)
-      else
-        setUsername("")
-  }
-  */
   
   return (
     <div className={styles.Post__content}>
