@@ -12,7 +12,7 @@ interface Props { //não entendi por que não fumciona
     change: React.Dispatch<React.SetStateAction<boolean>>
 } */
 
-export default function NewPost(props: any) {
+export default function NewPost({change}:{change: React.Dispatch<React.SetStateAction<boolean>>}) {
 
     const { register, handleSubmit, reset } = useForm<Inputs>();
     const apiPost = useApiPost();
@@ -20,7 +20,7 @@ export default function NewPost(props: any) {
 
     const onSubmit: SubmitHandler<Inputs> = async data => {
         await apiPost.newPost(data.postText);    
-        props.change(true)
+        change(true)
         reset()
     }
 
