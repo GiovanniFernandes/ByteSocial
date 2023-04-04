@@ -60,16 +60,7 @@ export default function Settings(props: Props) {
 
     if(data === '') return
 
-    const oldPassword = window.prompt("Digite sua senha antiga: ");
-
-    if(oldPassword === null) return
-    else if(oldPassword === ''){
-        window.alert("Se faz necessário a sua senha antiga para prosseguir com a mudança de senha !")
-        changePassword(data);
-        return
-    }
-
-    const response = await apiUser.changePassword(oldPassword,data)
+    const response = await apiUser.changePassword(data)
 
     if(response.status === false) 
         setErrorPassword("Não foi possível atualizar a senha")

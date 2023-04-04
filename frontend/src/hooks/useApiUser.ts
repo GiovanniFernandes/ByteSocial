@@ -20,7 +20,7 @@ export const useApiUser = () => ({
         return resposta.data
     },
 
-    changePassword: async (password:String,newPassword:String) => {
+    changePassword: async (newPassword:String) => {
 
         const storeData = localStorage.getItem('authToken');
         if(!storeData) return false;
@@ -30,11 +30,10 @@ export const useApiUser = () => ({
                 Authorization: "Bearer "+storeData
             },
             validateStatus: (status:any) => {
-                return status < 500; // Resolve somente se o código de status for menor que 500
+                return status < 500;
             } 
         }
         const resposta = await api.put('/user/change/pass',{
-            password,
             newPassword
         }, axiosConfig);
 
