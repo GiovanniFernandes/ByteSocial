@@ -2,7 +2,7 @@ import { IoMdSend } from "react-icons/io";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from './NewPost.module.scss';
 import { useApiPost } from "hooks/useApiPost";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Inputs = {
     postText: string,
@@ -12,20 +12,28 @@ type Inputs = {
 export default function NewPost({change}:{change: React.Dispatch<React.SetStateAction<boolean>>}) {
 
     const { register, handleSubmit, reset } = useForm<Inputs>();
-    const [height, setHeigh] = useState(22);
     const apiPost = useApiPost();
+
+    const refTextarea = useRef<HTMLTextAreaElement>(null);
+    const defaultHeightTextarea = useRef(22);
+
 
     const onSubmit: SubmitHandler<Inputs> = async data => {
         await apiPost.newPost(data.postText);    
         change(true)
         reset()
     }
-    
-    const changeHeight = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
-        
-        setHeigh(e.target.scrollHeight);
-    }
 
+    const changeHeight = () => { 
+        
+        const element = refTextarea.current;
+        
+        if (!element) return
+        
+        element.style.height = `${defaultHeightTextarea.current}px`;
+        element.style.height = `${element.scrollHeight}px`
+    }   
+    
     return (
         <form
         onSubmit={handleSubmit(onSubmit)}
@@ -33,10 +41,10 @@ export default function NewPost({change}:{change: React.Dispatch<React.SetStateA
         >
             <textarea
                 {...register("postText", { required: true })}
-                style={{height:`${height}px`}}
                 className={styles.newPost__input}
                 placeholder='O que você está pensando?'
                 onChange={changeHeight}
+                ref={refTextarea}
             />
                 <button
                 type="submit"
@@ -52,3 +60,23 @@ export default function NewPost({change}:{change: React.Dispatch<React.SetStateA
         </form>
     )
 }
+
+/*
+        const changeHeight = (e: any) => { 
+      
+        Não entendi, mas funcionou, apenas com "e:any", mas não entendi, parecia que 
+        o e: tinha propriedades de mais de um objeto do "React.ChangeEvent<HTMLTextAreaElement>" e
+        do "HTMLTextAreaElement"
+
+        if (!e)
+            return
+        
+        const target = e.target ? e.target : e;
+        
+        target.style.height = `${defaultHeightTextarea.current}px`;
+        target.style.height = `${target.scrollHeight}px`
+
+        }   
+
+
+*/
