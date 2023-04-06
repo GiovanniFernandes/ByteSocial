@@ -2,7 +2,7 @@ import { IoMdSend } from "react-icons/io";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from './NewPost.module.scss';
 import { useApiPost } from "hooks/useApiPost";
-import { useRef, useState } from "react";
+import { useRef} from "react";
 
 type Inputs = {
     postText: string,
@@ -106,8 +106,9 @@ export default function NewPost({change}:{change: React.Dispatch<React.SetStateA
 
 
     RESULTADO: Aqui o textarea sobe e desce, mas por conta do 'ref' parou de fazer submit.
-    se retirar o ref, volta a fazer submit, mas o ref não deveria interfirir em nada no submit do forms,
-    o botão clica normalmente, mas não faz mais submit
+    se retirar o ref, volta a fazer submit, mas o ref não deveria interfirir em nada no submit do forms, o botão clica normalmente, mas não faz mais submit.
+
+    Obs. tentei usar um useState no lugar do useRef, mas também não funcionou.
     
     React.FormEvent<HTMLButtonElement>
 */
