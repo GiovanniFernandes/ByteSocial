@@ -4,15 +4,16 @@
   background: $branco-destaque;
   width: 285px;
   height: 100vh;
-  position: fixed;
+
   &__closed {
     background: $branco-destaque;
     width: 125px;
     height: 100vh;
+    
   }
   &__hideAligner {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     padding: 18px 0 14px 0;
   }
   &__hideButton {
