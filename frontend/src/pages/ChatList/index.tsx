@@ -2,6 +2,7 @@ import styles from './ChatList.module.scss'
 import Menu from '../../components/Menu'
 import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -59,10 +60,12 @@ export default function ContactList(props: Props){
       
     }*/ 
 
+    const navigate = useNavigate();
+
+
     return( 
     
     <div className={styles.chatListPrincipal}>
-        <Menu selectedMenu={0} />
         <div className={styles.chatListPrincipal__page}>
           <div className={styles.chatListPrincipal__title}> 
             <h1>Mensagens</h1>
@@ -70,14 +73,12 @@ export default function ContactList(props: Props){
         
           <div className={styles.chatListPrincipal__top}>
             <div className={styles.chatListPrincipal__sections}>
-              <div className={selectedSection !== 0 ? styles.chatListPrincipal__sections__item : styles.chatListPrincipal__sections__item__selected}
-              onClick={() => setSelectedSection(1)}>
-                <h3>Conversas</h3>
+              <div className={styles.chatListPrincipal__sections__item__selected}>
+                <a>Conversas</a>
               </div>
               
-              <div className={selectedSection !== 1 ? styles.chatListPrincipal__sections__item : styles.chatListPrincipal__sections__item__selected}
-              onClick={() => setSelectedSection(0)}>
-                <h3>Lista de contatos</h3>
+              <div className={styles.chatListPrincipal__sections__item}>
+                <a onClick={() => navigate('/contactList')}>Lista de contatos</a>
               </div>
             </div>
 
@@ -106,7 +107,7 @@ export default function ContactList(props: Props){
                   </div>
                   <div className={styles.chatListPrincipal__contactList__contactText}>
                     <h2 className={styles.chatListPrincipal__contactList__userName}>{item.username}</h2>
-                    <p className={styles.chatListPrincipal__contactList__userMsg}>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <p className={styles.chatListPrincipal__contactList__userMsg}>Lorem ipsum dolor sit amet consectetur adipisicing elit vasco</p>
                   </div>
                 </li>
                 )}

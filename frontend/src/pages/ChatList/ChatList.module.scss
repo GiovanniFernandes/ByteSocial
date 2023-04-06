@@ -6,7 +6,6 @@
   &__page{
     display: flex;
     flex-direction: column;
-    margin-left: 390px;
     width: 100%;
   }
   
@@ -131,6 +130,13 @@
     &__userName{
       font-weight: 500;
       font-size: 16px;
+    }
+
+    &__userMsg{
+      max-width: 350px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     &__contactText{

@@ -2,6 +2,8 @@ import styles from './ContactList.module.scss'
 import Menu from '../../components/Menu'
 import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
+
 
 
 
@@ -59,10 +61,12 @@ export default function ContactList(props: Props){
       
     }*/ 
 
+    const navigate = useNavigate();
+
+
     return( 
     
     <div className={styles.contactListPrincipal}>
-        <Menu selectedMenu={0} />
         <div className={styles.contactListPrincipal__page}>
           <div className={styles.contactListPrincipal__title}> 
             <h1>Mensagens</h1>
@@ -70,14 +74,12 @@ export default function ContactList(props: Props){
         
           <div className={styles.contactListPrincipal__top}>
             <div className={styles.contactListPrincipal__sections}>
-              <div className={selectedSection !== 1 ? styles.contactListPrincipal__sections__item : styles.contactListPrincipal__sections__item__selected}
-              onClick={() => setSelectedSection(1)}>
-                <h3>Conversas</h3>
+              <div className={styles.contactListPrincipal__sections__item}>
+                <a onClick={() => navigate('/chatList')}>Conversas</a>
               </div>
               
-              <div className={selectedSection !== 0 ? styles.contactListPrincipal__sections__item : styles.contactListPrincipal__sections__item__selected}
-              onClick={() => setSelectedSection(0)}>
-                <h3>Lista de contatos</h3>
+              <div className={styles.contactListPrincipal__sections__item__selected}>
+                <a>Lista de contatos</a>
               </div>
             </div>
 
