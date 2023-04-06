@@ -2,26 +2,28 @@ import { IoMdSend } from "react-icons/io";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from './NewPost.module.scss';
 import { useApiPost } from "hooks/useApiPost";
+import { useState } from "react";
 
 type Inputs = {
     postText: string,
 };
 
-/*
-interface Props { //não entendi por que não fumciona
-    change: React.Dispatch<React.SetStateAction<boolean>>
-} */
 
 export default function NewPost({change}:{change: React.Dispatch<React.SetStateAction<boolean>>}) {
 
     const { register, handleSubmit, reset } = useForm<Inputs>();
+    const [height, setHeigh] = useState(22);
     const apiPost = useApiPost();
-
 
     const onSubmit: SubmitHandler<Inputs> = async data => {
         await apiPost.newPost(data.postText);    
         change(true)
         reset()
+    }
+    
+    const changeHeight = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
+        
+        setHeigh(e.target.scrollHeight);
     }
 
     return (
@@ -30,10 +32,11 @@ export default function NewPost({change}:{change: React.Dispatch<React.SetStateA
         className={styles.newPost}
         >
             <textarea
-            {...register("postText", { required: true })}
-            className={styles.newPost__input}
-            placeholder='O que você está pensando?'
-            rows={1}
+                {...register("postText", { required: true })}
+                style={{height:`${height}px`}}
+                className={styles.newPost__input}
+                placeholder='O que você está pensando?'
+                onChange={changeHeight}
             />
                 <button
                 type="submit"
