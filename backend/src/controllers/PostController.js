@@ -1,7 +1,7 @@
 const database = require ("../database/models");
 const Posts = database.Posts;
 const Likes = database.Likes;
-
+const postService = require("../services/postService")
 class PostController
 {
     static async createPost(req,res)
@@ -64,23 +64,8 @@ class PostController
           limit: 8
         });
 
-        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: "numeric",
-        minute: "numeric", };  
-        
-        const normalizationPosts = rows.map(e => {
-          
-          const postDate = `${new Date(e.createdAt).toLocaleDateString('pt-BR', options)}h`;
-          
-          return {
-            postId: e.id.toString(),
-            postUserId: e.user_id.toString(),
-            postUsername: e.User.username,
-            postContent: e.content,
-            postDate: postDate.replace(".", " ").replace(",", " ás ")
-          }
-        
-        })
-                
+        const normalizationPosts = await postService.normalizationPosts(rows);  
+
         return res.status(200).json({
           count,
           list:normalizationPosts
@@ -91,7 +76,36 @@ class PostController
         return res.status(500).json({msg:error.message});
       }
     }
-  
+    
+    static async showPostsUser(req, res)
+    {
+      try {
+        const { offset, id } = req.params;
+
+        const { count, rows } = await Posts.findAndCountAll({
+          where: {user_id: Number(id)},
+          include: "User",
+          order:[['createdAt', 'DESC']],
+          offset: Number(offset),
+          limit: 8
+        });
+
+        if (rows.length === 0)
+          return res.status(200).json({ count, list:[] });
+        
+
+        const normalizationPosts = postService.normalizationPosts(rows);
+        
+        return res.status(200).json({
+          count,
+          list:normalizationPosts
+        });
+        
+
+      } catch (error) {
+        return res.status(500).json({msg:error.message});
+      }
+    }
 }
 
 
