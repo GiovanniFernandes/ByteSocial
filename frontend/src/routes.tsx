@@ -26,8 +26,8 @@ export default function AppRouter() {
             <Route path='home' element={<Home selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
             <Route path='profile' element={<Profile selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
             <Route path='settings' element={<Settings selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
-            <Route path='contactlist' element={<ContactList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
             <Route path='chatList' element={<ChatList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+            <Route path='contactlist' element={<ContactList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
           </Route>
 
           <Route path='/login' element={<Welcome children={<Login/>}/>} />
