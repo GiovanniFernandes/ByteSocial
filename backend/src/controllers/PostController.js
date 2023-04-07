@@ -1,7 +1,7 @@
 const database = require ("../database/models");
 const Posts = database.Posts;
 const Likes = database.Likes;
-
+const postService = require("../services/postService")
 class PostController
 {
     static async createPost(req,res)
@@ -46,6 +46,61 @@ class PostController
         if(!post)return res.status(404).json({msg:"Post não encontrado, talvez esse post não exista!"});
 
         return res.status(200).json({post, likes:likesInPost.length});
+
+      } catch (error) {
+        return res.status(500).json({msg:error.message});
+      }
+    }
+  
+    static async showPosts(req, res)
+    {
+      try {
+        const { offset } = req.params;
+
+        const {count, rows} = await Posts.findAndCountAll ({
+          include: "User",
+          order:[['createdAt', 'DESC']],
+          offset: Number(offset),
+          limit: 8
+        });
+
+        const normalizationPosts = await postService.normalizationPosts(rows);  
+
+        return res.status(200).json({
+          count,
+          list:normalizationPosts
+        });
+        
+
+      } catch (error) {
+        return res.status(500).json({msg:error.message});
+      }
+    }
+    
+    static async showPostsUser(req, res)
+    {
+      try {
+        const { offset, id } = req.params;
+
+        const { count, rows } = await Posts.findAndCountAll({
+          where: {user_id: Number(id)},
+          include: "User",
+          order:[['createdAt', 'DESC']],
+          offset: Number(offset),
+          limit: 8
+        });
+
+        if (rows.length === 0)
+          return res.status(200).json({ count, list:[] });
+        
+
+        const normalizationPosts = postService.normalizationPosts(rows);
+        
+        return res.status(200).json({
+          count,
+          list:normalizationPosts
+        });
+        
 
       } catch (error) {
         return res.status(500).json({msg:error.message});

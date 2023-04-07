@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react"
 import styles from './Home.module.scss';
-import { IoMdSend } from 'react-icons/io'
-import posts from 'data/posts.json'
 import Post from "components/Post/Post";
-
-
-// import { useContext } from 'react';
-// import { AuthContext } from 'contexts/Auth/AuthContexts'
+import NewPost from "components/NewPost";
+import { useApiPost } from "hooks/useApiPost";
+import { tPost, aboutPosts } from "types/Post";
 
 interface Props {
   selectedMenu: number,
@@ -17,32 +14,32 @@ interface Props {
 export default function Home(props: Props) {
 
   const [selectedSection, setSelectedSection] = useState<number>(0);
-  // const [username, setUsername] = useState<string | null>('');const auth = useContext(AuthContext); 
-    
+  const [changeListPost, setChangeListPost] = useState<boolean>(false);
+  const [listPost, setListPost] = useState<tPost[]>([]);
+  const [count, setCount] = useState<number>(1)
+
+  const apiPost = useApiPost();
+
   useEffect(() => {
-    // getUser();
     props.setSelectedMenu(1)
   }, [])
+
+  useEffect(() => {
+    setChangeListPost(false);
+    effectToPosts();
+  }, [changeListPost])
   
-  // const getUser = async () => {
-  //   if(auth.user != null)
-  //       setUsername(auth.user.username)
-  //     else
-  //       setUsername("")
-  // }
-    
+  const effectToPosts = async () => {
+    const data: aboutPosts = await apiPost.showPosts(0);
+    setCount(data.count);
+    setListPost(data.list);
+  }
 
-
-
+  
   return (
     <div className={styles.Home} id='Home'>
       <div className={styles.Home__newPost}>
-        <textarea className={styles.Home__newPost__input} placeholder='O que você está pensando?' rows={1} />
-        <IoMdSend
-          className={styles.Home__newPost__send}
-          size={30}
-          color='#52A3FF'
-        />
+        <NewPost change={setChangeListPost}/>
       </div>
       <div className={styles.Home__sections}>
         <div
@@ -52,18 +49,19 @@ export default function Home(props: Props) {
         </div>
       </div>
       <div className={styles.Home__FeedPosts}>
-        {posts.map(e => <Post
-          username={e.username}
-          conteudo={e.conteudo}
-          curtidas={e.curtidas}
-          comentario={e.comentario}
-          dataPostagem={e.dataPostagem}
-          key={`postHome${e.id}`}
+        {listPost.map(e => <Post
+          username={e.postUsername}
+          conteudo={e.postContent}
+          curtidas={5}
+          comentario={10}
+          dataPostagem={e.postDate}
+          userId={e.postUserId}
+          key={`postHome${e.postId}`}
         ></Post>)}
         
       </div>
       <div>
-        <h2>Aqui vai o componente de paginação</h2>
+        <h2>Aqui vai o componente de paginação{`count == ${count}`}</h2>
       </div>
     </div>
   ) 

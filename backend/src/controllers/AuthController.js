@@ -27,7 +27,7 @@ class AuthController
 
         const {id, username} = usuario;
             
-        const token  = jwt.sign({id, username},process.env.JWT_SECRET, { expiresIn:'1h',})
+        const token  = jwt.sign({id, username},process.env.JWT_SECRET, { expiresIn:'10h',})
         
         return res.status(202).json({ 
             user: {id, username}, 

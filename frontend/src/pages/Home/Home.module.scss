@@ -2,31 +2,10 @@
 
 .Home{
   width: 768px;
+
   &__newPost {
     margin-top: 80px;
     width: 100%;
-    border-radius: 10px;
-    padding: 12px 20px;
-    background-color: $azul-botao-transparencia;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  
-    &__input {
-      border-style: none;
-      background-color: $azul-botao-transparencia;
-      width: 100%;
-      resize: vertical;
-    }
-  
-    &__input:focus {
-      outline: none;
-    }
-  
-    &__send {
-      cursor: pointer;
-    }
-  
   }
   &__sections {
     display: flex;

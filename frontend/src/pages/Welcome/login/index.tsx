@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import SpanError from 'components/SpanError/SpanError'
 
 type Inputs = {
   email: string,
@@ -12,7 +13,7 @@ type Inputs = {
 
 export default function Login() {
 
-  const { register, handleSubmit } = useForm<Inputs>()
+  const { register, handleSubmit, resetField } = useForm<Inputs>()
 
   const [erroLogin, setErroLogin] = useState<string>("")
   const auth = useContext(AuthContext);
@@ -26,6 +27,7 @@ export default function Login() {
       navigate('/home')
     }
     else {
+      resetField("password")
       setErroLogin("Usuário ou senha incorretos")
     }
 }
@@ -50,7 +52,7 @@ export default function Login() {
           {...register('password', { required: true })}
         />  
       </div>
-      {(erroLogin !== "") ? <span className={styles.error}>{erroLogin}</span>: ""}
+      <SpanError err={erroLogin} />
       <div>
         <button type='reset' className={styles.formulario__botoes__register}
           onClick={() => navigate('/register')}>

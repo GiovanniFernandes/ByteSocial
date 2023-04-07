@@ -13,12 +13,21 @@
       border-style: none;
       background-color: $azul-botao-transparencia;
       width: 100%;
-      resize: vertical;
-    }
-
-    &__input:focus {
+      height: 22px; 
+      min-width: 22px;
+      word-break: break-word;
+      resize: none;
       outline: none;
-    }
+
+      &:focus {
+        outline: none;
+      }
+
+      &::-webkit-scrollbar{
+        width: 0px;
+      }
+    } 
+
 
     &__send {
       cursor: pointer;

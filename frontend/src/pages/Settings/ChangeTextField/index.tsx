@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { EditBUtton } from './assets/EditButton'
 import style from './ChangeTextField.module.scss'
-
+import SpanError from 'components/SpanError/SpanError'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 interface ItemTextField {
     type:string,
     placeholder:string,
     id:string,
     fieldName:string,
-    aoClick:any
+    aoClick: (data:string) => Promise<void>,
+    err:string
 }
     
 
@@ -39,10 +41,7 @@ export const ChangeTextField = (props:ItemTextField) => {
                 </button>
                 
             </div>
-            
-
-
-
+            <SpanError err={props.err}/>     
         </div>
     )
 
