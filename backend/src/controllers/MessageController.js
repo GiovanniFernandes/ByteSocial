@@ -66,7 +66,7 @@ class MessageController {
           conversations.push({
             senderId,
             receiverId,
-            messages: message,
+            lastMessage: message,
           });
         }
       });
