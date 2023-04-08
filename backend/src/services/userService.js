@@ -24,17 +24,6 @@ class userService {
         return false;
     }
 
-    static async findUsername(username)
-    {
-        const usuarios = await Users.findAll({where:{username}});
-        if(usuarios.length>0)
-        {
-        return true;
-        }
-        return false;
-            
-    }
-
 }
 
 module.exports = userService;
