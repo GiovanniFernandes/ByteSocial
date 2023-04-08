@@ -16,7 +16,7 @@
 
   {
     "title": "Mensagens",
-    "link": "/ContactList",
+    "link": "/ChatList",
     "icon": "/assets/icons/message.svg",
     "iconSelected": "/assets/icons/selected/message.svg",
     "id": 3
