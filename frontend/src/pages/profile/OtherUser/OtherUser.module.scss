@@ -12,8 +12,7 @@
 
   &__OtherUser {
     display: flex;
-    margin-bottom: 38px;
-  
+    margin-bottom: 38px;    
     &__pic {
       width: 189px;
       height: 189px;
@@ -36,13 +35,15 @@
 
     &__connect {
       margin-top: 22px;
+      margin-bottom: 26px;
       display: flex;
       background-color: #B6D3F3;
       border-radius: 8px;
       width: 125px;
-      height: 33;
+      height: 33px;
       align-items: center;
       justify-content: center;
+      border: none;
       &__text{
         font-size: 10px;
         color: $azul-destaque;
@@ -53,25 +54,26 @@
       &__icon{
         // background-color: black;
         color: $azul-destaque;
-        
       }
-      
+        
+      &:hover{
+        cursor: pointer;
+      }
+
+
     }
 
     &__interactions {
       display: flex;
       padding: 0;
-      margin: 57px 0 0;
+      margin: 0;
     }
 
     &__interaction {
       display: flex;
       flex-direction: column;
       align-items: center;
-      // margin: 26px 18px 54px 0;
-      margin-top: 26px;
-      margin-right: 18px;
-      margin-bottom: 54px;
+      margin: 0 18px 0 0;
 
       &__count {
         color: $azul-destaque;
@@ -80,6 +82,23 @@
       &__title {
         color: $preto-texto;
         margin: 0;
+      }
+    }
+  }
+
+  &__sectionPosts {
+
+
+    &_title {
+      margin: 0 26px 30px 0;
+      padding: 0 10px 7px 10px;
+      max-width:fit-content;
+      border-bottom: solid 3px $azul-destaque;
+
+      h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
       }
     }
   }
