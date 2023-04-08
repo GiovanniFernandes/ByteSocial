@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from './OtherUser.module.scss'
-import { useContext } from 'react';
-import { AuthContext } from 'contexts/Auth/AuthContexts'
 import {BsFillPersonPlusFill} from 'react-icons/bs'
+import { useParams } from "react-router-dom";
 interface Props {
   selectedMenu: number,
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
@@ -26,18 +25,17 @@ const interactions = [
 
 export default function OtherUser(props: Props) {
 
+  const [username, setUsername] = useState<string | null>('')
+  const { postUserId } = useParams();
+
 
     useEffect(() => {
-        getUser()
-        props.setSelectedMenu(1)
-    }, [])
-    const auth = useContext(AuthContext); 
-    const [username, setUsername] = useState<string | null>('')
+      props.setSelectedMenu(1)
+      getUser()
+      }, [])
     const getUser = async () => {
-      if(auth.user != null)
-          setUsername(auth.user.username) 
-        else 
-          setUsername("")
+      //Requisição para o back e passar postUserId
+      setUsername('Xuxa constante')
     }
 
   return (
@@ -55,7 +53,6 @@ export default function OtherUser(props: Props) {
               size={20}
             />
             <h3 className={styles.profile__OtherUser__connect__text}>Conectar-se</h3>
-            
           </button>
           
           <ul className={styles.profile__OtherUser__interactions}>

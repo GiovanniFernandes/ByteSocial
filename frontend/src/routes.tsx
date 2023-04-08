@@ -25,7 +25,7 @@ export default function AppRouter() {
           <Route path='/' element={<DefaultPage selectedMenu={selectedMenu}/>}>
             <Route path='home' element={<Home selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
             <Route path='profile' element={<Profile selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
-	          <Route path='otheruser' element={<OtherUser selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
+	          <Route path='otherUser/:postUserId' element={<OtherUser selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
             <Route path='settings' element={<Settings selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
           </Route>
 
