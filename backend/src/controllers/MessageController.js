@@ -93,7 +93,8 @@ class MessageController {
           });
         }
 
-        conversationsUser[i].username = user.username; 
+        conversationsUser[i].username = user.username;
+        conversationsUser[i].userId = user.id;
         delete conversationsUser[i].senderId;
         delete conversationsUser[i].receiverId;
       }
