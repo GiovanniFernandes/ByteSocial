@@ -188,16 +188,18 @@ class UserController {
     }
     static async alteraSenha (req, res){ 
 
-        const {password, newPassword} = req.body;
+        const {newPassword} = req.body;
         const id = req.user_id;
 
         try{
            
-            const usuario = await Users.findOne({where:{id}});
+            /*
+            const usuario = await Users.findOne({ where: { id } });
             const verificaSenha = bcrypt.compareSync(password,usuario.password);  
             
             if(!verificaSenha)
                 return res.status(300).json({status:false, msg:"Senha atual incorreta", verificaSenha});
+            */
             
             const hash = userService.hashDaSenha(newPassword);
             const atualizou = await Users.update({password:hash},{where:{id}});

@@ -1,6 +1,6 @@
 import { AuthContext } from 'contexts/Auth/AuthContexts';
 import { useApiUser } from 'hooks/useApiUser';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CameraSvg } from './assets/CameraSVG';
 import { DeletePersonSvg } from './assets/DeletePersonSvg';
@@ -19,53 +19,53 @@ export default function Settings(props: Props) {
     const apiUser = useApiUser();
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
+    
+    const [errorUsername, setErrorUsername] = useState<string>("");
+    const [errorEmail, setErrorEmail] = useState<string>("");
+    const [errorPassword, setErrorPassword] = useState<string>("");
+
 
     useEffect(() => {
         props.setSelectedMenu(3)
     }, [])
 
-    const changeName = async (data:String) => {
+    const changeName = async (data:string) => {
 
     if(data === '') return
 
     const response = await apiUser.changeName(data);
 
     if(response.status === false) 
-        window.alert(`Falha: ${response.msg}`)
-    else 
+        setErrorUsername("Não foi possível atualizar seu nome");
+    else {
+        setErrorUsername("");
         auth.validateToken();
+    }
     
     }
 
-    const changeEmail = async (data:String) => {
+    const changeEmail = async (data:string) => {
 
     if(data === '') return
 
     const response = await apiUser.changeEmail(data)
 
     if(response.status === false) 
-        window.alert(`Falha: ${response.msg}`)
+        setErrorEmail("Não foi possível atualizar o email")
+    else 
+        setErrorEmail("")
     }
  
-    const changePassword = async (data:String) => {
+    const changePassword = async (data:string) => {
 
     if(data === '') return
 
-    const oldPassword = window.prompt("Digite sua senha antiga: ");
-
-    if(oldPassword === null) return
-    else if(oldPassword === ''){
-        window.alert("Se faz necessário a sua senha antiga para prosseguir com a mudança de senha !")
-        changePassword(data);
-        return
-    }
-
-    const response = await apiUser.changePassword(oldPassword,data)
+    const response = await apiUser.changePassword(data)
 
     if(response.status === false) 
-        window.alert(`Falha: : ${response.msg}`)
+        setErrorPassword("Não foi possível atualizar a senha")
     else 
-        window.alert(`Sucesso: ${response.msg}`,)
+        setErrorPassword("")
     }
 
     const deleteAccount = async () => {
@@ -92,21 +92,24 @@ export default function Settings(props: Props) {
         placeholder:"Nome de usuário",
         id:"NomeDeUsuario",
         fieldName:"Nome",
-        aoClick: changeName
+        aoClick: changeName,
+        err: errorUsername
     },
     {
         type: "email",
         placeholder:"email@email",
         id:"email",
         fieldName:"Email",
-        aoClick: changeEmail
+        aoClick: changeEmail,
+        err: errorEmail
     },
     {
         type: "password",
         placeholder:"*****************",
         id:"password",
         fieldName:"Senha",
-        aoClick: changePassword
+        aoClick: changePassword,
+        err: errorPassword
     }
     ]
 
@@ -125,8 +128,8 @@ export default function Settings(props: Props) {
                 id = {item.id}
                 fieldName={item.fieldName}
                 aoClick={item.aoClick}
+                err={item.err}
                 key={`Change Text Field ${item.fieldName}`
-            
             }
                 />
                 )}

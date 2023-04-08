@@ -3,6 +3,7 @@ import styles from './Home.module.scss';
 import Post from "components/Post/Post";
 import NewPost from "components/NewPost";
 import { useApiPost } from "hooks/useApiPost";
+import { tPost, aboutPosts } from "types/Post";
 import {useSearchParams} from 'react-router-dom'
 
 interface Props {
@@ -10,25 +11,12 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
-type post = {
-
-  "postId": string,
-	"postUserId": string,
-	"postUsername": string,
-	"postContent": string,
-	"postDate": string
-}
-
-type aboutPosts = {
-  "count": number,
-  "list" : Array<post>
-}
 
 export default function Home(props: Props) {
 
   const [selectedSection, setSelectedSection] = useState<number>(0);
   const [changeListPost, setChangeListPost] = useState<boolean>(false);
-  const [listPost, setListPost] = useState<post[]>([]);
+  const [listPost, setListPost] = useState<tPost[]>([]);
   const [count, setCount] = useState<number>(1)
   const [searchParams, setSearchParams] = useSearchParams({});
 
