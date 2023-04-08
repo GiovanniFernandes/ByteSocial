@@ -14,19 +14,14 @@ class UserController {
         const {username,password,email} = req.body;
              
         try{ 
-        
-            const userSplit = username.split(" ");   
-            if(userSplit.length>1) return res.status(300).json({msg:"Não é permitido espaços no seu nome de usuário", status:false});
+          
+            if(username.length<2) return res.status(300).json({msg:"Insira um nome válido", status:false});
                 
             if(!username || !email || !password) return res.status(203).json({msg:"Preencha todos os campos!",status:false});
             
             let emailExists = await userService.findEmail(email);
             
-            let usernameExists = await userService.findUsername(username);
-            
             if(emailExists) return res.status(203).json({msg:"Email já cadastrado!", status:false});
-    
-            if(usernameExists) return res.status(203).json({msg:"Username já cadastrado!", status:false});
     
             if(password.length<6) return res.status(203).json({msg:"A sua senha precisa ter no mínimo 6 caracteres", status:false});
             
