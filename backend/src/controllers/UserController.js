@@ -1,10 +1,9 @@
 const database = require ("../database/models");
 const Users = database.Users;
 const Posts = database.Posts;
-const Likes = database.Likes;
 const Connections = database.Connections;
 const userService = require("../services/userService.js");
-const bcrypt = require("bcrypt");
+const postService = require("../services/postService");
 
 
 class UserController {
@@ -14,19 +13,14 @@ class UserController {
         const {username,password,email} = req.body;
              
         try{ 
-        
-            const userSplit = username.split(" ");   
-            if(userSplit.length>1) return res.status(300).json({msg:"Não é permitido espaços no seu nome de usuário", status:false});
+          
+            if(username.length<2) return res.status(300).json({msg:"Insira um nome válido", status:false});
                 
             if(!username || !email || !password) return res.status(203).json({msg:"Preencha todos os campos!",status:false});
             
             let emailExists = await userService.findEmail(email);
             
-            let usernameExists = await userService.findUsername(username);
-            
             if(emailExists) return res.status(203).json({msg:"Email já cadastrado!", status:false});
-    
-            if(usernameExists) return res.status(203).json({msg:"Username já cadastrado!", status:false});
     
             if(password.length<6) return res.status(203).json({msg:"A sua senha precisa ter no mínimo 6 caracteres", status:false});
             
@@ -74,14 +68,24 @@ class UserController {
         }
     }
 
-    static async pegaProfile(req,res)
-    {
+    static async pegaProfile(req,res){
         try {
-            const id = req.user_id;
-            const posts = await Posts.findAll({where:{user_id:id}});
-            const {username} = await Users.findOne({where:{id}});
-            
 
+            const { offset, id } = req.params;
+
+            const { count, rows } = await Posts.findAndCountAll({
+                where: {user_id: Number(id)},
+                include: "User",
+                order:[['createdAt', 'DESC']],
+                offset: Number(offset),
+                limit:8
+              });
+      
+
+            const normalizationPosts = postService.normalizationPosts(rows);
+            
+            const { username } = await Users.findOne({ where: { id } });
+            
             const pSolicit = await Connections.findAll({where:{user2_id:id}});
             const pSent = await Connections.findAll({where:{user1_id:id}});
 
@@ -106,18 +110,20 @@ class UserController {
                     requests.push(pSolicit[i])
                 }
             }
-            return res.status(200).json({username,
-                qtdPosts:posts.length,
-                 posts,
-                  connections:connections.length,
-                   requests:requests.length
-                });
+            return res.status(200).json({
+                user_id:id,
+                username,
+                count,  
+                list:normalizationPosts,
+                connections:connections.length,
+                requests:requests.length
+            });
 
         } catch (error) {
             return res.status(500).json({msg:error.message});
         }
     }
-    
+
     static async pegaTodosUsuarios (req,res){
         
         try{

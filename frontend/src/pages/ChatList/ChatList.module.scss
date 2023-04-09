@@ -1,12 +1,13 @@
 @import 'styles/variaveis';
 
-.contactListPrincipal{
+.chatListPrincipal{
   display: flex;
 
   &__page{
     display: flex;
     flex-direction: column;
     width: 100%;
+    
   }
   
   &__title{ // nosso ☭
@@ -124,16 +125,32 @@
         border-radius: 33px;
         padding: 4px 2px 2px 4px;
       }
-
-      h2{
-        font-size: 14px;
-        font-weight: bold;
-      }
     }
 
     &__userName{
       font-weight: 500;
       font-size: 16px;
+    }
+
+    &__userMsg{
+      max-width: 350px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    &__contactText{
+        display: inline;
+        
+        h2{
+            font-size: 14px;
+            font-weight: bold;
+
+        }
+
+        p{
+            font-size: 12px;
+        }
     }
   
 }

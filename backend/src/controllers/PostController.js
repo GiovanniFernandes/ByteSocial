@@ -77,35 +77,6 @@ class PostController
       }
     }
     
-    static async showPostsUser(req, res)
-    {
-      try {
-        const { offset, id } = req.params;
-
-        const { count, rows } = await Posts.findAndCountAll({
-          where: {user_id: Number(id)},
-          include: "User",
-          order:[['createdAt', 'DESC']],
-          offset: Number(offset),
-          limit: 8
-        });
-
-        if (rows.length === 0)
-          return res.status(200).json({ count, list:[] });
-        
-
-        const normalizationPosts = postService.normalizationPosts(rows);
-        
-        return res.status(200).json({
-          count,
-          list:normalizationPosts
-        });
-        
-
-      } catch (error) {
-        return res.status(500).json({msg:error.message});
-      }
-    }
 }
 
 

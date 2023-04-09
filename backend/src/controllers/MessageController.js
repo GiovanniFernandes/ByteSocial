@@ -1,5 +1,6 @@
 const database = require("../database/models");
-const Messages = database.Messages;
+const { Messages, Users} = database;
+
 const jwt = require ('jsonwebtoken');
 const { Sequelize } = require('sequelize');
 
@@ -28,10 +29,8 @@ class MessageController {
 
    static async getConversations(req, res){
     //Pegando o Id do usuário através do token
-    const authHeader = req.headers.authorization;
-        const parts = authHeader.split(" ")
-        const [, token] = parts;
-        const {id} = jwt.decode(token);
+    const id = req.user_id;
+    let senderId, receiverId, user;
 
     try {
       const messages = await Messages.findAll({
@@ -49,35 +48,61 @@ class MessageController {
         throw new Error();
       }
 
-      
       //Criando array de conversas
       const conversations = [];
       
       //Iterando cada mensagem e separando em conversas
-      messages.forEach(message => {
-        const senderId = message.sender_id;
-        const receiverId = message.receiver_id;
+      messages.forEach(async message => {
+        senderId = message.sender_id;
+        receiverId = message.receiver_id;
         const conversation = conversations.find(conv =>
           (conv.senderId === senderId && conv.receiverId === receiverId) ||
           (conv.senderId === receiverId && conv.receiverId === senderId)
         );
 
         //Ignorar mensagem caso a conversa já exista (Retornará apenas a ultima mensagem de cada conversa)
-        if (!conversation) {   
+        if (!conversation) {
+
           conversations.push({
             senderId,
             receiverId,
-            sender: message.sender,
-            receiver: message.receiver,
-            messages: [message],
+            lastMessage: message,
           });
         }
       });
-      
-      return res.status(200).json(conversations);
+
+      //Passar o nome do outro usuário da conversa
+      const conversationsUser = [];
+      for (let i=0; i<conversations.length; i++) {
+        conversationsUser.push(conversations[i]);
+        if (id === conversations[i].senderId){
+          user = await Users.findOne({
+            where: {
+              id: conversations[i].receiverId 
+            },
+            attributes: ['id', 'username']
+          });
+        }
+
+        else if (id === conversations[i].receiverId){
+          user = await Users.findOne({
+            where: {
+              id: conversations[i].senderId
+            },
+            attributes: ['id', 'username']
+          });
+        }
+
+        conversationsUser[i].username = user.username;
+        conversationsUser[i].userId = user.id;
+        delete conversationsUser[i].senderId;
+        delete conversationsUser[i].receiverId;
+      }
+
+      return res.status(200).json(conversationsUser);
 
     } catch (error) {
-      return res.status(500).json({ msg: error.message });
+      return res.status(500).json({ "msg" : error.message });
     }
   }
 }

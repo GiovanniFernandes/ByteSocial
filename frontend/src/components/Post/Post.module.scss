@@ -60,13 +60,14 @@
     }
     &__user {
       display:flex;
-       &__img{
+
+      &__img {
         width: 46px;
         height: 46px;
-        }
+        cursor: pointer;
+      }
         
-      
-      &__userInfo{
+      &__userInfo { 
         margin-left:13px;
         &__name{ 
           margin: 0 0 8px;
@@ -78,7 +79,7 @@
           line-height:21px;
           display:flex;
           text-decoration: none;
-          
+          cursor: pointer;
         }
         &__PostDate{
           margin-top:1px;
@@ -87,19 +88,12 @@
           width: fit-content;
   
         }
-      
+  
       }
-      &__text{
-      font-size: 14px;
-      line-height: 14px;
-      font-family: "Poppins";
-    }
-    
-      
       
   }
     &__text p {
-      word-break: break-all;
+      word-break: break-word;
       white-space: pre-line;  
     }
   }
