@@ -1,4 +1,4 @@
-import { api } from "services/api";
+import { api, settingAxios } from "services/api";
 
 
 export const useApiAuth = () => ({
@@ -16,26 +16,20 @@ export const useApiAuth = () => ({
         },
             {
             validateStatus: (status:any) => {
-                return status < 500; // Resolve somente se o código de status for menor que 500
+                return status < 500;
             } 
         }
         )
-        console.log("msg: ", resposta)
 
         return resposta.data;
     },
     authGet: async ()=> {
-        const storeData = localStorage.getItem('authToken');
-        
-        if(!storeData) return false;
-        
-        const axiosConfig = {
-            headers: {
-                Authorization: "Bearer "+storeData
-            } 
-        }
+        const settingGeneralAxios = settingAxios();
 
-        const resposta = await api.get('/users', axiosConfig);
+        if (!settingGeneralAxios)
+            return false
+
+        const resposta = await api.get('/users', settingGeneralAxios);
 
         return resposta.data    
         

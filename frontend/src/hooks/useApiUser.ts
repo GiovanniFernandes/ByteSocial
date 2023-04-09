@@ -22,78 +22,53 @@ export const useApiUser = () => ({
 
     changePassword: async (newPassword:String) => {
 
-        const storeData = localStorage.getItem('authToken');
-        if(!storeData) return false;
+        const settingGeneralAxios = settingAxios();
+
+        if (!settingGeneralAxios)
+            return false
         
-        const axiosConfig = {
-            headers: {
-                Authorization: "Bearer "+storeData
-            },
-            validateStatus: (status:any) => {
-                return status < 500;
-            } 
-        }
         const resposta = await api.put('/user/change/pass',{
             newPassword
-        }, axiosConfig);
+        }, settingGeneralAxios);
 
         return resposta.data
     },
 
     changeEmail: async (email:String) => {
 
-        const storeData = localStorage.getItem('authToken');
-        if(!storeData) return false;
+        const settingGeneralAxios = settingAxios();
+
+        if (!settingGeneralAxios)
+            return false
         
-        const axiosConfig = {
-            headers: {
-                Authorization: "Bearer "+storeData
-            },
-            validateStatus: (status:any) => {
-                return status < 500; // Resolve somente se o código de status for menor que 500
-            } 
-        }
         const resposta = await api.put('/user/change/email',{
             email
-        }, axiosConfig);
+        }, settingGeneralAxios);
 
         return resposta.data
     },
     changeName: async (username:String) => {
 
-        const storeData = localStorage.getItem('authToken');
-        if(!storeData) return false;
-        
-        const axiosConfig = {
-            headers: {
-                Authorization: "Bearer "+storeData
-            },
-            validateStatus: (status:any) => {
-                return status < 500; // Resolve somente se o código de status for menor que 500
-            } 
-        }
+        const settingGeneralAxios = settingAxios();
 
+        if (!settingGeneralAxios)
+            return false
+        
         const resposta = await api.put('/user/change/username',{
             username
-        }, axiosConfig);
+        }, settingGeneralAxios);
 
         return resposta.data
     },
     
     deletaUsuario: async () => {
 
-        const storeData = localStorage.getItem('authToken');
-        if(!storeData) return false;
+        const settingGeneralAxios = settingAxios();
+
+        if (!settingGeneralAxios)
+            return false
         
-        const axiosConfig = {
-            headers: {
-                Authorization: "Bearer "+storeData
-            },
-            validateStatus: (status:any) => {
-                return status < 500; // Resolve somente se o código de status for menor que 500
-            } 
-        }
-        const resposta = await api.delete('/user', axiosConfig);
+        const resposta = await api.delete('/user', settingGeneralAxios);
 
         return resposta.data
     },
