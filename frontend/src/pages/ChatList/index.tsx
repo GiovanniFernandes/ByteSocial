@@ -12,30 +12,36 @@ interface Props {
 }
 
 interface Contact {
-  username: string;
+  username: string,
+  id:string
 }
 
 const list: Contact[] = [
   {
+    id: "1",
     username: 'Terencio'
   },
   {
+    id: "2",
     username: 'Isabele'
   },
   {
+    id: "3",
     username: 'Bianca'
   },
   {
+    id: "4",
     username: 'Terencio'
   },
   {
+    id: "5",
     username: 'Isabele'
   },
   {
+    id: "6",
     username: 'Bianca'
   }
 ];
-
 
 export default function ContactList(props: Props){
   const [search, setSearch] = useState('')
@@ -98,7 +104,8 @@ export default function ContactList(props: Props){
           <div className={styles.chatListPrincipal__contactList}>
             <ul className={styles.chatListPrincipal__contactList__list}>
               {contactsFilter.map((item) => 
-                <li className={styles.chatListPrincipal__contactList__contact}>
+                <li key={`chatList:${item.id}`}
+                  className={styles.chatListPrincipal__contactList__contact}>
                 
                   
                   <div className={styles.chatListPrincipal__contactList__contactPhoto}>
