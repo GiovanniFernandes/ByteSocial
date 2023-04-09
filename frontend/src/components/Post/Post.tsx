@@ -1,24 +1,37 @@
+import { AuthContext } from 'contexts/Auth/AuthContexts';
 import styles from './Post.module.scss' ;
 import {Heart, ChatCircle} from 'phosphor-react'
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
 interface Props {
   id?:string,
-  username?: string,
+  username: string,
   conteudo: string,
   dataPostagem: string,
   curtidas: number,
   comentario: number,
-  userId: string
+  userId: string 
 }
 
 
 export default function Post(props: Props){
   
+  const auth = useContext(AuthContext)
   const navigate = useNavigate();
+  
+  const toOtherUser = () => {
 
-  const toOtherUser= () => {
+    const user = auth.user;
+
+    if (user !== null) {
+      if (user.id.toString() === props.userId) {
+        navigate(`/profile`)
+        return
+      }
+    }
+
     navigate(`/otherUser/${props.userId}`)
   }
   

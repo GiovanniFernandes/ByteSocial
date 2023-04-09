@@ -3,7 +3,7 @@ import Cadastro from 'pages/Welcome/cadastro';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from 'pages/Welcome/login';
 import Profile from 'pages/profile';
-import OtherUser from 'pages/profile/OtherUser';
+import OtherUser from 'pages/OtherUser';
 import DefaultPage from 'components/DefaultPage';
 import { useState } from 'react';
 import Settings from 'pages/Settings';

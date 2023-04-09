@@ -1,4 +1,4 @@
-import { api } from "services/api";
+import { api, settingAxios } from "services/api";
 
 
 export const useApiUser = () => ({
@@ -96,8 +96,22 @@ export const useApiUser = () => ({
         const resposta = await api.delete('/user', axiosConfig);
 
         return resposta.data
+    },
+
+    getUserProfile: async (id:string, offset:number) => {
+
+        const settingGeneralAxios = settingAxios();
+
+        if (!settingGeneralAxios)
+            return false
+        
+        const resposta = await api.get(`/profile/${id}/${offset.toString()}`,
+        settingGeneralAxios)
+        
+        return resposta.data;
+
+
+
     }
-
-
 
 })
