@@ -6,7 +6,6 @@ const router = Router();
 router
 .get("/post/:post_id", auth,PostController.showPost)
 .get("/posts/:offset", auth, PostController.showPosts)
-.get("/posts/:offset/:id", auth, PostController.showPostsUser)
 .post("/publicate",auth,PostController.createPost)
 .delete("/posts/:post_id",auth,PostController.deletePost)
 
