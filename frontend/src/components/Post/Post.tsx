@@ -25,7 +25,9 @@ export default function Post(props: Props){
   return (
     <div className={styles.Post__content}>
     <div className={styles.Post__content__user}>
-      <div className={styles.Post__content__user__img}>
+        <div className={styles.Post__content__user__img}
+        onClick={toOtherUser}
+        >
           <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${props.username}`} alt="Foto de perfil" className={styles.Post__content__user__img} />
         </div>
         <div className={styles.Post__content__user__userInfo}>
