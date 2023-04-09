@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Settings from 'pages/Settings';
 import Home from 'pages/Home';
 import ContactList from 'pages/ContactList';
+import ChatList from 'pages/ChatList';
 
 
 export default function AppRouter() {
@@ -25,18 +26,17 @@ export default function AppRouter() {
           <Route path='/' element={<DefaultPage selectedMenu={selectedMenu}/>}>
             <Route path='home' element={<Home selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
             <Route path='profile' element={<Profile selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
-	          <Route path='otherUser/:postUserId' element={<OtherUser selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
-            <Route path='settings' element={<Settings selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
+            <Route path='settings' element={<Settings selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+            <Route path='chatList' element={<ChatList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+            <Route path='contactlist' element={<ContactList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+            <Route path='otherUser/:postUserId' element={<OtherUser selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
+
           </Route>
 
           <Route path='/login' element={<Welcome children={<Login/>}/>} />
           <Route path='/register' element={<Welcome children={<Cadastro />}/>} />
-
-          <Route path='/contactlist' element={<ContactList/>} />
-
           
-
-
+          
         </Routes>   
 
       </Router>
@@ -44,11 +44,3 @@ export default function AppRouter() {
 
   );
 }
-
-/*
-<Route path="/private" element={<RequireAuth><PaginaPrivada /></RequireAuth>} />
-<Route path='/private' element={<RequireAuth> <PaginaPrivada /></RequireAuth>} />
-
-loucura kkkk
-isso aqui são coisas diferentes, não faz sentido kkkk
-*/

@@ -13,7 +13,6 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
-
 export default function Settings(props: Props) {
 
     const apiUser = useApiUser();
@@ -26,8 +25,8 @@ export default function Settings(props: Props) {
 
 
     useEffect(() => {
-        props.setSelectedMenu(3)
-    }, [])
+        props.setSelectedMenu(4)
+    }, [])  
 
     const changeName = async (data:string) => {
 

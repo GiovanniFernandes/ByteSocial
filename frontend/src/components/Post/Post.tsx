@@ -1,8 +1,9 @@
 import { AuthContext } from 'contexts/Auth/AuthContexts';
 import styles from './Post.module.scss' ;
-import {Heart, ChatCircle} from 'phosphor-react'
+import { ChatCircle, Heart } from 'phosphor-react';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 
 
 interface Props {
