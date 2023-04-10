@@ -1,17 +1,20 @@
 const database = require ("../database/models");
 const Users = database.Users;
 const Connections = database.Connections;
+const { Op } = require('sequelize');
 
 class ConnectionController 
 {
 
     static async deleteFriendship(req,res)
     {
-        const{username} = req.params; //Pode fazer com id se o front preferir
-        const id = req.user_id;
-        const usuarioReq = await Users.findOne({where:{username}});
+        const { id } = req.params; //Pode fazer com id se o front preferir
+        const userId = req.user_id;
+        const userReq = await Users.findOne({where:{id}});
 
-        if(!usuarioReq) return res.status(404).json({msg:"Usuário não existe"})
+        if(!userReq) return res.status(404).json({msg:"Usuário não existe"})
+        if(userReq.id==userId) return res.status(400).json({msg:"Ooops, parece que você se equivocou..."}) 
+
 
         const buscaUser = await Connections.findOne({where:{user1_id:id, user2_id:usuarioReq.id}});
 
@@ -35,45 +38,48 @@ class ConnectionController
 
     static async showConnections(req,res)
     {
-
-        const id = req.user_id;
-
-        const pSolicit = await Connections.findAll({where:{user2_id:id}});
-        const pSent = await Connections.findAll({where:{user1_id:id}});
-
-            
-            let connections = []; //array de ids dos usuários que são suas conexões
-
-            for(let i=0; i<pSolicit.length; i++)
-            {
-                for(let j=0; j<pSent.length; j++)
-                {
-                    if(pSolicit[i].user1_id==pSent[j].user2_id && pSolicit[i].user2_id==pSent[j].user1_id )
-                    {
-                        connections.push(pSent[j].user2_id);
-                        pSolicit[i]=0;
-                    }
+        try {
+            const id = req.user_id;
+            let user, friendId;
+            const connections = await Connections.findAll({
+                where:{
+                    [Op.or]:[
+                        {   user1_id: id    },
+                        {   user2_id: id    }
+                    ],
+                    isStatus:true
                 }
-            }
-
-            let conexoes = []
-
-            for(let i=0; i<connections.length; i++)
-            {
-                let usuario = await Users.findOne({where:{id:connections[i]}})
-                
-                conexoes.push(usuario);
-            }
-
-            conexoes.forEach(user=>{
-                if(user.password!=undefined || user.email!=undefined)
-                    {
-                        user.password=undefined;
-                        user.email=undefined;
-                    }
             })
 
-            return res.status(200).json({Connections:conexoes});
+            const contactList = [];
+
+            for(let i=0; i<connections.length; i++) {
+                if (id === connections[i].user1_id) {
+                    user = await Users.findOne({
+                        where: {
+                          id: connections[i].user2_id 
+                        },
+                        attributes: ['id', 'username']
+                    });
+                }
+
+                else if (id === connections[i].user2_id) {
+                    user = await Users.findOne({
+                        where: {
+                          id: connections[i].user1_id 
+                        },
+                        attributes: ['id', 'username']
+                    });
+                }
+                contactList.push(user);
+            }
+
+            return res.status(200).json(contactList);
+            
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+        
     }
 
 }
