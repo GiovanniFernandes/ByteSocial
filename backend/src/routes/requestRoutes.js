@@ -5,9 +5,9 @@ const router = Router();
 
 router
 .get("/requests", auth, RequestController.showRequests)
-.post("/request/:username",auth,RequestController.sendRequest)
-.post("/request/accept/:username", auth, RequestController.acceptRequest)
-.delete("/request/reject/:username",auth,RequestController.rejectRequest)
-.delete("/request/cancel/:username", auth, RequestController.cancelRequest)
+.post("/request/:id",auth,RequestController.sendRequest)
+.post("/request/accept/:id", auth, RequestController.acceptRequest)
+.delete("/request/reject/:id",auth,RequestController.rejectRequest)
+.delete("/request/cancel/:id", auth, RequestController.cancelRequest)
 
 module.exports = router;
