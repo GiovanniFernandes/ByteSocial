@@ -7,10 +7,20 @@ socket.on("connect", () => {
 });
 
 //join room
-socket.emit("join", {userId: 8});
+socket.emit("add-user", {userId: 8, username: "Romário"});
 
 socket.on("new-message", async (data) => {
-    console.log(data)
-    const { receiver_id, sender_id, message } = data;
-    console.log("Nova mensagem recebida:", { receiver_id, sender_id, message });
-  });  
+    console.log("Nova mensagem recebida:", { author: data.author, message: data.savedMessage.message });
+});
+
+function sendMessage(senderId, receiverId, message) {
+  try {
+    socket.emit("send-message", { senderId, receiverId, message });
+  } catch (error) {
+    console.error(`Erro ao enviar mensagem para ${receiverId}: ${error}`);
+  }
+}
+
+setTimeout(() => {
+  sendMessage(8, 7, "Olá, 7!");
+}, 4000);

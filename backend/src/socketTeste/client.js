@@ -8,25 +8,22 @@ socket.on("connect", () => {
 });
 
 //join room
-socket.emit("join", {userId: 8});
+socket.emit("add-user", {userId: 7, username: "Ronaldo"});
 
-async function sendMessage(receiverId, message) {
+socket.on("get-users", async (data) => {
+    console.log(data)
+  });
+
+async function sendMessage(senderId, receiverId, message) {
   try {
-    await socket.emit("send-message", { receiverId, message });
+    await socket.emit("send-message", { senderId, receiverId, message });
   } catch (error) {
     console.error(`Erro ao enviar mensagem para ${receiverId}: ${error}`);
   }
 }
 
-function checkForNewMessages() {
-  socket.on("new-message", (data) => {
-    const { receiver_id, sender_id, message } = data;
-    console.log("Nova mensagem recebida:", { receiver_id, sender_id, message });
-  });
+socket.on("new-message", async (data) => {
+  console.log("Nova mensagem recebida:", { author: data.author, message: data.savedMessage.message });
+});
 
-  setTimeout(checkForNewMessages, 3000); // espera 3 segundos antes de checar novamente
-}
-
-checkForNewMessages();
-
-sendMessage(8, "Olá, TESTE2!");
+sendMessage(7, 8, "Olá, 8!");

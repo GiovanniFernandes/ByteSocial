@@ -3,36 +3,33 @@ const MessageController = require('../controllers/MessageController.js');
 class MessageSocketController {
   constructor(io) {
     this.io = io;
-    //this.messageController = new MessageController();
-    this.connectedUsers = {};
-    this.usersRooms = {};
+    this.connectedUsers = [];
     this.handleConnection();
   }
-
+  
   handleConnection() {
     this.io.on('connection', (socket) => {
       console.log(`Socket connected: ${socket.id}`);
       this.handleDisconnect(socket);
 
-      socket.on('join', ({ userId }) => {
-        this.connectedUsers[socket.id] = userId;
-        if (!this.usersRooms[userId]) {
-          this.usersRooms[userId] = []; 
-        }
-        this.usersRooms[userId].push(socket.id);
-        console.log(`User ${userId} joined room ${socket.id}`);
+      socket.on('add-user', ({ userId, username }) => {
+        !this.connectedUsers.some((user) => user.userId === userId) &&
+          this.connectedUsers.push({ userId, socketID: socket.id });
+        socket.data.username = username;
+        this.io.emit('get-users', this.connectedUsers);
       });
-
-      socket.on('send-message', async ({ receiverId, message }) => {
-        const senderId = this.connectedUsers[socket.id];
+      
+      socket.on('send-message', async ({ senderId, receiverId, message }) => {
         try {
           const savedMessage = await MessageController.enviarMensagem(receiverId, senderId, message);
-          const receiverSockets = this.usersRooms[receiverId];
+          //armazena o id do socket do usuário que recebeu a mensagem
+          const receiverSockets = this.connectedUsers.filter((user) => user.userId === receiverId).map((user) => user.socketID);
           console.log(receiverSockets);
           if (receiverSockets) {
-            console.log("AQUI!!!")
-            receiverSockets.forEach((receiverSocket) => {
-              this.io.to(receiverSocket).emit('new-message', savedMessage);
+            socket.to(receiverSockets).emit('new-message', {
+              authorId: senderId,
+              author: socket.data.username,
+              savedMessage
             });
           }
         } catch (error) {
@@ -45,46 +42,11 @@ class MessageSocketController {
   handleDisconnect(socket) {
     socket.on('disconnect', () => {
       console.log(`Socket disconnected: ${socket.id}`);
-      const userId = this.connectedUsers[socket.id];
-      if (userId) {
-        this.connectedUsers[socket.id] = null;
-        const userRooms = this.usersRooms[userId];
-        if (userRooms) {
-          this.usersRooms[userId] = userRooms.filter((roomId) => roomId !== socket.id);
-          if (this.usersRooms[userId].length === 0) {
-            this.usersRooms[userId] = null;
-          }
-        }
-      }
+
+      // atualiza a lista sem o usuário que se desconectou
+      this.connectedUsers = this.connectedUsers.filter((user) => user.socketID !== socket.id)
     });
   }
 }
 
 module.exports = MessageSocketController;
-
-
-
-
-// module.exports = function(io) {
-//     io.on('connection', (socket) => {
-//       console.log(`User ${socket.id} connected`);
-      
-//       // Escuta o evento de envio de mensagem privada
-//       socket.on('private message', async ({ sender, receiver, message }) => {
-//         const newMessage = new Messages({
-//           sender,
-//           receiver,
-//           message,
-//           timestamp: new Date(),
-//         });
-  
-//         await newMessage.save();
-  
-//         // Emite um evento para o receptor da mensagem
-//         io.to(receiver).emit('private message', newMessage);
-  
-//         // Emite um evento para o remetente da mensagem
-//         io.to(sender).emit('private message', newMessage);
-//       });
-//     });
-// }
