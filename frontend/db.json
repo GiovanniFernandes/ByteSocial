@@ -1,0 +1,49 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+
+  "profile": {
+    "name": "typicode"
+  },
+
+  "contact" : [
+    {
+        "id": "1",
+        "username": "Terencio"
+      },
+      {
+        "id": "2",
+        "username": "Isabele"
+      },
+      {
+        "id": "3",
+        "username": "Bianca"
+      },
+      {
+        "id": "4",
+        "username": "Terencio"
+      },
+      {
+        "id": "5",
+        "username": "Isabele"
+      },
+      {
+        "id": "6",
+        "username": "Bianca"
+      }
+  ]
+
+}
