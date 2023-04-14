@@ -8,31 +8,52 @@ class ConnectionController
 
     static async deleteFriendship(req,res)
     {
-        const { id } = req.params; //Pode fazer com id se o front preferir
+        const { id } = req.params;
         const userId = req.user_id;
         const userReq = await Users.findOne({where:{id}});
 
         if(!userReq) return res.status(404).json({msg:"Usuário não existe"})
         if(userReq.id==userId) return res.status(400).json({msg:"Ooops, parece que você se equivocou..."}) 
-
-
-        const buscaUser = await Connections.findOne({where:{user1_id:id, user2_id:usuarioReq.id}});
-
-        const buscaEmUser = await Connections.findOne({where:{user1_id:usuarioReq.id, user2_id:id}});
-
-        if(!buscaUser&&!buscaEmUser) return res.status(400).json({msg:"Você não tem vínculo algum com esse usuário"});
-
-            if(!buscaEmUser&&buscaUser){
-                const cancelledReq = await Connections.destroy({where:{user1_id:id, user2_id:usuarioReq.id}});
-                return res.status(202).json({msg:"Solicitação Cancelada!"});
+        
+        const connection1 = await Connections.findOne({
+            where: {
+                user1_id: id,
+                user2_id: userId,
+                isStatus: true
             }
-            
-            if(buscaUser&&buscaEmUser)
-            {
-                const finishFriendship1 = await Connections.destroy({where:{user1_id:id, user2_id:usuarioReq.id}});
-                const finishFriendship2 = await Connections.destroy({where:{user1_id:usuarioReq.id, user2_id:id}});
-                return res.status(202).json({msg:"Usuário deletado da sua lista de amigos!"});
+        })
+
+        if(connection1){
+            await Connections.destroy({
+                where: {
+                    user1_id: id,
+                    user2_id: userId
+                }
+            })
+
+            return res.status(202).json({msg: "Usuário deletado da sua lista de amigos!"});
+        }
+
+        const connection2 = await Connections.findOne({
+            where: {
+                user1_id: userId,
+                user2_id: id,
+                isStatus: true
             }
+        })
+       
+        if(connection2){
+            await Connections.destroy({
+                where: {
+                    user1_id: userId,
+                    user2_id: id
+                }
+            })
+
+            return res.status(202).json({msg: "Usuário deletado da sua lista de amigos!"});
+        }
+
+        return res.status(400).json({msg: "Você não tem vínculo algum com esse usuário"});
 
     }
 
@@ -40,7 +61,7 @@ class ConnectionController
     {
         try {
             const id = req.user_id;
-            let user, friendId;
+            let user;
             const connections = await Connections.findAll({
                 where:{
                     [Op.or]:[
