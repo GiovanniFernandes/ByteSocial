@@ -4,7 +4,7 @@ const auth = require('../middlewares/auth')
 const router = Router();
 
 router
-.get('/user/:usernameParam',auth,UserController.pegaUsuarioEspecifico)
+.get('/user/:id',auth,UserController.pegaUsuarioEspecifico)
 .get('/users', auth, UserController.pegaTodosUsuarios)
 .get('/profile/:id/:offset', auth, UserController.pegaProfile)
 

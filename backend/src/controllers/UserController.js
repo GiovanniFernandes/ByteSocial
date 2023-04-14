@@ -2,9 +2,11 @@ const database = require ("../database/models");
 const Users = database.Users;
 const Posts = database.Posts;
 const Connections = database.Connections;
+const Messages = database.Messages;
+const Likes = database.Likes;
 const userService = require("../services/userService.js");
 const postService = require("../services/postService");
-
+const { Op } = require("sequelize");
 
 class UserController {
 
@@ -41,24 +43,29 @@ class UserController {
 
     static async pegaUsuarioEspecifico (req,res){
 
-        const {usernameParam} = req.params;
+        const { id } = req.params;
         
         try{
-            const usuario = await Users.findOne({where:{username:usernameParam}})
-            const {id,username,createdAt} = usuario;
+            const user = await Users.findOne({where:{id}})
 
-            const posts = await Posts.findAll({where:{user_id:id}})
-            if(posts.length==0) return res.status(200).json({username,
-                "Criado em ": createdAt,
-                qtdPosts:posts.length,
-                posts:"Usuário não possui posts",
+            const posts = await Posts.findAll({
+                order: [
+                    ['createdAt', 'DESC']
+                  ],
+                  where:{user_id:user.id}
+                })
+
+            if(posts.length==0) return res.status(200).json({username: user.username,
+                "Criado em ": user.createdAt,
+                qtdPosts: posts.length,
+                posts: "Usuário não possui posts",
                 });
 
-            if(usuario) return res.status(200).json
+            if(user) return res.status(200).json
             ({
-                username,
-                "Criado em ": createdAt,
-                qtdPosts:posts.length,
+                username: user.username,
+                "Criado em ": user.createdAt,
+                qtdPosts: posts.length,
                 posts,
             });
 
@@ -71,7 +78,51 @@ class UserController {
     static async pegaProfile(req,res){
         try {
 
+            const userId = req.user_id;
             const { offset, id } = req.params;
+            let status;
+            
+            /*
+            0 - Não é amigo
+            1 - Enviei Solicitação
+            2 - Recebi Solicitação
+            3 - Amigos
+            */
+
+            const userReq = await Users.findOne({where:{id}});
+            if(!userReq) return res.status(404).json({msg:"Usuário não existe"})
+            if(userReq.id==userId) return res.status(400).json({msg:"Ooops, parece que você se equivocou..."}) 
+
+
+            const connection1 = await Connections.findOne({
+                where: {
+                    user1_id: userId,
+                    user2_id: id
+                }
+            })
+
+            const connection2 = await Connections.findOne({
+                where: {
+                    user1_id: id,
+                    user2_id: userId
+                }
+            })
+
+            if(!connection1 && !connection2) {
+                status = 0;
+            }
+
+            if(connection1 && !connection1.isStatus) {
+                status = 1;
+            }
+
+            if(connection2 && !connection2.isStatus) {
+                status = 2;
+            }
+
+            if(connection1 && connection1.isStatus || connection2 && connection2.isStatus) {
+                status = 3;
+            }
 
             const { count, rows } = await Posts.findAndCountAll({
                 where: {user_id: Number(id)},
@@ -79,44 +130,40 @@ class UserController {
                 order:[['createdAt', 'DESC']],
                 offset: Number(offset),
                 limit:8
-              });
-      
-
+            });
+            
             const normalizationPosts = postService.normalizationPosts(rows);
             
             const { username } = await Users.findOne({ where: { id } });
             
-            const pSolicit = await Connections.findAll({where:{user2_id:id}});
-            const pSent = await Connections.findAll({where:{user1_id:id}});
-
-            let requests = [];
-            let connections = [];
-
-            for(let i=0; i<pSolicit.length; i++)
-            {
-                for(let j=0; j<pSent.length; j++)
-                {
-                    if(pSolicit[i].user1_id==pSent[j].user2_id && pSolicit[i].user2_id==pSent[j].user1_id )
-                    {
-                        connections.push(pSent[j].user2_id);
-                        pSolicit[i]=0;
-                    }
+            const connections = await Connections.count({
+                where:{
+                    [Op.or]:[
+                        {   user1_id: id    },
+                        {   user2_id: id    }
+                    ],
+                    isStatus: true
                 }
-            }
-            for(let i=0; i<pSolicit.length; i++)
-            {
-                if(pSolicit[i]!=0)
-                {
-                    requests.push(pSolicit[i])
+            })
+
+            const requests = await Connections.count({
+                where:{
+                    [Op.or]:[
+                        {   user1_id: id    },
+                        {   user2_id: id    }
+                    ],
+                    isStatus: false
                 }
-            }
+            })
+
             return res.status(200).json({
-                user_id:id,
+                user_id: id,
                 username,
-                count,  
-                list:normalizationPosts,
-                connections:connections.length,
-                requests:requests.length
+                count,
+                list: normalizationPosts,
+                connections,
+                requests,
+                statusFriendship: status
             });
 
         } catch (error) {
@@ -127,14 +174,9 @@ class UserController {
     static async pegaTodosUsuarios (req,res){
         
         try{
-            const usuarios = await Users.findAll();
-            usuarios.forEach(user=>
-                {
-                    if(user.password!=undefined)
-                    {
-                        user.password=undefined;
-                    }
-                })
+            const usuarios = await Users.findAll({
+                attributes: ['id', 'username', 'email', 'createdAt', 'updatedAt']
+            });
             return res.status(200).json(usuarios);
 
         } catch (errors){
@@ -223,6 +265,33 @@ class UserController {
 
         const id = req.user_id ;
         try{
+            await Connections.destroy({
+                where: {
+                    [Op.or]:[
+                        {   user1_id: id    },
+                        {   user2_id: id    }
+                    ]
+                }
+            })
+            await Posts.destroy({
+                where: {
+                    user_id: id
+                }
+            })
+            await Messages.destroy({
+                where: {
+                    [Op.or]:[
+                        {   sender_id: id    },
+                        {   receiver_id: id    }
+                    ]
+                }
+            })
+            await Likes.destroy({
+                where: {
+                    user_id: id
+                }
+            })
+
             await Users.destroy({where:{id}});
             return res.status(200).json({msg:`id ${id} removido`});
 
