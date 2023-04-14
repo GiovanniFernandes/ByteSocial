@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Posts.init({
-    content: DataTypes.STRING
+    content: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Posts',

@@ -16,7 +16,7 @@ class PostService {
                 postUserId: e.user_id.toString(),
                 postUsername: e.User.username,
                 postContent: e.content,
-                postDate: postDate.replace(".", " ").replace(",", " ás ")
+                postDate: postDate.replace(".", "").replace(",", " ás")
             }
         
         });
