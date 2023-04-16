@@ -3,8 +3,7 @@ const Users = database.Users;
 const Connections = database.Connections;
 
 class ConnectionController 
-{
-
+{   //Atualizar função deleteFriendship
     static async deleteFriendship(req,res)
     {
         const{username} = req.params; //Pode fazer com id se o front preferir
@@ -75,6 +74,25 @@ class ConnectionController
 
             return res.status(200).json({Connections:conexoes});
     }
+
+    static async friendshipVerification(senderId, receiverId){
+       /* FUNÇÃO ATUALIZADA
+       const buscaUser = await Connections.findOne({where:{user1_id:senderId, user2_id:receiverId}});
+
+        const buscaEmUser = await Connections.findOne({where:{user1_id:receiverId, user2_id:senderId}});
+        console.log(buscaUser);
+        console.log(buscaEmUser);
+        if (buscaUser){return buscaUser};
+        if (buscaEmUser){return buscaEmUser}
+        else {throw new Error("Você não tem vínculo algum com esse usuário");}
+      }*/
+
+      const buscaUser = await Connections.findOne({where:{user1_id:senderId, user2_id:receiverId}});
+
+        const buscaEmUser = await Connections.findOne({where:{user1_id:receiverId, user2_id:senderId}});
+        if (buscaUser && buscaEmUser){return 0}
+        throw new Error("Você não tem vínculo algum com esse usuário");
+      }
 
 }
 
