@@ -5,12 +5,14 @@ const socket = io.connect("http://localhost:3021");
 socket.on("connect", () => {
   console.log("Conectado com sucesso!");
 });
+socket.on("error", (data) => {
+  console.log(data);
+});
 
-//join room
-socket.emit("add-user", {userId: 8, username: "Romário"});
+socket.emit("add-user", {userId: 11});
 
 socket.on("new-message", async (data) => {
-    console.log("Nova mensagem recebida:", { author: data.author, message: data.savedMessage.message });
+    console.log("Nova mensagem recebida:", { message: data.savedMessage.message });
 });
 
 function sendMessage(senderId, receiverId, message) {
@@ -22,5 +24,5 @@ function sendMessage(senderId, receiverId, message) {
 }
 
 setTimeout(() => {
-  sendMessage(8, 7, "Olá, 7!");
+  sendMessage(11, 12, "Olá, 12!");
 }, 4000);

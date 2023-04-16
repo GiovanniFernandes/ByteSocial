@@ -6,13 +6,11 @@ const socket = io.connect("http://localhost:3021");
 socket.on("connect", () => {
   console.log("Conectado com sucesso!");
 });
+socket.on("error", (data) => {
+  console.log(data);
+});
 
-//join room
-socket.emit("add-user", {userId: 7, username: "Ronaldo"});
-
-socket.on("get-users", async (data) => {
-    console.log(data)
-  });
+socket.emit("add-user", {userId: 12});
 
 async function sendMessage(senderId, receiverId, message) {
   try {
@@ -23,7 +21,10 @@ async function sendMessage(senderId, receiverId, message) {
 }
 
 socket.on("new-message", async (data) => {
-  console.log("Nova mensagem recebida:", { author: data.author, message: data.savedMessage.message });
+  console.log("Nova mensagem recebida:", { message: data.savedMessage.message });
 });
 
-sendMessage(7, 8, "Olá, 8!");
+setTimeout(() => {
+  sendMessage(12, 11, "Olá, 11!");
+}, 4000);
+
