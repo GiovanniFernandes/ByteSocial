@@ -80,8 +80,6 @@ class ConnectionController
        const buscaUser = await Connections.findOne({where:{user1_id:senderId, user2_id:receiverId}});
 
         const buscaEmUser = await Connections.findOne({where:{user1_id:receiverId, user2_id:senderId}});
-        console.log(buscaUser);
-        console.log(buscaEmUser);
         if (buscaUser){return buscaUser};
         if (buscaEmUser){return buscaEmUser}
         else {throw new Error("Você não tem vínculo algum com esse usuário");}
