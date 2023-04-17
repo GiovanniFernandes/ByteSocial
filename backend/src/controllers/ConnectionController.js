@@ -4,7 +4,7 @@ const Connections = database.Connections;
 const { Op } = require('sequelize');
 
 class ConnectionController 
-{   //Atualizar função deleteFriendship
+{  
     static async deleteFriendship(req,res)
     {
         const { id } = req.params;
