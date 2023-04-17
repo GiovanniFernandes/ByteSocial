@@ -12,6 +12,8 @@
     "save": "^2.5.0",
     "sequelize": "^6.21.4",
     "sequelize-cli": "^6.4.1",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1",
     "sqlite3": "^5.1.6"
   },
   "name": "backend",

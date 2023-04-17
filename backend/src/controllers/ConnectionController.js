@@ -4,8 +4,7 @@ const Connections = database.Connections;
 const { Op } = require('sequelize');
 
 class ConnectionController 
-{
-
+{   //Atualizar função deleteFriendship
     static async deleteFriendship(req,res)
     {
         const { id } = req.params;
@@ -102,6 +101,23 @@ class ConnectionController
         }
         
     }
+
+    static async friendshipVerification(senderId, receiverId){
+       /* FUNÇÃO ATUALIZADA
+       const buscaUser = await Connections.findOne({where:{user1_id:senderId, user2_id:receiverId}});
+
+        const buscaEmUser = await Connections.findOne({where:{user1_id:receiverId, user2_id:senderId}});
+        if (buscaUser){return buscaUser};
+        if (buscaEmUser){return buscaEmUser}
+        else {throw new Error("Você não tem vínculo algum com esse usuário");}
+      }*/
+
+      const buscaUser = await Connections.findOne({where:{user1_id:senderId, user2_id:receiverId}});
+
+        const buscaEmUser = await Connections.findOne({where:{user1_id:receiverId, user2_id:senderId}});
+        if (buscaUser && buscaEmUser){return 0}
+        throw new Error("Você não tem vínculo algum com esse usuário");
+      }
 
 }
 

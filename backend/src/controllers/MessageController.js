@@ -5,26 +5,48 @@ const jwt = require ('jsonwebtoken');
 const { Sequelize } = require('sequelize');
 
 class MessageController {
-  static async enviarMensagem(req, res) {
+  // static async enviarMensagem(req, res) {
+  //   try {
+  //     const { receiver_id } = req.params;
+  //     const { sender_id, message } = req.body;
+  //     const timestamp = new Date();
+
+  //     if (!message) {
+  //       return res.status(400).json({ erro: 'Escreva uma mensagem antes de enviar' });
+  //     }
+  //     if (!sender_id || !receiver_id) {
+  //       return res
+  //         .status(400)
+  //         .json({ error: "Os campos sender_id e receiver_id são obrigatórios" });
+  //     }
+
+  //     const mensagem = await Messages.create({ sender_id, receiver_id, message, timestamp });
+  //     return res.status(201).json(mensagem);
+  //   } catch (error) {
+  //     return res.status(500).json({ msg: error.message });
+  //   } 
+  // }
+
+  static async enviarMensagem(receiver_id, sender_id, message) {
     try {
-      const { receiver_id } = req.params;
-      const { sender_id, message } = req.body;
       const timestamp = new Date();
 
       if (!message) {
-        return res.status(400).json({ erro: 'Escreva uma mensagem antes de enviar' });
+        throw new Error("Escreva uma mensagem antes de enviar");
       }
       if (!sender_id || !receiver_id) {
-        return res
-          .status(400)
-          .json({ error: "Os campos sender_id e receiver_id são obrigatórios" });
+        throw new Error("Os campos sender_id e receiver_id são obrigatórios");
       }
 
       const mensagem = await Messages.create({ sender_id, receiver_id, message, timestamp });
-      return res.status(201).json(mensagem);
+      return mensagem;
     } catch (error) {
-      return res.status(500).json({ msg: error.message });
-    } 
+      // Captura da resposta de erro do banco de dados
+      if (error.original) {
+        console.log(`Erro do banco de dados: ${error.original.message}`);
+      }
+      throw error;
+    }
   }
 
    static async getConversations(req, res){
