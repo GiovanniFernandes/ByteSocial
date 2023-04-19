@@ -6,6 +6,7 @@ import { AuthContext } from 'contexts/Auth/AuthContexts'
 import NewPost from 'components/NewPost';
 import { useApiPost } from 'hooks/useApiPost';
 import { tPost, aboutPosts } from 'types/Post';
+import { NavLink } from 'react-router-dom';
 interface Props {
   selectedMenu: number,
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
@@ -56,7 +57,7 @@ export default function Profile(props: Props) {
         </div>
         <div className={styles.profile__user__infos}>
           <h2 className={styles.profile__user__name}>{username}</h2>
-          <a href="#profile" className={styles.profile__user__edit}>Editar perfil</a>
+          <NavLink to="/settings" className={styles.profile__user__edit}>Editar perfil</NavLink>
           <ul className={styles.profile__user__interactions}>
             {interactions.map((item) => (
               <li key={`interactions${item.title}`}className={styles.profile__user__interaction}>
