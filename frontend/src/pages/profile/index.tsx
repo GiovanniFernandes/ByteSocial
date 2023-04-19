@@ -12,6 +12,20 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
+/*
+manipulação da Api ficam em Hooks
+
+pages:
+- Other Perfil e Home tem muitas informações importantes para completar aqui
+- Message tem uma dica de como mudar de "suas publicações " para "Solicitação de conexões"
+
+*/
+
+
+
+
+
+
 export default function Profile(props: Props) {
 
   const auth = useContext(AuthContext); 
