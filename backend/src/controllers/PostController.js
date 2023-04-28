@@ -55,13 +55,13 @@ class PostController
     static async showPosts(req, res)
     {
       try {
-        const { offset } = req.params;
+        const { offset, limit } = req.params;
 
         const {count, rows} = await Posts.findAndCountAll ({
           include: "User",
           order:[['createdAt', 'DESC']],
           offset: Number(offset),
-          limit: 8
+          limit: Number(limit)
         });
 
         const normalizationPosts = await postService.normalizationPosts(rows);  
