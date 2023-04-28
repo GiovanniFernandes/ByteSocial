@@ -5,6 +5,8 @@ import NewPost from "components/NewPost";
 import { useApiPost } from "hooks/useApiPost";
 import { tPost, aboutPosts } from "types/Post";
 import {useSearchParams} from 'react-router-dom'
+import Pagination from "components/Pagination";
+import { off } from "process";
 
 interface Props {
   selectedMenu: number,
@@ -17,8 +19,10 @@ export default function Home(props: Props) {
   const [selectedSection, setSelectedSection] = useState<number>(0);
   const [changeListPost, setChangeListPost] = useState<boolean>(false);
   const [listPost, setListPost] = useState<tPost[]>([]);
-  const [count, setCount] = useState<number>(1)
-  const [searchParams, setSearchParams] = useSearchParams({});
+  const [total, setTotal] = useState<number>(1);
+  const [offset, setOffset] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(5);
+
 
   const apiPost = useApiPost();
 
@@ -29,19 +33,12 @@ export default function Home(props: Props) {
   useEffect(() => {
     setChangeListPost(false);
     effectToPosts();
-  }, [changeListPost])
-//   const handlePaginationChange = (_, value) => {
-//     // cria uma cópia do objeto searchParams
-//     const newSearchParams = new URLSearchParams(searchParams);
-//     // adiciona o novo valor de página à cópia
-//     newSearchParams.set("page", value);
-//     // atualiza o estado com a cópia
-//     setSearchParams(newSearchParams);
-// };
-  
+  }, [changeListPost, offset])
+
   const effectToPosts = async () => {
-    const data: aboutPosts = await apiPost.showPosts(0);
-    setCount(data.count);
+    console.log("offset= ", offset)
+    const data: aboutPosts = await apiPost.showPosts(offset, limit);
+    setTotal(data.count);
     setListPost(data.list);
   }
 
@@ -71,7 +68,15 @@ export default function Home(props: Props) {
         
       </div>
       <div>
-      {/* <Pagination
+        <Pagination limit={limit} total ={total} offset={offset} setOffset={setOffset}/>
+      </div>
+    </div>
+  ) 
+}
+
+/*   const [searchParams, setSearchParams] = useSearchParams({});
+
+<Pagination
                     className='mb-16'
                     color='primary'
                     size='large'
@@ -80,8 +85,14 @@ export default function Home(props: Props) {
                     page={parseInt(page)}
                     count={Math.ceil(totalCount/6)} //Math.ceil(apartments.length / 6)
                     onChange={handlePaginationChange}
-                /> */}
-      </div>
-    </div>
-  ) 
-}
+                /> */
+
+                //   const handlePaginationChange = (_, value) => {
+//     // cria uma cópia do objeto searchParams
+//     const newSearchParams = new URLSearchParams(searchParams);
+//     // adiciona o novo valor de página à cópia
+//     newSearchParams.set("page", value);
+//     // atualiza o estado com a cópia
+//     setSearchParams(newSearchParams);
+// };
+  

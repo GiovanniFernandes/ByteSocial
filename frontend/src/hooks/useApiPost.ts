@@ -21,14 +21,14 @@ export const useApiPost = () => ({
         return resposta.data;
     },
 
-    showPosts: async (offset:number) => {
+    showPosts: async (offset:number, limit:number) => {
 
         const settingGeneralAxios = settingAxios();
 
         if (!settingGeneralAxios)
             return false
         
-        const resposta = await api.get(`/posts/${offset.toString()}`,
+        const resposta = await api.get(`/posts/${offset.toString()}/${limit.toString()}`,
         settingGeneralAxios )
 
         return resposta.data;

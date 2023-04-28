@@ -34,7 +34,7 @@ export default function Profile(props: Props) {
   }, [changeListPost])
   
   const effectToPosts = async () => {
-    const data: aboutPosts = await apiPost.showPosts(0);
+    const data: aboutPosts = await apiPost.showPosts(0,6);
     setCount(data.count);
     setListPost(data.list);
   }
