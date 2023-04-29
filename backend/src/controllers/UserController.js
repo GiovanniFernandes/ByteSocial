@@ -41,39 +41,63 @@ class UserController {
         }
     }
 
-    static async pegaUsuarioEspecifico (req,res){
+    static async getMyProfile (req,res){
 
-        const { id } = req.params;
+        const id  = req.user_id;
+        const { offset, limit } = req.params;
         
-        try{
-            const user = await Users.findOne({where:{id}})
+        try {
+            const user = await Users.findOne({ where: {id} })
 
-            const posts = await Posts.findAll({
-                order: [
-                    ['createdAt', 'DESC']
-                  ],
-                  where:{user_id:user.id}
-                })
-
-            if(posts.length==0) return res.status(200).json({username: user.username,
-                "Criado em ": user.createdAt,
-                qtdPosts: posts.length,
-                posts: "Usuário não possui posts",
-                });
-
-            if(user) return res.status(200).json
-            ({
-                username: user.username,
-                "Criado em ": user.createdAt,
-                qtdPosts: posts.length,
-                posts,
+            const { count, rows } = await Posts.findAndCountAll({
+                include: "User",
+                order:[['createdAt', 'DESC']],
+                offset: Number(offset),
+                limit: Number(limit),
+                where: {
+                    user_id: Number(id),
+                }
             });
 
-            return res.status(404).json({msg:"Usuario não encontrado"}); 
+            const countConnections = await Connections.count({
+                where:{
+                    [Op.or]:[
+                        {   user1_id: id    },
+                        {   user2_id: id    }
+                    ],
+                    isStatus: true
+                }
+            })
+
+            const countRequests = await Connections.count({
+                where:{
+                    [Op.or]:[
+                        {   user1_id: id    },
+                        {   user2_id: id    }
+                    ],
+                    isStatus: false
+                }
+            })
+
+            const normalizationPosts = await postService.normalizationPosts(rows); 
+            
+            return res.status(200).json({
+                user_id:user.id,
+                username: user.username,
+                count, // qtd posts
+                list: normalizationPosts,
+                connections: countConnections,
+                requests: countRequests
+            });
+
+
+            //return res.status(404).json({msg:"Usuario não encontrado"}); 
         } catch (error){
             return res.status(500).json(error.message)
         }
     }
+
+    
 
     static async pegaProfile(req,res){
         try {
@@ -303,3 +327,83 @@ class UserController {
 }
 
 module.exports = UserController;
+
+
+
+
+
+
+
+
+            /*
+
+            .get('/myprofile/:offset/:limit', auth, UserController.getMyProfile)
+
+
+
+
+
+
+            const posts = await Posts.findAll({
+                order: [
+                    ['createdAt', 'DESC']
+                  ],
+                  where:{user_id:id}
+                })
+            */
+            
+            /*
+            if (posts.length == 0) return res.status(200).json({
+                username: user.username,
+                "Criado em ": user.createdAt,
+                qtdPosts: posts.length,
+                posts: "Usuário não possui posts",
+                });
+            */
+            /*
+            if(user) return res.status(200).json
+            ({
+                username: user.username,
+                "Criado em ": user.createdAt,
+                qtdPosts: posts.length,
+                posts,
+            });
+            */
+
+            /*
+
+            static async getMyProfile (req,res){
+
+        console.log("Chegoooooou")
+        const { id } = req.id;
+        const { offset, limit } = req.params;
+        
+        try {
+            
+            const user = await Users.findOne({where:{id}})
+            
+            const {count, rows} = await Posts.findAndCountAll ({
+                order:[['createdAt', 'DESC']],
+                offset: Number(offset),
+                limit: Number(limit),
+                where:{user_id:id}
+            });
+
+            
+            return res.status(200).json ({
+                username: user.username,
+                count, // qtd posts
+                list: rows,
+                amountConnection: 10,
+                amountRequest: 5
+            });
+
+
+            //return res.status(404).json({msg:"Usuario não encontrado"}); 
+        } catch (error){
+            return res.status(500).json(error.message)
+        }
+    }
+
+
+            */
