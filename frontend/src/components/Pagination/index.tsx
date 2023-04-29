@@ -1,10 +1,6 @@
 
-
 const MAX_ITENS = 5; // Quantidade de buttons de paginação
 const MAX_LEFT = (MAX_ITENS - 1) / 2;
-
-
-
 
 interface Props {
   limit: number,
@@ -14,21 +10,12 @@ interface Props {
 }
 
 
-
-
 export default function Pagination({limit, total, offset, setOffset}: Props) {
 
   const currentPage = offset ? (offset / limit) + 1 : 1;
   const amountPages = Math.ceil(total / limit); 
 
   const firstPage = Math.max(currentPage - MAX_LEFT, 1);
-
-
-  const changePage = () => {
-    console.log("ok")
-  
-  }
-
 
     return (
       <div>

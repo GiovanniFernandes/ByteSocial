@@ -4,15 +4,14 @@ import Post from "components/Post/Post";
 import NewPost from "components/NewPost";
 import { useApiPost } from "hooks/useApiPost";
 import { tPost, aboutPosts } from "types/Post";
-import {useSearchParams} from 'react-router-dom'
 import Pagination from "components/Pagination";
-import { off } from "process";
 
 interface Props {
   selectedMenu: number,
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
+const LIMIT = 5;
 
 export default function Home(props: Props) {
 
@@ -21,7 +20,6 @@ export default function Home(props: Props) {
   const [listPost, setListPost] = useState<tPost[]>([]);
   const [total, setTotal] = useState<number>(1);
   const [offset, setOffset] = useState<number>(5);
-  const [limit, setLimit] = useState<number>(5);
 
 
   const apiPost = useApiPost();
@@ -37,7 +35,7 @@ export default function Home(props: Props) {
 
   const effectToPosts = async () => {
     console.log("offset= ", offset)
-    const data: aboutPosts = await apiPost.showPosts(offset, limit);
+    const data: aboutPosts = await apiPost.showPosts(offset, LIMIT);
     setTotal(data.count);
     setListPost(data.list);
   }
@@ -68,31 +66,8 @@ export default function Home(props: Props) {
         
       </div>
       <div>
-        <Pagination limit={limit} total ={total} offset={offset} setOffset={setOffset}/>
+        <Pagination limit={LIMIT} total ={total} offset={offset} setOffset={setOffset}/>
       </div>
     </div>
   ) 
 }
-
-/*   const [searchParams, setSearchParams] = useSearchParams({});
-
-<Pagination
-                    className='mb-16'
-                    color='primary'
-                    size='large'
-                    shape='rounded'
-                    defaultPage={1}
-                    page={parseInt(page)}
-                    count={Math.ceil(totalCount/6)} //Math.ceil(apartments.length / 6)
-                    onChange={handlePaginationChange}
-                /> */
-
-                //   const handlePaginationChange = (_, value) => {
-//     // cria uma cópia do objeto searchParams
-//     const newSearchParams = new URLSearchParams(searchParams);
-//     // adiciona o novo valor de página à cópia
-//     newSearchParams.set("page", value);
-//     // atualiza o estado com a cópia
-//     setSearchParams(newSearchParams);
-// };
-  
