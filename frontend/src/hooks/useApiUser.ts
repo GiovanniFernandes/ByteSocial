@@ -87,6 +87,19 @@ export const useApiUser = () => ({
 
 
 
-    }
+    },
 
+    getMyProfile: async (offset: number, limit:number) => {
+        
+        const settingGeneralAxios = settingAxios();
+
+        if (!settingGeneralAxios)
+            return false
+        
+        const resposta = await api.get(`/myprofile/${offset.toString()}/${limit.toString()}`,
+        settingGeneralAxios)
+        
+        
+        return resposta.data;
+    }
 })

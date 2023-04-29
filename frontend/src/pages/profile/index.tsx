@@ -4,22 +4,43 @@ import interactions from 'data/interactions.json'
 import { useContext } from 'react';
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 import NewPost from 'components/NewPost';
-import { useApiPost } from 'hooks/useApiPost';
-import { tPost, aboutPosts } from 'types/Post';
+import { tPost } from 'types/Post';
 import { NavLink } from 'react-router-dom';
+import { useApiUser } from 'hooks/useApiUser';
+
+import { _userProfile } from '../../types/userProfile'
+import Post from 'components/Post/Post';
+import RequestConnection from 'components/RequestConnection';
+
 interface Props {
   selectedMenu: number,
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
-/*
-manipulação da Api ficam em Hooks
+const LIMIT = 2;
 
-pages:
-- Other Perfil e Home tem muitas informações importantes para completar aqui
-- Message tem uma dica de como mudar de "suas publicações " para "Solicitação de conexões"
 
-*/
+const listResquest = [
+
+  {
+    user_id: 10,
+    email: "xuxa@soparabaixinhos.com",
+    username: "xuxa"
+  },
+  {
+    user_id: 11,
+    email: "Sasha@soparabaixinhos.com",
+    username: "Sasha"
+  },
+  {
+    user_id: 12,
+    email: "zoro@reidoinferno.com",
+    username: "zoro"
+  }
+
+]
+
+
 
 
 
@@ -29,13 +50,26 @@ pages:
 export default function Profile(props: Props) {
 
   const auth = useContext(AuthContext); 
-  const [username, setUsername] = useState<string | null>('')
-  const [selectedSection, setSelectedSection] = useState<number>(0)
-  const [changeListPost, setChangeListPost] = useState<boolean>(false);
-  const [ , setListPost] = useState<tPost[]>([]);
-  const [ , setCount] = useState<number>(1)
 
-  const apiPost = useApiPost();
+  const [username, setUsername] = useState<string | null>('')
+
+  const [selectedSection, setSelectedSection] = useState<number>(0)
+
+
+
+  const [changeListPost, setChangeListPost] = useState<boolean>(false);
+
+  const [offset, setOffset] = useState<number>(0)
+
+
+  const [listPost, setListPost] = useState<tPost[]>([]);
+  
+  
+  const [count, setCount] = useState<number>(1)
+  
+
+  const apiUser = useApiUser();
+
 
 
   useEffect(() => {
@@ -49,7 +83,9 @@ export default function Profile(props: Props) {
   }, [changeListPost])
   
   const effectToPosts = async () => {
-    const data: aboutPosts = await apiPost.showPosts(0);
+
+    const data:_userProfile = await apiUser.getMyProfile(offset, LIMIT)
+  
     setCount(data.count);
     setListPost(data.list);
   }
@@ -60,6 +96,10 @@ export default function Profile(props: Props) {
       else 
         setUsername("")
   }
+
+
+
+
 
   return (
 
@@ -95,7 +135,61 @@ export default function Profile(props: Props) {
           <h3>Solicitações de conexão</h3>
         </div>
       </div>
+      {
+        (selectedSection === 0) ? 
+          
+        <div className={styles.Home__FeedPosts}>
+        {listPost.map(e => <Post
+          username={e.postUsername}
+          conteudo={e.postContent}
+          curtidas={5}
+          comentario={10}
+          dataPostagem={e.postDate}
+          userId={e.postUserId}
+          key={`postMyProfile${e.postId}`
+          } 
+
+        ></Post>)}
+        
+          </div>
+          :
+          <div>
+            {
+              listResquest.map(e => <RequestConnection 
+                user_id={e.user_id}
+                email={e.email}
+                username={e.username}
+              />)
+            }
+
+
+          </div>
+
+      
+
+      }
+      
+      
+      
+      
+
+
+
+
     </div>
 
   )
 }
+
+/*
+[
+  {
+    username: xuxa,
+
+    
+  }
+]
+
+
+
+*/
