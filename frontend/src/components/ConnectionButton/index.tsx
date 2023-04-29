@@ -1,4 +1,5 @@
 import { BsFillPersonPlusFill } from 'react-icons/bs'
+import { FaUserFriends } from 'react-icons/fa'
 import styles from './ConnectionButton.module.scss'
 import { eStateConnections } from 'types/eStateConnections'
 
@@ -26,17 +27,17 @@ export const ConnectionButton = (props:Props) => {
 /*
     Estados do botão    
     1º estágio 
-        - vizualização padrão
+        - vizualização padrão = sem connexão = noConnction
             - ação = solicitaçaõ de amizade, estado alterado para o 2º estágio 
     2º estágio 
-        - vizualização de quem enviou:
+        - vizualização de quem enviou: = ResquestSent
             - botão de cancelar solicitação de amizade, em vermelho ou laranja
                 - ação = cancela solicitação enviada, estado alterado para o 1º estágio  
-        - vizualização de quem recebeu: 
+        - vizualização de quem recebeu: = receivedRequest
             - botão de aceitar aceitar ou recusar amizade, seguir exemplo dos botões em perfil
                 - ação aceitar = envia para o 3º estágio 
                 - ação recusar = envia para o 1º estágio
-    3º estágio
+    3º estágio = friend
         - vizualização de amigos
             - ação = desfazer amizade ao clicar no botão, envia para o 1º estágio
 */
@@ -44,8 +45,8 @@ export const ConnectionButton = (props:Props) => {
     switch (props.aboutConnetion) {
 
         case eStateConnections.friends:
-            return <button className={styles.connect} onClick={click01}>
-                <BsFillPersonPlusFill
+            return <button className={styles.friend} onClick={click01}>
+                <FaUserFriends
                     className={styles.connect__icon}
                     size={20}
                 />
@@ -65,7 +66,7 @@ export const ConnectionButton = (props:Props) => {
         
         case eStateConnections.unrelated:
             return <>
-            <button className={styles.connect} onClick={click03}>
+            <button className={styles.noConnection} onClick={click03}>
              <BsFillPersonPlusFill
              className={styles.connect__icon}
              size={20}
