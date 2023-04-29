@@ -33,12 +33,12 @@
 
   }
 
-  .ResquestSent {
+  .requestSent {
 
     margin-top: 22px;
     margin-bottom: 26px;
     display: flex;
-    background-color:rosybrown;
+    background-color:red;
     border-radius: 8px;
     width: 125px;
     height: 33px;
@@ -68,42 +68,81 @@
 
   .receivedRequest {
     
-    margin-top: 22px;
-    margin-bottom: 26px;
     display: flex;
-    background-color: yellow;
-    border-radius: 8px;
-    width: 125px;
-    height: 33px;
-    align-items: center;
-    justify-content: center;
-    border: none;
 
-    &__text{
-      font-size: 10px;
-      color: $azul-destaque;
-      text-decoration: none;
-      margin-left: 5px;
-      // width: fit-content;
-    }
-    &__icon{
-      color: $azul-destaque;
-    }
-      
-    &:hover{
+
+    
+    &_accept {
+
+      background-color: #90ee90;
+      margin-top: 22px;
+      margin-bottom: 26px;
+      display: flex;
+      border-radius: 8px;
+      width: 60px;
+      height: 33px;
+      align-items: center;
+      justify-content: center;
+      border: none;
       cursor: pointer;
-      margin-top: 20px;
-      width: 127px;
-      height: 35px;
+      
+      &__text{
+        font-size: 10px;
+        color: $azul-destaque;
+        text-decoration: none;
+        margin-left: 5px;
+        // width: fit-content;
+      }
+      &__icon{
+        color: $azul-destaque;
+      }
+        
     }
+
+    &_refect {
+
+      margin-top: 22px;
+      margin-bottom: 26px;
+      display: flex;
+      border-radius: 8px;
+      width: 60px;
+      height: 33px;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      background-color: #ff6961;
+
+      &__text{
+        font-size: 10px;
+        color: $azul-destaque;
+        text-decoration: none;
+        margin-left: 5px;
+        // width: fit-content;
+      }
+      &__icon{
+        color: $azul-destaque;
+      }
+        
+      
+    }
+
+    & button+button {
+      margin-left: 5px;
+    } 
+
+    
+    
+
+    
 
   }
 
-  .friend {
+  .friends {
     margin-top: 22px;
     margin-bottom: 26px;
     display: flex;
-    background-color: green;
+    background-color: gold;
     border-radius: 8px;
     width: 125px;
     height: 33px;

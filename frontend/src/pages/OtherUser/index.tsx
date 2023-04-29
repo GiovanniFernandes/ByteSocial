@@ -24,7 +24,10 @@ export default function OtherUser(props: Props) {
   
   const [amountConnections, setAmountConnections] = useState<number>(0)
 
-  const [aboutConnetion, setAboutConnection] = useState<eStateConnections>(eStateConnections.unrelated)
+  
+  const [aboutConnetion, setAboutConnection] = useState<eStateConnections>(eStateConnections.noConnection)
+  
+
 
   useEffect(() => {
     props.setSelectedMenu(1)
@@ -67,7 +70,7 @@ export default function OtherUser(props: Props) {
         </div>
         <div className={styles.profile__OtherUser__infos}>
           <h2 className={styles.profile__OtherUser__name}>{username}</h2>
-          <ConnectionButton aboutConnetion={aboutConnetion} setAboutConnetion={setAboutConnection}/>
+          <ConnectionButton aboutConnetion={aboutConnetion}/>
 
           <ul className={styles.profile__OtherUser__interactions}>
               {interactions.map((item) => (

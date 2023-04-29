@@ -1,15 +1,14 @@
 export enum eStateConnections {
-    unrelated, requestSent, friends
+    noConnection =0, requestSent = 1, receivedRequest = 2, friends =3 
 }
   
-
 /*
     Estados do botão    
     1º estágio 
         - vizualização padrão = sem connexão = noConnction
             - ação = solicitaçaõ de amizade, estado alterado para o 2º estágio 
     2º estágio 
-        - vizualização de quem enviou: = ResquestSent
+        - vizualização de quem enviou: = resquestSent
             - botão de cancelar solicitação de amizade, em vermelho ou laranja
                 - ação = cancela solicitação enviada, estado alterado para o 1º estágio  
         - vizualização de quem recebeu: = receivedRequest
