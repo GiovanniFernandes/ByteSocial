@@ -103,22 +103,30 @@ class ConnectionController
     }
 
     static async friendshipVerification(senderId, receiverId){
-       /* FUNÇÃO ATUALIZADA
-       const buscaUser = await Connections.findOne({where:{user1_id:senderId, user2_id:receiverId}});
 
-        const buscaEmUser = await Connections.findOne({where:{user1_id:receiverId, user2_id:senderId}});
-        if (buscaUser){return buscaUser};
-        if (buscaEmUser){return buscaEmUser}
-        else {throw new Error("Você não tem vínculo algum com esse usuário");}
-      }*/
+        const receiverUser = await Users.findOne({where:{id: receiverId}});
 
-      const buscaUser = await Connections.findOne({where:{user1_id:senderId, user2_id:receiverId}});
+         if(!receiverUser) {throw new Error("O usuário que você está tentando mandar mensagem não existe.")}
 
-        const buscaEmUser = await Connections.findOne({where:{user1_id:receiverId, user2_id:senderId}});
-        if (buscaUser && buscaEmUser){return 0}
-        throw new Error("Você não tem vínculo algum com esse usuário");
-      }
+         const connection1 = await Connections.findOne({
+             where: {
+                 user1_id: senderId,
+                 user2_id: receiverId,
+                 isStatus: true
+             }
+         })
+ 
+         const connection2 = await Connections.findOne({
+             where: {
+                 user1_id: receiverId,
+                 user2_id: senderId,
+                 isStatus: true
+             }
+         })
+        
+         if (!connection1 && !connection2) {throw new Error("Você não tem vínculo algum com esse usuário.")}
+     }
+ }
 
-}
 
 module.exports = ConnectionController;

@@ -3,9 +3,7 @@ import Menu from '../../components/Menu'
 import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
-
-
-
+import axios from "axios"
 
 interface Props {
   selectedMenu: number,
@@ -17,37 +15,10 @@ interface Contact {
   id:string
 }
 
-const list: Contact[] = [
-  {
-    id: "1",
-    username: 'Terencio'
-  },
-  {
-    id: "2",
-    username: 'Isabele'
-  },
-  {
-    id: "3",
-    username: 'Bianca'
-  },
-  {
-    id: "4",
-    username: 'Terencio'
-  },
-  {
-    id: "5",
-    username: 'Isabele'
-  },
-  {
-    id: "6",
-    username: 'Bianca'
-  }
-];
-
-
 export default function ContactList(props: Props){
   const [search, setSearch] = useState('')
-
+  const [list, setList] = useState<Array<Contact>>([]);
+  
   const lowerSearch = search.toLowerCase()
 
   const contactsFilter = list.filter((item: Contact) => item.username.toLowerCase().includes(lowerSearch));
@@ -55,15 +26,20 @@ export default function ContactList(props: Props){
     /*const apiUser = useApiUser();
     const auth = useContext(AuthContext);*/
   
-    const [selectedSection, setSelectedSection] = useState<number>(0)
+  const [selectedSection, setSelectedSection] = useState<number>(0)
   
     //const [contactname, setContactname] = useState<string | null >('')
 
     useEffect(() => {
       props.setSelectedMenu(3)
+
+      async function getContacts(){
+        const contact = await axios.get<Array<Contact>>("http://localhost:3000/contact");
+        setList(contact.data);
+      }
+      getContacts()
     }, [])
 
-  
     /*const getContact = async () => {
       
     }*/ 
