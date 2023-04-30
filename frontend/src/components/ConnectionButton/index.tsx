@@ -62,10 +62,8 @@ export const ConnectionButton = ({aboutConnection, user_id}: Props) => {
 
 
     const clickNoConncetion = async () => {
-        //dispatch({ type: "receivedRequest" })
         const data:any = await apiConnection.newRequest(user_id)
         
-        console.log(data)
         if (data !== false) {
              dispatch({ type: "requestSent" })
         }
