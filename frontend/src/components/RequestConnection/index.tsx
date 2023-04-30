@@ -1,15 +1,46 @@
 import styles from './requestConnection.module.scss'
 import { X, Check } from "@phosphor-icons/react";
+import { useApiConnection } from 'hooks/useApiConnection';
 
 
 
 interface Props {
-    user_id: number | string,
+    user_id: number,
     email: string,
-    username:string
+    username: string,
+    changeListRequest: () => Promise<void>,
+    changeInteractions: () => Promise<void>
 }
 
-export default function RequestConnection({user_id, email, username}: Props) {
+interface iData {
+    msg:string
+}
+
+
+export default function RequestConnection(
+    { user_id, email, username, changeListRequest, changeInteractions }: Props) {
+
+    const apiConnection = useApiConnection()
+
+    const clickAccept = async () => {
+        const data: iData = await apiConnection.acceptRequest(user_id);
+        
+        if (data.msg === "Solicitação de amizade aceita!") {
+            await changeListRequest();
+            await changeInteractions();
+        }
+
+    }
+
+    const clickReject = async () => {
+        const data: iData = await apiConnection.rejectRequest(user_id);
+        
+        if (data.msg === "Solicitação rejeitada") {
+            await changeListRequest();
+            await changeInteractions();
+        }
+
+    }
 
 
     return (
@@ -27,9 +58,20 @@ export default function RequestConnection({user_id, email, username}: Props) {
             </div>
 
             <div className={styles.ButtonContent}>
-            <button style={{backgroundColor:"#36ff6e"}}className={styles.ButtonContent__ButtonOption}><Check size={32} /></button>
-            <button style={{backgroundColor:"#F93944"}}className={styles.ButtonContent__ButtonOption}><X size={32}/></button>
-
+                    <button
+                        style={{ backgroundColor: "#36ff6e" }}
+                        className={styles.ButtonContent__ButtonOption}
+                        onClick={clickAccept}
+                    >
+                        <Check size={32} />
+                    </button>
+                    <button
+                        style={{ backgroundColor: "#F93944" }}
+                        className={styles.ButtonContent__ButtonOption}
+                        onClick={clickReject}
+                    >
+                        <X size={32} />
+                    </button>
             </div>
         </div> 
        

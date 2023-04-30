@@ -6,7 +6,6 @@ import NewPost from 'components/NewPost';
 import { tPost } from 'types/Post';
 import { NavLink } from 'react-router-dom';
 import { useApiUser } from 'hooks/useApiUser';
-
 import { _userProfile } from '../../types/userProfile'
 import Post from 'components/Post/Post';
 import RequestConnection from 'components/RequestConnection';
@@ -42,7 +41,7 @@ export default function Profile(props: Props) {
 
   const [offset, setOffset] = useState<number>(0)
   
-  const [changeListPost, setChangeListPost] = useState<boolean>(false);
+  const [changeProfile, setChangeProfile] = useState<boolean>(false);
   const [listPost, setListPost] = useState<tPost[]>([]);
   const [amountPosts, setAmountPosts] = useState<number>(1)
 
@@ -61,9 +60,9 @@ export default function Profile(props: Props) {
   }, [])
 
   useEffect(() => {
-    setChangeListPost(false);
+    setChangeProfile(false);
     effectToPosts();
-  }, [changeListPost])
+  }, [changeProfile])
   
   const effectToPosts = async () => {
 
@@ -135,7 +134,7 @@ export default function Profile(props: Props) {
           </ul>
         </div>
       </div>
-      <NewPost change={setChangeListPost} />
+      <NewPost change={setChangeProfile} />
       <div className={styles.profile__sections}>
         <div
           className={selectedSection !== 0 ? styles.profile__sections__item : styles.profile__sections__item__selected}
@@ -167,13 +166,15 @@ export default function Profile(props: Props) {
           </div>
           :
           <div className={styles.profile__list}>
-            {
-              listResquest.map(e => <RequestConnection 
+            {(listResquest.length > 0)? listResquest.map(e => <RequestConnection 
                 user_id={e.id}
                 email={e.email}
                 username={e.username}
+                changeListRequest={clickSectionSolicitaçõesConexão}
+                changeInteractions={effectToPosts}
                 key={e.id}
-              />)
+            />)
+              : <h4 style={{marginLeft: '1vh'}}>Sem solicitações de amizade no momento</h4>
             }
 
 

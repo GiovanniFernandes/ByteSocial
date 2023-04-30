@@ -30,8 +30,8 @@ export const useApiConnection = () => ({
             return false
 
             const resposta = await api.delete(`/request/cancel/${id.toString()}`,
-            settingGeneralAxios)
-            console.log("cancel request: ", resposta)
+                settingGeneralAxios)
+        
         return resposta.data;
     },
 
@@ -47,7 +47,6 @@ export const useApiConnection = () => ({
         const resposta = await api.post(`/request/accept/${id.toString()}`,{},
             settingGeneralAxios)
         
-        console.log("accpet: ", resposta)
         return resposta.data;
     },
 
@@ -62,7 +61,7 @@ export const useApiConnection = () => ({
 
             const resposta = await api.delete(`/request/reject/${id.toString()}`,
             settingGeneralAxios)
-            console.log("reject: ", resposta)
+
         return resposta.data;
     },
     
