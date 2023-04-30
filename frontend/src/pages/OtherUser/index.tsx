@@ -25,7 +25,7 @@ export default function OtherUser(props: Props) {
   const [amountConnections, setAmountConnections] = useState<number>(0)
 
   
-  const [aboutConnetion, setAboutConnection] = useState<eStateConnections>(eStateConnections.noConnection)
+  const [statusFriendship, setStatusFriendship] = useState<eStateConnections>(eStateConnections.noConnection)
   
 
 
@@ -36,12 +36,14 @@ export default function OtherUser(props: Props) {
   
   const getUser = async () => {
     if (postUserId === undefined) return
-    const userProfile: _userProfile = await apiUser.getUserProfile(postUserId, 0);  
+    const userProfile: _userProfile & { statusFriendship: number } = await apiUser.getUserProfile(postUserId, 0); 
     
     setUsername(userProfile.username)
     setListPost(userProfile.list)
     setAmountPosts(userProfile.count)
     setAmountConnections(userProfile.connections)
+    setStatusFriendship(userProfile.statusFriendship);
+
   }
 
   const interactions = [
@@ -70,7 +72,11 @@ export default function OtherUser(props: Props) {
         </div>
         <div className={styles.profile__OtherUser__infos}>
           <h2 className={styles.profile__OtherUser__name}>{username}</h2>
-          <ConnectionButton aboutConnetion={aboutConnetion}/>
+          
+          <ConnectionButton
+            user_id={Number(postUserId)}
+            aboutConnection={statusFriendship}
+          />
 
           <ul className={styles.profile__OtherUser__interactions}>
               {interactions.map((item) => (

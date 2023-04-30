@@ -2,11 +2,13 @@ import { BsFillPersonPlusFill } from 'react-icons/bs'
 import { FaUserFriends } from 'react-icons/fa'
 import styles from './ConnectionButton.module.scss'
 import { eStateConnections } from 'types/eStateConnections'
-import { useReducer } from 'react'
+import { useEffect, useReducer } from 'react'
+import { useApiConnection } from 'hooks/useApiConnection'
 
 interface Props {
-    aboutConnetion: eStateConnections,
-    setAboutConnetion?: React.Dispatch<React.SetStateAction<eStateConnections>>
+    aboutConnection: eStateConnections,
+    setAboutConnetion?: React.Dispatch<React.SetStateAction<eStateConnections>>,
+    user_id: number
 }
 interface IAction {
     type:
@@ -20,7 +22,7 @@ enum eRequestSent {
     accept, reject
 }
 
-const reducerButton = (_: eStateConnections, action: IAction) => {
+const reducerButton = ( state : eStateConnections, action: IAction) => {
 
     const { type } = action;
 
@@ -34,37 +36,80 @@ const reducerButton = (_: eStateConnections, action: IAction) => {
         case "friends":
             return eStateConnections.friends
         default:
-           return eStateConnections.noConnection
+           return state
     }
 }
 
 
 
-export const ConnectionButton = ({aboutConnetion}: Props) => {
-    
-    const [state, dispatch] = useReducer(reducerButton, aboutConnetion)
+export const ConnectionButton = ({aboutConnection, user_id}: Props) => {
+    const [state, dispatch] = useReducer(reducerButton, aboutConnection)
+    const apiConnection = useApiConnection();
 
-    const clickNoConncetion = () => {
-        //dispatch({ type: "requestSent" })
-        dispatch({ type: "receivedRequest" })
+
+    useEffect(() => {
+        switch (aboutConnection) {
+            case eStateConnections.noConnection:
+                dispatch({ type: 'noConnection' }); break;
+            case eStateConnections.requestSent:
+                dispatch({ type: 'requestSent' }); break;
+            case eStateConnections.receivedRequest:
+                dispatch({ type: 'receivedRequest' }); break;
+            case eStateConnections.friends:
+                dispatch({ type: 'friends' }); break;
+        }
+    }, [aboutConnection])
+
+
+    const clickNoConncetion = async () => {
+        //dispatch({ type: "receivedRequest" })
+        const data:any = await apiConnection.newRequest(user_id)
+        
+        console.log(data)
+        if (data !== false) {
+             dispatch({ type: "requestSent" })
+        }
+
     }
     
-    const clickRequestSent = () => {
-        dispatch({type:"noConnection"})
-    }
+    const clickRequestSent = async () => {
 
-    const clickReceivedRequest = (request: eRequestSent) => {
-        if (request === eRequestSent.accept)
-            dispatch({ type: "friends" })
-        else 
+        const data: any = await apiConnection.cancelRequest(user_id)
+
+        if(data)
             dispatch({ type: "noConnection" })
+        else 
+            console.log("ERRO: clickRequestSent")
+
     }
 
-    const clickFriends = () => {
-        dispatch({type:"noConnection"})
+    const clickReceivedRequest = async (request: eRequestSent) => {
+        if (request === eRequestSent.accept) {
+
+            const data: any = await apiConnection.acceptRequest(user_id)
+
+            if (data)
+                dispatch({ type: "friends" })
+            else
+                console.log("erro clickReceivedRequest accept")
+
+            
+        }
+        else {
+            const data: any = await apiConnection.rejectRequest(user_id)
+
+            if (data)
+                dispatch({ type: "noConnection" })
+            else
+                console.log("erro clickReceivedRequest reject")
+                
+        }
+    }
+
+    const clickFriends = async () => {
+        console.log("https://www.youtube.com/watch?v=NAmBBzrD2vc&ab_channel=NayLima")
     }
     
-
     switch (state) {
 
         case eStateConnections.noConnection:
