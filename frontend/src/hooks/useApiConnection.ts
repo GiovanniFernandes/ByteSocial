@@ -66,11 +66,7 @@ export const useApiConnection = () => ({
         return resposta.data;
     },
     
-    showRequest: async (id: number) => {
-
-        if (id === null)
-            return false
-        
+    showRequests: async () => {
         const settingGeneralAxios = settingAxios();
 
         if (!settingGeneralAxios)

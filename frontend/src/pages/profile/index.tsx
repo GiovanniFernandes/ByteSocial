@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import styles from './Profile.module.scss'
-import interactions from 'data/interactions.json'
 import { useContext } from 'react';
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 import NewPost from 'components/NewPost';
@@ -11,38 +10,24 @@ import { useApiUser } from 'hooks/useApiUser';
 import { _userProfile } from '../../types/userProfile'
 import Post from 'components/Post/Post';
 import RequestConnection from 'components/RequestConnection';
+import { useApiConnection } from 'hooks/useApiConnection';
 
 interface Props {
   selectedMenu: number,
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
-const LIMIT = 2;
-
-
-const listResquest = [
-
-  {
-    user_id: 10,
-    email: "xuxa@soparabaixinhos.com",
-    username: "xuxa"
-  },
-  {
-    user_id: 11,
-    email: "Sasha@soparabaixinhos.com",
-    username: "Sasha"
-  },
-  {
-    user_id: 12,
-    email: "zoro@reidoinferno.com",
-    username: "zoro"
-  }
-
-]
+type request = {
+  id: number,
+  username: string,
+  email: string
+}
 
 
 
 
+
+const LIMIT = 10;
 
 
 
@@ -55,21 +40,19 @@ export default function Profile(props: Props) {
 
   const [selectedSection, setSelectedSection] = useState<number>(0)
 
-
-
-  const [changeListPost, setChangeListPost] = useState<boolean>(false);
-
   const [offset, setOffset] = useState<number>(0)
-
-
+  
+  const [changeListPost, setChangeListPost] = useState<boolean>(false);
   const [listPost, setListPost] = useState<tPost[]>([]);
-  
-  
-  const [count, setCount] = useState<number>(1)
-  
+  const [amountPosts, setAmountPosts] = useState<number>(1)
+
+  const [amountConnections, setAmountConnections] = useState<number>(0)
+  const [amountRequestsReceived, setAmountRequestsReceived] = useState<number>(0)
+
+  const [listResquest, setListRequest] = useState<request[]>([])
 
   const apiUser = useApiUser();
-
+  const apiConnection = useApiConnection();
 
 
   useEffect(() => {
@@ -85,10 +68,43 @@ export default function Profile(props: Props) {
   const effectToPosts = async () => {
 
     const data:_userProfile = await apiUser.getMyProfile(offset, LIMIT)
-  
-    setCount(data.count);
+    
     setListPost(data.list);
+
+    setAmountPosts(data.count);
+    setAmountConnections(data.connections);
+    setAmountRequestsReceived(data.requests);
+
   }
+
+  const clickSectionSolicitaçõesConexão = async () => {
+    setSelectedSection(1);
+
+    const data:request[] = await apiConnection.showRequests();
+    setListRequest(data);
+  }
+
+
+
+  const interactions = [
+    {
+      "title": "posts",
+      "count": amountPosts
+    },
+    {
+      "title": "respostas",
+      "count": amountPosts*3
+    },
+    {
+      "title": "conexões",
+      "count": amountConnections
+    },
+    {
+      "title": "solicitações",
+      "count": amountRequestsReceived
+    }
+  ]
+
 
   const getUser = async () => {
     if(auth.user != null)
@@ -96,9 +112,6 @@ export default function Profile(props: Props) {
       else 
         setUsername("")
   }
-
-
-
 
 
   return (
@@ -131,14 +144,14 @@ export default function Profile(props: Props) {
         </div>
         <div
           className={selectedSection !== 1 ? styles.profile__sections__item : styles.profile__sections__item__selected}
-          onClick={() => setSelectedSection(1)}>
+          onClick={() => clickSectionSolicitaçõesConexão()}>
           <h3>Solicitações de conexão</h3>
         </div>
       </div>
       {
         (selectedSection === 0) ? 
           
-        <div className={styles.Home__FeedPosts}>
+        <div className={styles.profile__list}>
         {listPost.map(e => <Post
           username={e.postUsername}
           conteudo={e.postContent}
@@ -153,43 +166,21 @@ export default function Profile(props: Props) {
         
           </div>
           :
-          <div>
+          <div className={styles.profile__list}>
             {
               listResquest.map(e => <RequestConnection 
-                user_id={e.user_id}
+                user_id={e.id}
                 email={e.email}
                 username={e.username}
+                key={e.id}
               />)
             }
 
 
           </div>
-
-      
-
       }
       
-      
-      
-      
-
-
-
-
     </div>
 
   )
 }
-
-/*
-[
-  {
-    username: xuxa,
-
-    
-  }
-]
-
-
-
-*/
