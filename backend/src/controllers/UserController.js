@@ -70,11 +70,8 @@ class UserController {
             })
 
             const countRequests = await Connections.count({
-                where:{
-                    [Op.or]:[
-                        {   user1_id: id    },
-                        {   user2_id: id    }
-                    ],
+                where: { 
+                    user2_id:id,
                     isStatus: false
                 }
             })
