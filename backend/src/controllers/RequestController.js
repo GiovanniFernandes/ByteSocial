@@ -205,7 +205,7 @@ class RequestController {
             })
 
 
-            return res.status(200).json({requiredReceived: requiredReceived.user2});
+            return res.status(200).json(requiredReceived.user2);
 
         } catch (error) {
             return res.status(500).json(error.message)
