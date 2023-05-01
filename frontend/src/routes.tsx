@@ -10,6 +10,7 @@ import Settings from 'pages/Settings';
 import Home from 'pages/Home';
 import ContactList from 'pages/ContactList';
 import ChatList from 'pages/ChatList';
+import Chat from 'pages/Chat';
 
 
 export default function AppRouter() {
@@ -24,6 +25,7 @@ export default function AppRouter() {
         <Routes>
            <Route path='contactlist' element={<ContactList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
            <Route path='chatList' element={<ChatList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+           <Route path='chat' element={<Chat selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />}/>
           <Route path='/' element={<DefaultPage selectedMenu={selectedMenu}/>}>
             <Route path='home' element={<Home selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>
             <Route path='profile' element={<Profile selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />

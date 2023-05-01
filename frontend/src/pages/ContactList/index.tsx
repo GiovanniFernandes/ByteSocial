@@ -34,7 +34,7 @@ export default function ContactList(props: Props){
       props.setSelectedMenu(3)
 
       async function getContacts(){
-        const contact = await axios.get<Array<Contact>>("http://localhost:3000/contact");
+        const contact = await axios.get<Array<Contact>>("http://localhost:5000/contact");
         setList(contact.data);
       }
       getContacts()

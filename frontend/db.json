@@ -44,6 +44,52 @@
         "id": "6",
         "username": "Bianca"
       }
+  ],
+
+  
+  "mensagens": [
+    {
+      "id": 1,
+      "content": "Olá, tudo bem?",
+      "timestamp": "2023-04-30T14:30:00.000Z",
+      "senderName": "João"
+    },
+    {
+      "id": 2,
+      "content": "Tudo sim, e você?",
+      "timestamp": "2023-04-30T14:31:00.000Z",
+      "senderName": "Maria"
+    },
+    {
+      "id": 1,
+      "content": "Estou bem também, obrigado",
+      "timestamp": "2023-04-30T14:32:00.000Z",
+      "senderName": "João"
+    },
+    {
+      "id": 1,
+      "content": "Como está sua familia?",
+      "timestamp": "2023-04-30T14:32:00.000Z",
+      "senderName": "João"
+    },
+    {
+      "id": 2,
+      "content": "está bem, minha mae fez uma cirurgia esses dias, mas ja recebeu alta do hospital",
+      "timestamp": "2023-04-30T14:32:00.000Z",
+      "senderName": "João"
+    },
+    {
+      "id": 1,
+      "content": "Ah que bom fico feliz que ela ja esteja bem.",
+      "timestamp": "2023-04-30T14:32:00.000Z",
+      "senderName": "João"
+    },
+    {
+      "id": 2,
+      "content": "e você, como ta indo nos estudos? já,conseguiu terminar a faculdade e pegar um estágio",
+      "timestamp": "2023-04-30T14:32:00.000Z",
+      "senderName": "João"
+    }
   ]
 
 }

@@ -1,0 +1,124 @@
+@import 'styles/variaveis';
+
+.chatScreen{
+  width: 998px;
+  height: 785px;
+  position: fixed;
+}
+
+.chatHeader{
+  display: flex;
+  width: 998px;
+  height: 81px;
+  background-color: #D2E8FF;
+  align-items: center;
+  padding: 10px;
+}
+.faArrowLeft{
+  color: #0068DF;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  margin-left: 25px;
+  margin-right: 20px;
+}
+
+.faArrowLeft:hover{
+  color: #6c9dd4;
+}
+
+.faList{
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  color: #0068DF;
+}
+
+.chatHeader img{
+  width: 57px;
+  height: 53px;
+  margin-left: 45px;
+}
+
+.chatHeader h1{
+  margin-left: 20px;
+  margin-right: 622px;
+  font-size: 16px;
+}
+
+.chatMain{
+  position: fixed;
+  width: 998px;
+  height: 616px;
+  background-color: #FFFFFF;
+  overflow-y: scroll;
+  display: flex; 
+  flex-direction: column-reverse; 
+  padding: 10px; 
+  box-sizing: border-box;
+}
+
+.chatMain ul{
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.friendMessage{
+  background-color: #B6D3F3;
+  border-radius: 18px;
+  padding: 1px 10px 1px 10px;
+  margin-bottom: 10px;
+  max-width: 335px;
+  overflow: hidden; 
+  word-wrap: break-word;
+  font-size: 16px;
+}
+
+.myMessage{
+  margin-left: 550px;
+  background-color: #8ec5ff;
+  border-radius: 18px;
+  padding: 1px 10px 1px 10px;
+  margin-bottom: 10px;
+  max-width: 335px;
+  overflow: hidden; 
+  word-wrap: break-word;
+  font-size: 16px;
+}
+
+.messageTime{
+  color: #0068DF;
+  font-size: 10px;
+}
+
+.chatFooter {
+  position: fixed;
+  margin-top: 610px;
+  margin-bottom: 70px;
+  width: 998px;
+  height: 91px;
+  background-color:  #D2E8FF;
+  display: flex;
+  align-items: center;
+}
+
+.chatFooter input {
+  background-color: white;
+  width: 784px;
+  height: 40px;
+  margin-left: 40px;
+  border-radius: 5px;
+  padding: 10px;
+  outline: none;
+  border-style: none;
+}
+
+.faArrowRight{
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  color: #0068DF;
+  margin-left: 54px;
+}
+
