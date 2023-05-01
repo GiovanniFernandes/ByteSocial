@@ -66,6 +66,7 @@ export default function Post(props: Props){
           <ChatCircle className={styles.Post__icons__Comment__svg}size={16} color="#0068DF" />
           <p className={styles.Post__content__icons__Comment__text}>{props.comentario} </p>
         </div>
+        
       </div>
 
   </div>

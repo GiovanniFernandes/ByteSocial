@@ -1,26 +1,57 @@
 import { useState, useEffect } from 'react';
 import styles from './Profile.module.scss'
-import interactions from 'data/interactions.json'
 import { useContext } from 'react';
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 import NewPost from 'components/NewPost';
-import { useApiPost } from 'hooks/useApiPost';
-import { tPost, aboutPosts } from 'types/Post';
+import { tPost } from 'types/Post';
+import { NavLink } from 'react-router-dom';
+import { useApiUser } from 'hooks/useApiUser';
+import { _userProfile } from '../../types/userProfile'
+import Post from 'components/Post/Post';
+import RequestConnection from 'components/RequestConnection';
+import { useApiConnection } from 'hooks/useApiConnection';
+
 interface Props {
   selectedMenu: number,
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
+type request = {
+  id: number,
+  username: string,
+  email: string
+}
+
+
+
+
+
+const LIMIT = 10;
+
+
+
+
 export default function Profile(props: Props) {
 
   const auth = useContext(AuthContext); 
-  const [username, setUsername] = useState<string | null>('')
-  const [selectedSection, setSelectedSection] = useState<number>(0)
-  const [changeListPost, setChangeListPost] = useState<boolean>(false);
-  const [ , setListPost] = useState<tPost[]>([]);
-  const [ , setCount] = useState<number>(1)
 
-  const apiPost = useApiPost();
+  const [username, setUsername] = useState<string | null>('')
+
+  const [selectedSection, setSelectedSection] = useState<number>(0)
+
+  const [offset, setOffset] = useState<number>(0)
+  
+  const [changeProfile, setChangeProfile] = useState<boolean>(false);
+  const [listPost, setListPost] = useState<tPost[]>([]);
+  const [amountPosts, setAmountPosts] = useState<number>(1)
+
+  const [amountConnections, setAmountConnections] = useState<number>(0)
+  const [amountRequestsReceived, setAmountRequestsReceived] = useState<number>(0)
+
+  const [listResquest, setListRequest] = useState<request[]>([])
+
+  const apiUser = useApiUser();
+  const apiConnection = useApiConnection();
 
 
   useEffect(() => {
@@ -29,15 +60,50 @@ export default function Profile(props: Props) {
   }, [])
 
   useEffect(() => {
-    setChangeListPost(false);
+    setChangeProfile(false);
     effectToPosts();
-  }, [changeListPost])
+  }, [changeProfile])
   
   const effectToPosts = async () => {
-    const data: aboutPosts = await apiPost.showPosts(0);
-    setCount(data.count);
+
+    const data:_userProfile = await apiUser.getMyProfile(offset, LIMIT)
+    
     setListPost(data.list);
+
+    setAmountPosts(data.count);
+    setAmountConnections(data.connections);
+    setAmountRequestsReceived(data.requests);
+
   }
+
+  const clickSectionSolicitaçõesConexão = async () => {
+    setSelectedSection(1);
+
+    const data:request[] = await apiConnection.showRequests();
+    setListRequest(data);
+  }
+
+
+
+  const interactions = [
+    {
+      "title": "posts",
+      "count": amountPosts
+    },
+    {
+      "title": "respostas",
+      "count": amountPosts*3
+    },
+    {
+      "title": "conexões",
+      "count": amountConnections
+    },
+    {
+      "title": "solicitações",
+      "count": amountRequestsReceived
+    }
+  ]
+
 
   const getUser = async () => {
     if(auth.user != null)
@@ -45,6 +111,7 @@ export default function Profile(props: Props) {
       else 
         setUsername("")
   }
+
 
   return (
 
@@ -56,7 +123,7 @@ export default function Profile(props: Props) {
         </div>
         <div className={styles.profile__user__infos}>
           <h2 className={styles.profile__user__name}>{username}</h2>
-          <a href="#profile" className={styles.profile__user__edit}>Editar perfil</a>
+          <NavLink to="/settings" className={styles.profile__user__edit}>Editar perfil</NavLink>
           <ul className={styles.profile__user__interactions}>
             {interactions.map((item) => (
               <li key={`interactions${item.title}`}className={styles.profile__user__interaction}>
@@ -67,7 +134,7 @@ export default function Profile(props: Props) {
           </ul>
         </div>
       </div>
-      <NewPost change={setChangeListPost} />
+      <NewPost change={setChangeProfile} />
       <div className={styles.profile__sections}>
         <div
           className={selectedSection !== 0 ? styles.profile__sections__item : styles.profile__sections__item__selected}
@@ -76,10 +143,44 @@ export default function Profile(props: Props) {
         </div>
         <div
           className={selectedSection !== 1 ? styles.profile__sections__item : styles.profile__sections__item__selected}
-          onClick={() => setSelectedSection(1)}>
+          onClick={() => clickSectionSolicitaçõesConexão()}>
           <h3>Solicitações de conexão</h3>
         </div>
       </div>
+      {
+        (selectedSection === 0) ? 
+          
+        <div className={styles.profile__list}>
+        {listPost.map(e => <Post
+          username={e.postUsername}
+          conteudo={e.postContent}
+          curtidas={5}
+          comentario={10}
+          dataPostagem={e.postDate}
+          userId={e.postUserId}
+          key={`postMyProfile${e.postId}`
+          } 
+
+        ></Post>)}
+        
+          </div>
+          :
+          <div className={styles.profile__list}>
+            {(listResquest.length > 0)? listResquest.map(e => <RequestConnection 
+                user_id={e.id}
+                email={e.email}
+                username={e.username}
+                changeListRequest={clickSectionSolicitaçõesConexão}
+                changeInteractions={effectToPosts}
+                key={e.id}
+            />)
+              : <h4 style={{marginLeft: '1vh'}}>Sem solicitações de amizade no momento</h4>
+            }
+
+
+          </div>
+      }
+      
     </div>
 
   )
