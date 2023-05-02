@@ -4,16 +4,18 @@ import { useContext, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
-
-
+import { useMenuContext } from 'contexts/Menu/MenuContexts'
 
 type IMenuItem = typeof menu[0]
 
 export default function Menu({selectedMenu}: {selectedMenu: number}) {
 
   const [selectedItem, setSelectedItem] = useState<number | null>(1)
-  const [openState, setOpenState] = useState(true)
-  const [username, setUsername] = useState<string | null >('')
+
+  const { openState, setOpenState } = useMenuContext();
+
+  const [username, setUsername] = useState<string | null>('')
+  
   const navigate = useNavigate()
   const auth = useContext(AuthContext)
 
@@ -37,7 +39,7 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
     if(item.title === 'Sair')
       auth.signout();
 
-    navigate(item.link); //o tipo link só apareceu após eu dar commit
+    navigate(item.link);
   }
 
   function onHideBtnClick() {
