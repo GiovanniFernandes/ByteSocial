@@ -53,6 +53,9 @@ export default function Home(props: Props) {
           <h3>Publicações</h3>
         </div>
       </div>
+      <div className={styles.Home__contentFeed}>
+        
+      </div>
       <div className={styles.Home__FeedPosts}>
         {listPost.map(e => <Post
           username={e.postUsername}
@@ -65,7 +68,7 @@ export default function Home(props: Props) {
         ></Post>)}
         
       </div>
-      <div>
+      <div className={styles.Home__paginationComponent}>
         <Pagination limit={LIMIT} total ={total} offset={offset} setOffset={setOffset}/>
       </div>
     </div>

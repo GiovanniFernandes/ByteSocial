@@ -1,0 +1,40 @@
+@import 'styles/variaveis';
+.Pagination{
+  width: 200px;
+  height: 36px;
+  // list-style: none;
+  &__pagination{
+    display: flex;
+    // margin-left: -10px;
+    // width: 100%;
+    
+    // background-color: black;
+    &__button{
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background-color: #DEE5ED;
+      border:none;
+      
+    }
+    &__buttonActive{
+      background-color: #0068DF;
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border:none;
+    }
+  }
+  &__pagination li{
+    margin: 34px 5px 61px 0;
+    // padding-left: 0;
+
+    // display: flex;
+    list-style: none;
+  }
+  &__pagination li:first-child{
+    margin-left: -40px;
+    // background-color: yellow;
+  }
+}
