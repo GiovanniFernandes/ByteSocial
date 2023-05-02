@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from 'contexts/Auth/AuthContexts'
 import { useMenuContext } from 'contexts/Menu/MenuContexts'
+import { ImageUser } from 'components/ImageUser'
 
 type IMenuItem = typeof menu[0]
 
@@ -56,7 +57,8 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
         </div>
         <div className={styles.menu__user}>
           <div className={styles.menu__user__pic}>
-            <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${username}`} alt="Foto de perfil" />
+            {/*<img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${username}`} alt="Foto de perfil" />*/}
+            <ImageUser username={username} description='Foto de Perfil' />
           </div>
           <p className={styles.menu__user__name}>{username}</p>
         </div>
@@ -91,7 +93,7 @@ export default function Menu({selectedMenu}: {selectedMenu: number}) {
         </div>
         <div className={styles.menu__user__closed}>
           <div className={styles.menu__user__pic}>
-            <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${username}`} alt="Foto de perfil" />
+          <ImageUser username={username} description='Foto de Perfil' />
           </div>
         </div>
         <ul className={styles.menu__list__closed}>
