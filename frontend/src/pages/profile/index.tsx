@@ -113,7 +113,7 @@ export default function Profile(props: Props) {
   }
 
 
-  return (
+return (
 
     <div className={styles.profile} id='profile'>
       <h1 className={styles.profile__title}>Seu Perfil</h1>
