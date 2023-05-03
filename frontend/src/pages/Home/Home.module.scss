@@ -1,7 +1,8 @@
 @import 'styles/variaveis';
 
 .Home{
-  width: 768px;
+  max-width: 768px;
+  width: 100%;
 
   &__newPost {
     margin-top: 80px;
@@ -37,52 +38,18 @@
       }
     }
   }
-  // 
-  
-  // &__post{
-  //   padding:37px 36px;
-  //   margin-top: 36px;
-  //   width: 768px;
-  //   height: 261px;
-  //   border-radius:10px;
-  //   background-color: white;
-  //   border: 1px solid #C7D7EC;
-  //   &__user {
-  //     display:flex;
-  //      &__img{
-  //       width: 46px;
-  //       height: 46px;
-  //       }
-      
-  //     &__userInfo{
-  //       margin-left:13px;
-  //       &__name{ 
-  //         margin: 0 0 8px;
-  //         font-size: 14px;
-  //         font-weight:500;
-  //         color: $preto-texto;
-  //         width: fit-content;
-  //         align-items:center;
-  //         line-height:21px;
-  //         display:flex;
-  //         text-decoration: none;
-          
-  //       }
-  //       &__PostDate{
-  //         margin-top:1px;
-  //         font-size: 10px;
-  //         color: $azul-destaque;
-  //         width: fit-content;
-  
-  //       }
-  //     }
-      
-      
-  // }
-  //   &__content{
-  //     font-size: 14px;
-  //     line-height: 14px;
-  //     font-family: "Poppins";
-  //   }
-  // }
+}
+
+
+@media screen and (max-width: 720px) {
+
+  .Home {
+
+    &__newPost {
+      margin-top: 70px;
+    }
+
+
+
+  }
 }
