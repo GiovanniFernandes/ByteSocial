@@ -49,15 +49,7 @@ class UserController {
         try {
             const user = await Users.findOne({ where: {id} })
 
-            const { count, rows } = await Posts.findAndCountAll({
-                include: "User",
-                order:[['createdAt', 'DESC']],
-                offset: Number(offset),
-                limit: Number(limit),
-                where: {
-                    user_id: Number(id),
-                }
-            });
+            const { count, rows } = await postService.findUsersPosts(offset, limit, id)
 
             const countConnections = await Connections.count({
                 where:{
@@ -76,7 +68,7 @@ class UserController {
                 }
             })
 
-            const normalizationPosts = await postService.normalizationPosts(rows); 
+            const normalizationPosts = await postService.normalizationPosts(rows, id); 
             
             return res.status(200).json({
                 user_id:user.id,
@@ -101,6 +93,7 @@ class UserController {
 
             const userId = req.user_id;
             const { offset, id } = req.params;
+            const limit = 8;
             let status;
             
             /*
@@ -145,15 +138,9 @@ class UserController {
                 status = 3;
             }
 
-            const { count, rows } = await Posts.findAndCountAll({
-                where: {user_id: Number(id)},
-                include: "User",
-                order:[['createdAt', 'DESC']],
-                offset: Number(offset),
-                limit:8
-            });
+            const { count, rows } = await postService.findUsersPosts(offset, limit, id)
             
-            const normalizationPosts = postService.normalizationPosts(rows);
+            const normalizationPosts = postService.normalizationPosts(rows, userId);
             
             const { username } = await Users.findOne({ where: { id } });
             

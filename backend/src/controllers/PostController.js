@@ -1,6 +1,7 @@
 const database = require ("../database/models");
 const Posts = database.Posts;
 const Likes = database.Likes;
+const Users = database.Users;
 const postService = require("../services/postService")
 class PostController
 {
@@ -56,15 +57,12 @@ class PostController
     {
       try {
         const { offset } = req.params;
+        const id = req.user_id;
+        const limit = 8;
 
-        const {count, rows} = await Posts.findAndCountAll ({
-          include: "User",
-          order:[['createdAt', 'DESC']],
-          offset: Number(offset),
-          limit: 8
-        });
-
-        const normalizationPosts = await postService.normalizationPosts(rows);  
+        const {count, rows} = await postService.findPosts(offset, limit)
+        
+        const normalizationPosts = await postService.normalizationPosts(rows, id);  
 
         return res.status(200).json({
           count,

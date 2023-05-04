@@ -21,12 +21,12 @@ class LikeController{
         if(verifyLike)
         {
             const dislike = await Likes.destroy({where:{user_id:id, post_id, username}});
-            return res.status(200).json({msg:"+1 👎"});
+            return res.status(200).json({msg:"ok"});
         }
 
         const like = await Likes.create({user_id:id, post_id, username});
 
-        return res.status(201).json({msg:"+1 👍"});
+        return res.status(201).json({msg:"ok"});
 
         } catch (error) {
             return res.status(500).json({msg:error.message});
