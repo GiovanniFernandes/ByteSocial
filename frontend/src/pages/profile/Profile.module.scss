@@ -1,8 +1,9 @@
 @import 'styles/variaveis';
 
 .profile {
-  width: 768px;
-  
+  max-width: 768px;
+  width: 100%;
+
   &__title {
     margin: 0 0 36px;
     font-size: 28px;
@@ -13,7 +14,7 @@
   &__user {
     display: flex;
     margin-bottom: 38px;
-  
+    
     &__pic {
       width: 189px;
       height: 189px;
@@ -123,4 +124,9 @@
   &__list {
     margin-bottom: 6vh;
   }
+}
+
+
+@media screen and (max-width: 1030px) {
+
 }
