@@ -4,7 +4,6 @@ import Post from "components/Post/Post";
 import NewPost from "components/NewPost";
 import { useApiPost } from "hooks/useApiPost";
 import { tPost, aboutPosts } from "types/Post";
-import {useSearchParams} from 'react-router-dom'
 
 interface Props {
   selectedMenu: number,
@@ -18,7 +17,7 @@ export default function Home(props: Props) {
   const [changeListPost, setChangeListPost] = useState<boolean>(false);
   const [listPost, setListPost] = useState<tPost[]>([]);
   const [count, setCount] = useState<number>(1)
-  const [searchParams, setSearchParams] = useSearchParams({});
+
 
   const apiPost = useApiPost();
 
@@ -30,14 +29,7 @@ export default function Home(props: Props) {
     setChangeListPost(false);
     effectToPosts();
   }, [changeListPost])
-//   const handlePaginationChange = (_, value) => {
-//     // cria uma cópia do objeto searchParams
-//     const newSearchParams = new URLSearchParams(searchParams);
-//     // adiciona o novo valor de página à cópia
-//     newSearchParams.set("page", value);
-//     // atualiza o estado com a cópia
-//     setSearchParams(newSearchParams);
-// };
+
   
   const effectToPosts = async () => {
     const data: aboutPosts = await apiPost.showPosts(0);
@@ -60,27 +52,24 @@ export default function Home(props: Props) {
       </div>
       <div className={styles.Home__FeedPosts}>
         {listPost.map(e => <Post
+          
+          id ={ e.postId }
           username={e.postUsername}
           conteudo={e.postContent}
-          curtidas={5}
-          comentario={10}
+          curtidas={e.postTotalLikes}
+          comentario={e.postTotalLikes*5}
           dataPostagem={e.postDate}
           userId={e.postUserId}
+          liked={e.userLiked}
+          setRefresh={setChangeListPost}
           key={`postHome${e.postId}`}
+
+
         ></Post>)}
         
       </div>
       <div>
-      {/* <Pagination
-                    className='mb-16'
-                    color='primary'
-                    size='large'
-                    shape='rounded'
-                    defaultPage={1}
-                    page={parseInt(page)}
-                    count={Math.ceil(totalCount/6)} //Math.ceil(apartments.length / 6)
-                    onChange={handlePaginationChange}
-                /> */}
+
       </div>
     </div>
   ) 

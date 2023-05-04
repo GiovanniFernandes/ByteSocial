@@ -151,13 +151,16 @@ export default function Profile(props: Props) {
         (selectedSection === 0) ? 
           
         <div className={styles.profile__list}>
-        {listPost.map(e => <Post
+          {listPost.map(e => <Post
+          id ={ e.postId }
           username={e.postUsername}
           conteudo={e.postContent}
-          curtidas={5}
-          comentario={10}
+          curtidas={e.postTotalLikes}
+          comentario={e.postTotalLikes*5}
+          liked={e.userLiked}
           dataPostagem={e.postDate}
           userId={e.postUserId}
+          setRefresh={setChangeProfile}
           key={`postMyProfile${e.postId}`
           } 
 

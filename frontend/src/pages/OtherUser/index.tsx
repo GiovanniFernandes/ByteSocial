@@ -24,15 +24,16 @@ export default function OtherUser(props: Props) {
   
   const [amountConnections, setAmountConnections] = useState<number>(0)
 
-  
+  const [refresh, setRefresh] = useState<boolean>(false)
   const [statusFriendship, setStatusFriendship] = useState<eStateConnections>(eStateConnections.noConnection)
   
 
 
   useEffect(() => {
     props.setSelectedMenu(1)
+    setRefresh(false);
     getUser()
-  }, [])
+  }, [refresh])
   
   const getUser = async () => {
     if (postUserId === undefined) return
@@ -96,12 +97,15 @@ export default function OtherUser(props: Props) {
         </div>
         <div className={styles.profile__sectionPosts_FeedPosts}>
           {listPost.map(e => <Post
+          id ={ e.postId }
           username={e.postUsername}
           conteudo={e.postContent}
-          curtidas={5}
-          comentario={10}
+          curtidas={e.postTotalLikes}
+          comentario={e.postTotalLikes*5}
+          liked={e.userLiked}
           dataPostagem={e.postDate}
           userId={e.postUserId}
+          setRefresh={setRefresh}
           key={`postOtherUser${e.postId}`}
           ></Post>)}
       </div>
