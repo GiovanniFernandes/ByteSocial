@@ -8,11 +8,15 @@
 .children-container-with-menu-open{
   padding: 65px 106px 65px 106px;
   margin-left: 285px;
+  max-width: 980px;
+  width: 100%;
 }
 
 .children-container-with-menu-closed {
   padding: 65px 106px 65px 106px;
   margin-left: 125px;
+  max-width: 980px;
+  width: 100%;
 }
 
 @media screen and (max-width: 1265px) {
