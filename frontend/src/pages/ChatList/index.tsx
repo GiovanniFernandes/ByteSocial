@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios"
-import { useParams } from 'react-router-dom';
 
 interface Props {
   selectedMenu: number,
@@ -24,10 +23,6 @@ export default function ContactList(props: Props){
   const contactsFilter = list.filter((item: Contact) => item.username.toLowerCase().includes(lowerSearch));
   
 
-  
-    const [selectedSection, setSelectedSection] = useState<number>(0)
-  
-
     useEffect(() => {
       props.setSelectedMenu(3)
 
@@ -39,10 +34,6 @@ export default function ContactList(props: Props){
     }, [])
 
     const navigate = useNavigate();
-
-    const navigateToChat = (contactId: string) => {
-      navigate(`/chat/${contactId}`);
-    }
 
     return (
       <div className={styles.chatListPrincipal}>
@@ -81,7 +72,7 @@ export default function ContactList(props: Props){
                 <li
                   key={`chatList:${item.id}`}
                   className={styles.chatListPrincipal__contactList__contact}
-                  onClick={() => navigate(`/chat/${item.id}`)}
+                  onClick={() => navigate(`/chat/${item.id}/${item.username}`)}
                 >
                   <div className={styles.chatListPrincipal__contactList__contactPhoto}>
                     <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${item.username}`} alt={`${item.username} avatar`} />

@@ -26,7 +26,6 @@ export default function ContactList(props: Props){
     /*const apiUser = useApiUser();
     const auth = useContext(AuthContext);*/
   
-  const [selectedSection, setSelectedSection] = useState<number>(0)
   
     //const [contactname, setContactname] = useState<string | null >('')
 
@@ -80,11 +79,12 @@ export default function ContactList(props: Props){
           </div>
           
           <div className={styles.contactListPrincipal__contactList}>
-            <ul onClick={() => navigate('/chat')} className={styles.contactListPrincipal__contactList__list}>
-              {contactsFilter.map((item) =>  <li key={`ContactList:${item.id}`}
-                  className={styles.contactListPrincipal__contactList__contact}>
-                
-                  
+            <ul className={styles.contactListPrincipal__contactList__list}>
+              {contactsFilter.map((item) =>  
+                <li key={`ContactList:${item.id}`}
+                className={styles.contactListPrincipal__contactList__contact}
+                onClick={() => navigate(`/chat/${item.id}/${item.username}`)}
+                >
                   <div className={styles.contactListPrincipal__contactList__contactPhoto}>
 
                     <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${item.username}`}/>
