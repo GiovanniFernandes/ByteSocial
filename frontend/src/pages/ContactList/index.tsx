@@ -62,7 +62,7 @@ export default function ContactList(props: Props){
               </div>
               
               <div className={styles.contactListPrincipal__sections__item__selected}>
-                <a>Lista de contatos</a>
+                <a>Contatos</a>
               </div>
             </div>
 
@@ -80,7 +80,7 @@ export default function ContactList(props: Props){
           </div>
           
           <div className={styles.contactListPrincipal__contactList}>
-            <ul className={styles.contactListPrincipal__contactList__list}>
+            <ul onClick={() => navigate('/chat')} className={styles.contactListPrincipal__contactList__list}>
               {contactsFilter.map((item) =>  <li key={`ContactList:${item.id}`}
                   className={styles.contactListPrincipal__contactList__contact}>
                 

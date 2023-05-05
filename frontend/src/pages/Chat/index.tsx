@@ -1,64 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from "./Chat.module.scss";
-import { FaChevronLeft, FaList, FaArrowRight } from 'react-icons/fa';
+import { FaChevronLeft, FaList, FaArrowRight, FaNpm } from 'react-icons/fa';
 import io from 'socket.io-client';
 import axios from "axios";
 
 const socket = io('http://localhost:3000'); //colocar a porta do backend
 
-const mensagens = [
-  {
-    id: 1,
-    content: "Olá, tudo bem?",
-    timestamp: "2023-04-30T14:30:00.000Z",
-    senderName: "João",
-  },
-  {
-    id: 2,
-    content: "Tudo sim, e você?",
-    timestamp: "2023-04-30T14:31:00.000Z",
-    senderName: "Maria",
-  },
-  {
-    id: 1,
-    content: "Estou bem também, obrigado",
-    timestamp: "2023-04-30T14:32:00.000Z",
-    senderName: "João",
-  },
-  {
-    id: 1,
-    content: "Como está sua familia?",
-    timestamp: "2023-04-30T14:32:00.000Z",
-    senderName: "João",
-  },
-  {
-    id: 2,
-    content: "está bem, minha mae fez uma cirurgia esses dias, mas ja recebeu alta do hospital",
-    timestamp: "2023-04-30T14:32:00.000Z",
-    senderName: "João",
-  },
-  {
-    id: 1,
-    content: "Ah que bom fico feliz que ela ja esteja bem.",
-    timestamp: "2023-04-30T14:32:00.000Z",
-    senderName: "João",
-  },
-  {
-    id: 2,
-    content: "e você, como ta indo nos estudos? já conseguiu terminar a faculdade e pegar um estágio",
-    timestamp: "2023-04-30T14:32:00.000Z",
-    senderName: "João",
-  },
-];
+
 
 interface IMessage {
-  authorId: number;
-  message: string;
-}
-
-interface Contact {
-  username: string,
-  id:string
+  id: number;
+  content: string;
+  timestamp: string;
+  senderName: string;
 }
 
 interface Props {
@@ -66,38 +20,26 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
+interface Contact {
+  username: string,
+  id:string
+}
+
 export default function Chat(props: Props) {
   const [inputText, setInputText] = useState('');
-  const [messages, setMessages] = useState<IMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const [list, setList] = useState<Array<Contact>>([]);
+  const [message, setMessage] = useState<Array<IMessage>>([]);
 
-  // useEffect(() => {
-  //   socket.emit('add-user', { userId: "" });
+  const messageFilter = message.filter((item: IMessage) => item);
 
-  //   socket.on('new-message', ({ authorId, savedMessage }) => {
-  //     setMessages([...messages, { authorId, message: savedMessage }]);
-  //   });
 
-  //   return () => {
-  //     socket.off('new-message');
-  //   };
-  // }, [messages]);
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const authorId = 123; // colocar o ID do usuário atual aqui
-  //   const savedMessage = inputText;
-  //   socket.emit('send-message', { authorId, savedMessage });
-  //   setInputText('');
-  // };
 
   useEffect(() => {
     props.setSelectedMenu(3)
 
     async function getMessages(){
-      const mensagens = await axios.get<Array<Contact>>("http://localhost:5000/mensagens");
-      setList(mensagens.data);
+      const mensagens = await axios.get<Array<IMessage>>("http://localhost:5000/mensagens");
+      setMessage(mensagens.data);
     }
     getMessages()
   }, [])
@@ -105,7 +47,7 @@ export default function Chat(props: Props) {
   return (
     <div className={styles.chatScreen}>
       <div className={styles.chatHeader}>
-        <a href="/contactList">
+        <a href="/chatList">
           <FaChevronLeft className={styles.faArrowLeft}/>
         </a>
           
@@ -115,7 +57,7 @@ export default function Chat(props: Props) {
 
       <div className={styles.chatMain}>
         <ul>
-              {mensagens.map((item) => 
+              {messageFilter.map((item) => 
                 <li className={item.id === 1 ? styles.myMessage : styles.friendMessage}>
                   <div>
                     <p>{item.content}</p>
