@@ -48,8 +48,24 @@ export const useApiPost = () => ({
             {}, settingGeneralAxios)
 
         return resposta.data;
+    },
+
+    deletePost: async (post_id: string) => {
+
+        if (post_id === "" || post_id === null)
+            return false
+        
+        const settingGeneralAxios = settingAxios();
+
+        if (!settingGeneralAxios)
+            return false
+
+        const resposta = await api.delete(`/posts/${post_id}`, settingGeneralAxios)
+
+        return resposta.data;
     }
     
+
 
 
 })

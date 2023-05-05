@@ -1,10 +1,11 @@
 import {AuthContext} from 'contexts/Auth/AuthContexts';
 import styles from './Post.module.scss';
-import {ChatCircle, DotsThreeOutline, Heart} from 'phosphor-react';
-import {useContext, useRef, useState} from 'react';
+import {ChatCircle, DotsThreeOutline, Heart, Trash} from 'phosphor-react';
+import {useContext, useMemo, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useApiPost} from 'hooks/useApiPost';
-
+import MenuEdit from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem'
 interface Props {
     id : string,
     username : string,
@@ -13,7 +14,6 @@ interface Props {
     curtidas : number,
     comentario : number,
     userId : string,
-    //currentUserId: string,
     liked : boolean,
     setRefresh : React.Dispatch < React.SetStateAction < boolean >>
 }
@@ -27,31 +27,44 @@ export default function Post(props : Props) {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
     const apiPost = useApiPost();
-    const currentUserId = useRef('1');
+    
+    const [like,setLike] = useState < boolean > (props.liked)
+    const white = '#FFFFFF';
+    const blue = '#0068DF';
+    
+    
+    const currentUserIdxUserId = useMemo(() => {
+        if (auth.user) 
+            return auth.user.id === Number(props.userId)
+        else 
+            return false
+    }, [auth.user])
 
-    const currentUserIdxUserId = (currentUserId.current === props.userId)
+    const [anchorEl, setAnchorEl] = useState < null | HTMLElement > (null);
+    const openMenuEdit = Boolean(anchorEl);
 
-    const [like,
-        setLike] = useState < boolean > (props.liked)
 
-    const white = '#FFFFFF'
-    const blue = '#0068DF'
-
-    const toOtherUser = () => {
-
-        const user = auth.user;
-
-        if (user !== null) {
-            if (user.id.toString() === props.userId) {
-                navigate(`/profile`)
-                return
-            }
-        }
-
-        navigate(`/otherUser/${props.userId}`)
+    const handleClickMenuEditOpen = (event : React.MouseEvent < HTMLButtonElement >) => {
+        setAnchorEl(event.currentTarget);
     }
 
-    const clickLike = async() => {
+    const handleClickMenuEditClose = () => {
+        setAnchorEl(null);
+    }
+
+    const handleClickDeletePost = async () => {
+        const data: Data = await apiPost.deletePost(props.id);
+
+        if (data.msg === "Post deletado com sucesso!") {
+            setAnchorEl(null);
+            props.setRefresh(true);
+        }
+        else
+            console.log('ERRO AO DELETAR Post');
+    }
+
+    
+    const handleClickLike = async() => {
 
         const data : Data = await apiPost.iLike(props.id);
         if (data.msg === 'ok') {
@@ -63,26 +76,53 @@ export default function Post(props : Props) {
 
     }
 
-    const onClickEdit = async() => {
-        console.log('clickEdit')
+
+    const handleClickProfileUser = () => {
+        const user = auth.user;
+
+        if (user !== null) {
+            if (user.id.toString() === props.userId) {
+                navigate(`/profile`)
+                return
+            }
+        }
+        navigate(`/otherUser/${props.userId}`)
     }
+
+    
 
     return (
         <div className={styles.Post__content}>
 
-            <div className={styles.Post__content__containerEdit}>
-                {currentUserIdxUserId && <button
-                    type='reset'
-                    onClick={onClickEdit}
-                //className={styles.Post__content__containerEdit}
-                >
+            <section className={styles.Post__content__containerEdit}>
+                {currentUserIdxUserId && <button type='reset' onClick={handleClickMenuEditOpen}>
                     <DotsThreeOutline size={20} color="#0068df" weight="fill"/>
                 </button>}
+                <div>
+                    <MenuEdit
+                        open={openMenuEdit}
+                        anchorEl={anchorEl}
+                        onClose={handleClickMenuEditClose}
+                        elevation={0}
+                        anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                    }}
+                        transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }}>
+                        <MenuItem onClick={handleClickDeletePost}>
+                            <Trash size={16} color="#e00016" weight="duotone"/>
+                            <label className={styles.Post__content__containerEdit_menuItem_label}>deletar post</label>
+                        </MenuItem>
+                    </MenuEdit>
 
-            </div>
+                </div>
+            </section>
 
-            <div className={styles.Post__content__user}>
-                <div className={styles.Post__content__user__img} onClick={toOtherUser}>
+            <section className={styles.Post__content__user}>
+                <div className={styles.Post__content__user__img} onClick={handleClickProfileUser}>
                     <img
                         src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${props.username}`}
                         alt="Foto de perfil"
@@ -90,17 +130,17 @@ export default function Post(props : Props) {
                 </div>
                 <div className={styles.Post__content__user__userInfo}>
                     <h4
-                        onClick={toOtherUser}
+                        onClick={handleClickProfileUser}
                         className={styles.Post__content__user__userInfo__name}>{props.username}</h4>
                     <p className={styles.Post__content__user__userInfo__PostDate}>{props.dataPostagem}</p>
                 </div>
-            </div>
+            </section>
 
-            <div className={styles.Post__content__text}>
+            <section className={styles.Post__content__text}>
                 <p>{props.conteudo}</p>
-            </div>
+            </section>
 
-            <div className={styles.Post__content__icons}>
+            <section className={styles.Post__content__icons}>
 
                 <button
                     type='reset'
@@ -112,7 +152,7 @@ export default function Post(props : Props) {
                     : {
                         backgroundColor: white
                     }}
-                    onClick={clickLike}>
+                    onClick={handleClickLike}>
 
                     <Heart
                         size={16}
@@ -140,15 +180,8 @@ export default function Post(props : Props) {
                     </p>
                 </div>
 
-            </div>
+            </section>
 
         </div>
     )
 }
-
-/*
-className={(!currentUserIdxUserId)
-                    ? styles.Post__content__NoEdit
-                    : styles.Post__content__edit}>
-
-*/
