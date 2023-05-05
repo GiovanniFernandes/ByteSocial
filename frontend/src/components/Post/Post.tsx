@@ -1,10 +1,9 @@
 import {AuthContext} from 'contexts/Auth/AuthContexts';
 import styles from './Post.module.scss';
-import {ChatCircle, Heart} from 'phosphor-react';
-import {useContext, useState} from 'react';
+import {ChatCircle, DotsThreeOutline, Heart} from 'phosphor-react';
+import {useContext, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useApiPost} from 'hooks/useApiPost';
-
 
 interface Props {
     id : string,
@@ -14,12 +13,13 @@ interface Props {
     curtidas : number,
     comentario : number,
     userId : string,
-    liked: boolean,
-    setRefresh: React.Dispatch<React.SetStateAction<boolean>>
+    //currentUserId: string,
+    liked : boolean,
+    setRefresh : React.Dispatch < React.SetStateAction < boolean >>
 }
 
 type Data = {
-    msg:string
+    msg: string
 }
 
 export default function Post(props : Props) {
@@ -27,6 +27,9 @@ export default function Post(props : Props) {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
     const apiPost = useApiPost();
+    const currentUserId = useRef('1');
+
+    const currentUserIdxUserId = (currentUserId.current === props.userId)
 
     const [like,
         setLike] = useState < boolean > (props.liked)
@@ -50,7 +53,7 @@ export default function Post(props : Props) {
 
     const clickLike = async() => {
 
-        const data:Data = await apiPost.iLike(props.id);
+        const data : Data = await apiPost.iLike(props.id);
         if (data.msg === 'ok') {
             setLike(e => !e);
             props.setRefresh(true)
@@ -60,8 +63,24 @@ export default function Post(props : Props) {
 
     }
 
+    const onClickEdit = async() => {
+        console.log('clickEdit')
+    }
+
     return (
         <div className={styles.Post__content}>
+
+            <div className={styles.Post__content__containerEdit}>
+                {currentUserIdxUserId && <button
+                    type='reset'
+                    onClick={onClickEdit}
+                //className={styles.Post__content__containerEdit}
+                >
+                    <DotsThreeOutline size={20} color="#0068df" weight="fill"/>
+                </button>}
+
+            </div>
+
             <div className={styles.Post__content__user}>
                 <div className={styles.Post__content__user__img} onClick={toOtherUser}>
                     <img
@@ -126,3 +145,10 @@ export default function Post(props : Props) {
         </div>
     )
 }
+
+/*
+className={(!currentUserIdxUserId)
+                    ? styles.Post__content__NoEdit
+                    : styles.Post__content__edit}>
+
+*/
