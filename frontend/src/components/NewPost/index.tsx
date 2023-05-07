@@ -2,35 +2,48 @@ import { IoMdSend } from "react-icons/io";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from './NewPost.module.scss';
 import { useApiPost } from "hooks/useApiPost";
-import { useRef} from "react";
+import { BaseSyntheticEvent, useState} from "react";
 
 type Inputs = {
     postText: string,
 };
 
+const DEFAULT_HEIGHT_TEXTAREA = '22px'
 
 export default function NewPost({change}:{change: React.Dispatch<React.SetStateAction<boolean>>}) {
 
     const { register, handleSubmit, reset } = useForm<Inputs>();
     const apiPost = useApiPost();
 
-    const defaultHeightTextarea = useRef(22);
+    const [hState, setHState ] = useState <HTMLElement | null >(null)
 
+    
     const onSubmit: SubmitHandler<Inputs> = async data => {
-        await apiPost.newPost(data.postText);    
+        
+        const content = data.postText.trimEnd().trimStart();
+
+        const dataMsg: any = await apiPost.newPost(content);    
+        console.log(dataMsg)
         change(true)
+        
+        if (hState)
+            hState.style.height = DEFAULT_HEIGHT_TEXTAREA;
+        
         reset()
     }
     
-    const changeHeight = (e:any) => {
+    const changeHeight = (e: BaseSyntheticEvent) => {
         
         if (!e) return
-    
+        
+        if(e.currentTarget)
+            setHState(e.currentTarget)
+        
         const target = e.target ? e.target : e;
     
-        target.style.height = `${defaultHeightTextarea.current}px`;
+        target.style.height = DEFAULT_HEIGHT_TEXTAREA;
         target.style.height = `${target.scrollHeight}px`
-    
+        
     }
 
     return (
@@ -58,57 +71,3 @@ export default function NewPost({change}:{change: React.Dispatch<React.SetStateA
         </form>
     )
 }
-
-/**
-    Simplesmente não entendi.
-    Duas situações distintas, mas que não entendi de jeito nenhum kkk
- */
-
-/*      A PRIMEIRA !
-
-        const changeHeight = (e: any) => { 
-      
-        if (!e)
-            return
-        
-        const target = e.target ? e.target : e;
-        
-        target.style.height = `${defaultHeightTextarea.current}px`;
-        target.style.height = `${target.scrollHeight}px`
-        }   
-
-        RESULTADO: Aqui o textArea sobe e desce normalmente e faz o submit 
-
-        Conclusão: Por mais que faça o que preciso, não entendi o por que de apenas funcionar  com "e:any", parecia que o e: tinha propriedades de mais de um objeto do "React.ChangeEvent<HTMLTextAreaElement>" e do "HTMLTextAreaElement"
-*/
-
-/*      A SEGUNDA !
-
-        
-        let refTextarea = useRef<HTMLTextAreaElement>(null);
-
-
-        const changeHeight = () => {
-        const element = refTextarea;
-        
-        if (!element) return
-        
-        element.style.height = `${defaultHeightTextarea.current}px`;
-        element.style.height = `${element.scrollHeight}px`
-
-    }
-    // acrescentando esse ref ter acesso aos elementos DOM do elemento
-
-        <textarea
-            ref={refTextarea}
-            onChange={changeHeight}
-        />
-
-
-    RESULTADO: Aqui o textarea sobe e desce, mas por conta do 'ref' parou de fazer submit.
-    se retirar o ref, volta a fazer submit, mas o ref não deveria interfirir em nada no submit do forms, o botão clica normalmente, mas não faz mais submit.
-
-    Obs. tentei usar um useState no lugar do useRef, mas também não funcionou.
-    
-    React.FormEvent<HTMLButtonElement>
-*/
