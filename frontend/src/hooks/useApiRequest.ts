@@ -2,7 +2,7 @@ import { api, settingAxios  } from "services/api";
 
 
 
-export const useApiConnection = () => ({
+export const useApiRequest = () => ({
 
     newRequest: async (id: number) => {
 

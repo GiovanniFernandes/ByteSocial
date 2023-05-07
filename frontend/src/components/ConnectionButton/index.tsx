@@ -3,7 +3,7 @@ import { FaUserFriends } from 'react-icons/fa'
 import styles from './ConnectionButton.module.scss'
 import { eStateConnections } from 'types/eStateConnections'
 import { useEffect, useReducer } from 'react'
-import { useApiConnection } from 'hooks/useApiConnection'
+import { useApiRequest } from 'hooks/useApiRequest'
 
 interface Props {
     aboutConnection: eStateConnections,
@@ -44,7 +44,7 @@ const reducerButton = ( state : eStateConnections, action: IAction) => {
 
 export const ConnectionButton = ({aboutConnection, user_id}: Props) => {
     const [state, dispatch] = useReducer(reducerButton, aboutConnection)
-    const apiConnection = useApiConnection();
+    const apiConnection = useApiRequest();
 
 
     useEffect(() => {
