@@ -272,7 +272,32 @@ class UserController {
     static async deletaUsuario (req,res) {
 
         const id = req.user_id ;
-        try{
+        try {
+            
+            await Likes.destroy({
+                where: {
+                    user_id: id
+                }
+            })
+            
+            const todosPostUser = await Posts.findAll({where:{user_id:id}})
+
+            await todosPostUser.map(e => {
+
+                Likes.destroy({
+                    where: {
+                        post_id: e.id
+                    }
+                })
+
+            })
+
+            await Posts.destroy({
+                where: {
+                    user_id: id
+                }
+            })
+
             await Connections.destroy({
                 where: {
                     [Op.or]:[
@@ -281,11 +306,7 @@ class UserController {
                     ]
                 }
             })
-            await Posts.destroy({
-                where: {
-                    user_id: id
-                }
-            })
+            /*
             await Messages.destroy({
                 where: {
                     [Op.or]:[
@@ -294,13 +315,8 @@ class UserController {
                     ]
                 }
             })
-            await Likes.destroy({
-                where: {
-                    user_id: id
-                }
-            })
-
-            await Users.destroy({where:{id}});
+            */
+            await Users.destroy({ where: { id } } );
             return res.status(200).json({msg:`id ${id} removido`});
 
         } catch (errors){
