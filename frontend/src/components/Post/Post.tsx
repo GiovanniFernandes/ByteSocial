@@ -22,6 +22,9 @@ type Data = {
     msg: string
 }
 
+const LIKE_COLOR_WHITE = '#FFFFFF';
+const LIKE_COLOR_BLUE = '#0068DF';
+
 export default function Post(props : Props) {
 
     const auth = useContext(AuthContext);
@@ -29,10 +32,7 @@ export default function Post(props : Props) {
     const apiPost = useApiPost();
     
     const [like,setLike] = useState < boolean > (props.liked)
-    const white = '#FFFFFF';
-    const blue = '#0068DF';
-    
-    
+  
     const currentUserIdxUserId = useMemo(() => {
         if (auth.user) 
             return auth.user.id === Number(props.userId)
@@ -40,7 +40,8 @@ export default function Post(props : Props) {
             return false
     }, [auth.user])
 
-    const [anchorEl, setAnchorEl] = useState < null | HTMLElement > (null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    
     const openMenuEdit = Boolean(anchorEl);
 
 
@@ -147,18 +148,18 @@ export default function Post(props : Props) {
                     className={styles.Post__content__icons__Like}
                     style={like
                     ? {
-                        backgroundColor: blue
+                        backgroundColor: LIKE_COLOR_BLUE
                     }
                     : {
-                        backgroundColor: white
+                        backgroundColor: LIKE_COLOR_WHITE
                     }}
                     onClick={handleClickLike}>
 
                     <Heart
                         size={16}
                         color={(like)
-                        ? white
-                        : blue}
+                        ? LIKE_COLOR_WHITE
+                        : LIKE_COLOR_BLUE}
                         weight={(like)
                         ? "fill"
                         : "regular"}/>
@@ -166,10 +167,10 @@ export default function Post(props : Props) {
                         className={styles.Post__content__icons__Like__text}
                         style={(like
                         ? {
-                            color: white
+                            color: LIKE_COLOR_WHITE
                         }
                         : {
-                            color: blue
+                            color: LIKE_COLOR_BLUE
                         })}>{props.curtidas}</p>
 
                 </button>
