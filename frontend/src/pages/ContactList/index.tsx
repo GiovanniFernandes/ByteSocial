@@ -3,7 +3,8 @@ import Menu from '../../components/Menu'
 import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
-import axios from "axios"
+import { useApiConnection } from 'hooks/useApiConnection'
+
 
 interface Props {
   selectedMenu: number,
@@ -34,8 +35,10 @@ export default function ContactList(props: Props){
       props.setSelectedMenu(3)
 
       async function getContacts(){
-        const contact = await axios.get<Array<Contact>>("http://localhost:5000/contact");
-        setList(contact.data);
+        //const contact = await axios.get<Array<Contact>>("http://localhost:5000/contact");
+        const contact = await useApiConnection().showConnections()
+        console.log(contact);
+        setList(contact);
       }
       getContacts()
     }, [])
