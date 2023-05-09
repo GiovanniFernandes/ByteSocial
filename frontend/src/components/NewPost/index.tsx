@@ -22,14 +22,19 @@ export default function NewPost({change}:{change: React.Dispatch<React.SetStateA
         
         const content = data.postText.trimEnd().trimStart();
 
-        const dataMsg: any = await apiPost.newPost(content);    
-        console.log(dataMsg)
-        change(true)
+        const dataMsg:{content:string} = await apiPost.newPost(content);    
         
+        if (!dataMsg.content) {
+            console.log("Erro: Newpost")
+            return
+        }
+        change(true)
         if (hState)
             hState.style.height = DEFAULT_HEIGHT_TEXTAREA;
         
         reset()
+        
+        
     }
     
     const changeHeight = (e: BaseSyntheticEvent) => {
