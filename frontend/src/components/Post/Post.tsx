@@ -1,11 +1,11 @@
 import {AuthContext} from 'contexts/Auth/AuthContexts';
 import styles from './Post.module.scss';
-import {ChatCircle, DotsThreeOutline, Heart, Trash} from 'phosphor-react';
-import {useContext, useMemo, useRef, useState} from 'react';
+import {ChatCircle, Heart, TrashSimple} from 'phosphor-react';
+import {useContext, useMemo, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useApiPost} from 'hooks/useApiPost';
-import MenuEdit from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem'
+import { IData } from 'types/IData';
+
 interface Props {
     id : string,
     username : string,
@@ -18,12 +18,11 @@ interface Props {
     setRefresh : React.Dispatch < React.SetStateAction < boolean >>
 }
 
-type Data = {
-    msg: string
-}
+
 
 const LIKE_COLOR_WHITE = '#FFFFFF';
 const LIKE_COLOR_BLUE = '#0068DF';
+const DELETE_POST_COLOR = '#F26169'
 
 export default function Post(props : Props) {
 
@@ -40,24 +39,11 @@ export default function Post(props : Props) {
             return false
     }, [auth.user])
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    
-    const openMenuEdit = Boolean(anchorEl);
-
-
-    const handleClickMenuEditOpen = (event : React.MouseEvent < HTMLButtonElement >) => {
-        setAnchorEl(event.currentTarget);
-    }
-
-    const handleClickMenuEditClose = () => {
-        setAnchorEl(null);
-    }
 
     const handleClickDeletePost = async () => {
-        const data: Data = await apiPost.deletePost(props.id);
+        const data: IData = await apiPost.deletePost(props.id);
 
         if (data.msg === "Post deletado com sucesso!") {
-            setAnchorEl(null);
             props.setRefresh(true);
         }
         else
@@ -67,7 +53,7 @@ export default function Post(props : Props) {
     
     const handleClickLike = async() => {
 
-        const data : Data = await apiPost.iLike(props.id);
+        const data : IData = await apiPost.iLike(props.id);
         if (data.msg === 'ok') {
             setLike(e => !e);
             props.setRefresh(true)
@@ -96,30 +82,9 @@ export default function Post(props : Props) {
         <div className={styles.Post__content}>
 
             <section className={styles.Post__content__containerEdit}>
-                {currentUserIdxUserId && <button type='reset' onClick={handleClickMenuEditOpen}>
-                    <DotsThreeOutline size={20} color="#0068df" weight="fill"/>
+                {currentUserIdxUserId && <button type='reset' onClick={handleClickDeletePost}>
+                    <TrashSimple size={17} color={DELETE_POST_COLOR} weight="fill" />
                 </button>}
-                <div>
-                    <MenuEdit
-                        open={openMenuEdit}
-                        anchorEl={anchorEl}
-                        onClose={handleClickMenuEditClose}
-                        elevation={0}
-                        anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right'
-                    }}
-                        transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right'
-                    }}>
-                        <MenuItem onClick={handleClickDeletePost}>
-                            <Trash size={16} color="#e00016" weight="duotone"/>
-                            <label className={styles.Post__content__containerEdit_menuItem_label}>deletar post</label>
-                        </MenuItem>
-                    </MenuEdit>
-
-                </div>
             </section>
 
             <section className={styles.Post__content__user}>

@@ -4,7 +4,7 @@
 
     &__content {
         display: block;
-        padding: 13px 36px 37px 36px;
+        padding: 13px 6px 37px 36px;
         margin-top: 36px;
         max-width: 768px;
         width: 100%;
@@ -17,12 +17,12 @@
         &__containerEdit {
 
             height: 24px;
-            left: 3.5%;
+            //left: 5.2%;
             display: flex;
+            width: 100%;
             justify-content: flex-end; /* alinha o conteúdo no fim do contêiner */
             align-items: flex-start; /* alinha o conteúdo no topo do contêiner */
             position: relative;
-            top: 2px;
 
             & button {
                 background-color: white;
