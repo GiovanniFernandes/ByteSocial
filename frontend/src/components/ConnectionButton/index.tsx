@@ -1,26 +1,23 @@
-import { BsFillPersonPlusFill } from 'react-icons/bs'
+import { BsFillPersonPlusFill, BsFillPersonDashFill, BsPersonXFill } from 'react-icons/bs'
 import { FaUserFriends } from 'react-icons/fa'
 import styles from './ConnectionButton.module.scss'
 import { eStateConnections } from 'types/eStateConnections'
 import { useEffect, useReducer } from 'react'
 import { useApiConnection } from 'hooks/useApiConnection'
+import { IData } from 'types/IData'
 
 interface Props {
     aboutConnection: eStateConnections,
-    setAboutConnetion?: React.Dispatch<React.SetStateAction<eStateConnections>>,
+    refresh:  React.Dispatch<React.SetStateAction<boolean>>,
     user_id: number
 }
 interface IAction {
     type:
     |'noConnection'
     |'requestSent'
-    |'receivedRequest'
     |'friends' 
 }
 
-enum eRequestSent {
-    accept, reject
-}
 
 const reducerButton = ( state : eStateConnections, action: IAction) => {
 
@@ -31,8 +28,6 @@ const reducerButton = ( state : eStateConnections, action: IAction) => {
             return eStateConnections.noConnection
         case "requestSent":
             return eStateConnections.requestSent
-        case "receivedRequest":
-            return eStateConnections.receivedRequest
         case "friends":
             return eStateConnections.friends
         default:
@@ -42,7 +37,7 @@ const reducerButton = ( state : eStateConnections, action: IAction) => {
 
 
 
-export const ConnectionButton = ({aboutConnection, user_id}: Props) => {
+export const ConnectionButton = ({aboutConnection, user_id, refresh}: Props) => {
     const [state, dispatch] = useReducer(reducerButton, aboutConnection)
     const apiConnection = useApiConnection();
 
@@ -53,8 +48,6 @@ export const ConnectionButton = ({aboutConnection, user_id}: Props) => {
                 dispatch({ type: 'noConnection' }); break;
             case eStateConnections.requestSent:
                 dispatch({ type: 'requestSent' }); break;
-            case eStateConnections.receivedRequest:
-                dispatch({ type: 'receivedRequest' }); break;
             case eStateConnections.friends:
                 dispatch({ type: 'friends' }); break;
         }
@@ -62,50 +55,43 @@ export const ConnectionButton = ({aboutConnection, user_id}: Props) => {
 
 
     const clickNoConncetion = async () => {
-        const data:any = await apiConnection.newRequest(user_id)
+        const data: IData = await apiConnection.newRequest(user_id)
         
-        if (data !== false) {
-             dispatch({ type: "requestSent" })
-        }
+        if (data.msg === "Solicitação enviada com sucesso!") {
+            dispatch({ type: "requestSent" })
 
+        } else if(data.msg === "Solicitação de amizade aceita!"){
+            dispatch({ type: "friends" })
+            refresh(true);
+        } else {
+            console.log("Erro: clickNoConnection")
+        }
     }
     
     const clickRequestSent = async () => {
 
-        const data: any = await apiConnection.cancelRequest(user_id)
+        const data: IData = await apiConnection.cancelRequest(user_id)
 
-        if(data)
+        if (data.msg === "Solicitação Cancelada!") {
             dispatch({ type: "noConnection" })
+        }
         else 
             console.log("ERRO: clickRequestSent")
 
     }
 
-    const clickReceivedRequest = async (request: eRequestSent) => {
-        if (request === eRequestSent.accept) {
-
-            const data: any = await apiConnection.acceptRequest(user_id)
-
-            if (data)
-                dispatch({ type: "friends" })
-            else
-                console.log("erro clickReceivedRequest accept")
-
-            
-        }
-        else {
-            const data: any = await apiConnection.rejectRequest(user_id)
-
-            if (data)
-                dispatch({ type: "noConnection" })
-            else
-                console.log("erro clickReceivedRequest reject")
-                
-        }
-    }
-
     const clickFriends = async () => {
-        console.log("https://www.youtube.com/watch?v=NAmBBzrD2vc&ab_channel=NayLima")
+        console.log("Assista: ","https://www.youtube.com/watch?v=NAmBBzrD2vc&ab_channel=NayLima")
+        
+        const data: IData = await apiConnection.deleteConnection(user_id)
+        
+        if (data.msg === "Usuário deletado da sua lista de amigos!") {
+            dispatch({ type: "noConnection" });
+            refresh(true);
+        } else {    
+            console.log("erro em ClickFriend.")
+        }
+
     }
     
     switch (state) {
@@ -124,44 +110,21 @@ export const ConnectionButton = ({aboutConnection, user_id}: Props) => {
         case eStateConnections.requestSent:
             return <>
                 <button className={styles.requestSent} onClick={clickRequestSent}>
-                 <BsFillPersonPlusFill
+                 <BsPersonXFill
                  className={styles.requestSent__icon}
                  size={20}
                  />
-                 <h3 className={styles.requestSent__text}>enviado</h3>
+                 <h3 className={styles.requestSent__text}>Cancelar Envio</h3>
                 </button>
             </> 
-        
-        case eStateConnections.receivedRequest:
-            return (
-                <div className={styles.receivedRequest}>
-                    <button className={styles.receivedRequest_accept}
-                        onClick={() => clickReceivedRequest(eRequestSent.accept)}>
-                        <BsFillPersonPlusFill
-                        className={styles.receivedRequest_accept__icon}
-                        size={20}
-                        />
-                        <h3 className={styles.receivedRequest_accept__text}>aceitar</h3>
-                    </button>
-                    <button className={styles.receivedRequest_refect}
-                        onClick={() => clickReceivedRequest(eRequestSent.reject)}>
-                        <BsFillPersonPlusFill
-                        className={styles.receivedRequest_refect__icon}
-                        size={20}
-                        />
-                        <h3 className={styles.receivedRequest_refect__text}>rejeitar</h3>
-                    </button>
-                </div>
-            )
-        
         case eStateConnections.friends:
             return (
             <button className={styles.friends} onClick={clickFriends}>
-                <FaUserFriends
+                <BsFillPersonDashFill
                     className={styles.friends__icon}
                     size={20}
                 />
-                <h3 className={styles.friends__text}>Best Friend</h3>
+                <h3 className={styles.friends__text}>Desconectar-se</h3>
             </button>)
         
         default:

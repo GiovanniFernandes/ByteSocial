@@ -43,7 +43,9 @@ export default function OtherUser(props: Props) {
     setListPost(userProfile.list)
     setAmountPosts(userProfile.count)
     setAmountConnections(userProfile.connections)
-    setStatusFriendship(userProfile.statusFriendship);
+    setStatusFriendship(() => (userProfile.statusFriendship === 2) ? 0
+      : userProfile.statusFriendship 
+    );
 
   }
 
@@ -77,6 +79,7 @@ export default function OtherUser(props: Props) {
           <ConnectionButton
             user_id={Number(postUserId)}
             aboutConnection={statusFriendship}
+            refresh={setRefresh}
           />
 
           <ul className={styles.profile__OtherUser__interactions}>

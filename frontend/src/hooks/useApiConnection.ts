@@ -74,6 +74,21 @@ export const useApiConnection = () => ({
         const resposta = await api.get(`/requests`, settingGeneralAxios )
         
         return resposta.data;
+    },
+
+    deleteConnection: async (id: number) => {
+
+        if (id === null)  return false
+        
+        const settingGeneralAxios = settingAxios();
+
+        if (!settingGeneralAxios)
+            return false
+
+            const resposta = await api.delete(`/connection/${id.toString()}`,
+            settingGeneralAxios)
+
+        return resposta.data;
     }
     
 
