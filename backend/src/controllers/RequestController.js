@@ -33,7 +33,16 @@ class RequestController {
                 if (connection2.isStatus) {
                     return res.status(400).json({msg:"Você já é amigo desse usuário"});
                 }
-                return res.status(400).json({msg:"Você já recebeu solicitação"});
+                else {
+                    await Connections.update({ isStatus:1 },
+                    {
+                        where: {
+                            user1_id: userReq.id,
+                            user2_id: userId
+                        }
+                    })
+                    return res.status(201).json({msg:"Solicitação de amizade aceita!"});
+                }
             }
 
             if (connection) {
