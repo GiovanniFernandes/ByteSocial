@@ -30,7 +30,7 @@ export default function Pagination({limit, total, offset, setOffset}: Props) {
                    
 
                 }
-                {/* <button className={page === currentPage ? 'Pagination_Pagination__pagination__button-active' : 'Pagination_Pagination__pagination__button'} type="reset" onClick={()=>{setOffset((page-1)*limit)}}>{page}</button> */}
+                
               </li>
             )
           }
