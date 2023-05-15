@@ -93,9 +93,8 @@ export default function ContactList(props: Props){
                     <img src={`https://avatar.uimaterial.com/?setId=0496UVJDTqyd2eCIAa46&name=${item.username}`}/>
                   </div>
 
-                  <h2 className={styles.contactListPrincipal__contactList__userName}>{item.username}</h2>
+                  <a className={styles.contactListPrincipal__contactList__userName} onClick={() => navigate(`/otherUser/${item.id}`)}>{item.username}</a>
                   
-                
               </li>
                 )}
               
