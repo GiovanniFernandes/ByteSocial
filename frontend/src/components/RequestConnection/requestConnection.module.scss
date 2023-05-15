@@ -55,6 +55,7 @@
           line-height:21px;
           display:flex;
           text-decoration: none;
+          text-transform: capitalize;
           cursor: pointer;
         }
         &__RequestEmail{
@@ -62,7 +63,7 @@
           font-size: 10px;
           color: $cinza_solicitacao;
           width: fit-content;
-             
+          text-transform:lowercase;
         }
       
       }
