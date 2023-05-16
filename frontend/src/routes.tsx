@@ -23,8 +23,7 @@ export default function AppRouter() {
       <Router>
         
         <Routes>
-           <Route path='contactlist' element={<ContactList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
-           <Route path='chatList' element={<ChatList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+           
           <Route path='chat' element={<Chat selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
           
 
@@ -38,6 +37,8 @@ export default function AppRouter() {
           <Route path='/' element={<DefaultPage selectedMenu={selectedMenu}/>}>
             <Route path='profile' element={<Profile selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>} />
             <Route path='settings' element={<Settings selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+            <Route path='chatList' element={<ChatList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
+            <Route path='contactlist' element={<ContactList selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />} />
             
  
             <Route path='otherUser/:postUserId' element={<OtherUser selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu}/>}/>

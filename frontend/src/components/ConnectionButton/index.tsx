@@ -1,5 +1,4 @@
 import { BsFillPersonPlusFill, BsFillPersonDashFill, BsPersonXFill } from 'react-icons/bs'
-import { FaUserFriends } from 'react-icons/fa'
 import styles from './ConnectionButton.module.scss'
 import { eStateConnections } from 'types/eStateConnections'
 import { useEffect, useReducer } from 'react'
@@ -132,22 +131,4 @@ export const ConnectionButton = ({aboutConnection, user_id, refresh}: Props) => 
     }
     
 }
-  
 
- /*
-    Estados do botão    
-    1º estágio 
-        - vizualização padrão = sem connexão = noConnction = 0
-            - ação = solicitaçaõ de amizade, estado alterado para o 2º estágio 
-    2º estágio 
-        - vizualização de quem enviou: = resquestSent = 1
-            - botão de cancelar solicitação de amizade, em vermelho ou laranja
-                - ação = cancela solicitação enviada, estado alterado para o 1º estágio  
-        - vizualização de quem recebeu: = receivedRequest =     2 
-            - botão de aceitar aceitar ou recusar amizade, seguir exemplo dos botões em perfil
-                - ação aceitar = envia para o 3º estágio 
-                - ação recusar = envia para o 1º estágio
-    3º estágio = friend = 3 
-        - vizualização de amigos
-            - ação = desfazer amizade ao clicar no botão, envia para o 1º estágio
-*/
