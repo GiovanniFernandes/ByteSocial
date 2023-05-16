@@ -1,6 +1,6 @@
 import styles from './requestConnection.module.scss'
 import { X, Check } from "@phosphor-icons/react";
-import { useApiRequest } from 'hooks/useApiRequest';
+import { useApiConnection } from 'hooks/useApiConnection';
 
 
 
@@ -20,7 +20,7 @@ interface iData {
 export default function RequestConnection(
     { user_id, email, username, changeListRequest, changeInteractions }: Props) {
 
-    const apiConnection = useApiRequest()
+    const apiConnection = useApiConnection()
 
     const clickAccept = async () => {
         const data: iData = await apiConnection.acceptRequest(user_id);

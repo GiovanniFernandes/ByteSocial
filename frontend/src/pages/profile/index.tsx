@@ -9,7 +9,7 @@ import { useApiUser } from 'hooks/useApiUser';
 import { _userProfile } from '../../types/userProfile'
 import Post from 'components/Post/Post';
 import RequestConnection from 'components/RequestConnection';
-import { useApiRequest } from 'hooks/useApiRequest';
+import { useApiConnection } from 'hooks/useApiConnection';
 
 interface Props {
   selectedMenu: number,
@@ -51,7 +51,7 @@ export default function Profile(props: Props) {
   const [listResquest, setListRequest] = useState<request[]>([])
 
   const apiUser = useApiUser();
-  const apiConnection = useApiRequest();
+  const apiConnection = useApiConnection();
 
 
   useEffect(() => {
