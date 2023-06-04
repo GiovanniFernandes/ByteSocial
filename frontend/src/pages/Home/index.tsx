@@ -19,7 +19,7 @@ export default function Home(props: Props) {
   const [changeListPost, setChangeListPost] = useState<boolean>(false);
   const [listPost, setListPost] = useState<tPost[]>([]);
   const [total, setTotal] = useState<number>(1);
-  const [offset, setOffset] = useState<number>(5);
+  const [offset, setOffset] = useState<number>(0);
 
 
   const apiPost = useApiPost();
@@ -34,7 +34,6 @@ export default function Home(props: Props) {
   }, [changeListPost, offset])
 
   const effectToPosts = async () => {
-    console.log("offset= ", offset)
     const data: aboutPosts = await apiPost.showPosts(offset, LIMIT);
     setTotal(data.count);
     setListPost(data.list);
