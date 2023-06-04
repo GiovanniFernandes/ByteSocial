@@ -36,7 +36,7 @@ export default function Home(props: Props) {
   const effectToPosts = async () => {
     const data: aboutPosts = await apiPost.showPosts(offset, LIMIT);
     setTotal(data.count);
-    setListPost(data.list);
+    setListPost(data.list ? data.list : []);
   }
 
   
@@ -57,13 +57,19 @@ export default function Home(props: Props) {
       </div>
       <div className={styles.Home__FeedPosts}>
         {listPost.map(e => <Post
+          
+          id ={ e.postId }
           username={e.postUsername}
           conteudo={e.postContent}
-          curtidas={5}
-          comentario={10}
+          curtidas={e.postTotalLikes}
+          comentario={e.postTotalLikes*5}
           dataPostagem={e.postDate}
           userId={e.postUserId}
+          liked={e.userLiked}
+          setRefresh={setChangeListPost}
           key={`postHome${e.postId}`}
+
+
         ></Post>)}
         
       </div>

@@ -33,7 +33,16 @@ class RequestController {
                 if (connection2.isStatus) {
                     return res.status(400).json({msg:"Você já é amigo desse usuário"});
                 }
-                return res.status(400).json({msg:"Você já recebeu solicitação"});
+                else {
+                    await Connections.update({ isStatus:1 },
+                    {
+                        where: {
+                            user1_id: userReq.id,
+                            user2_id: userId
+                        }
+                    })
+                    return res.status(201).json({msg:"Solicitação de amizade aceita!"});
+                }
             }
 
             if (connection) {
@@ -188,13 +197,24 @@ class RequestController {
         try {
             const id = req.user_id;
             
-            const requests = await Connections.findAll({where:{user2_id:id, isStatus:false}})
+            const requiredReceived = await Users.findOne({
+                where:{id:Number(id)},
+                include: {
+                    model:Users,
+                    as: 'user2',
+                    through: {
+                        where: {
+                            isStatus:false
+                        },
+                        attributes: []
+                    },
+                    attributes: ['id','username', 'email']
+                },
+                attributes:[]
+            })
 
-            if (!requests) {
-                return res.status(200).json({msg:"Você não possui nenhuma solicitação de conexão."});
-            }
 
-            return res.status(200).json({requests});
+            return res.status(200).json(requiredReceived.user2);
 
         } catch (error) {
             return res.status(500).json(error.message)

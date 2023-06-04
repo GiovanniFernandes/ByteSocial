@@ -1,7 +1,7 @@
 [
   {
     "title": "Inicio",
-    "link":"/home",
+    "link":"/",
     "icon": "/assets/icons/home.svg",
     "iconSelected": "/assets/icons/selected/home.svg",
     "id": 1

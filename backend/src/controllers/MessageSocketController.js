@@ -20,7 +20,7 @@ class MessageSocketController {
       
       socket.on('send-message', async ({ senderId, receiverId, message }) => {
         try {
-          const isFriend = await ConnectionController.friendshipVerification(senderId, receiverId);
+          await ConnectionController.friendshipVerification(senderId, receiverId);
           const savedMessage = await MessageController.enviarMensagem(receiverId, senderId, message);
           
           //armazena o id do socket do usuário que recebeu a mensagem

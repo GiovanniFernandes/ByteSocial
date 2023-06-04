@@ -7,13 +7,25 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       Users.hasMany(models.Posts, {
-        foreignKey:"user_id",
+        foreignKey: "user_id",  
+        onDelete:'CASCADE'
       })
 
-      Users.hasMany(models.Likes,
-      {
-          foreignKey:"user_id",
+      Users.hasMany(models.Likes, {
+        foreignKey:"user_id",
+        onDelete:'CASCADE'
       })
+      /*
+      Users.belongsToMany(models.Posts,
+      {
+        through: 'Likes',
+        as:'b',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+        })
+      */
+      
+      
       Users.belongsToMany(models.Users,
       {
           through:'Connections',

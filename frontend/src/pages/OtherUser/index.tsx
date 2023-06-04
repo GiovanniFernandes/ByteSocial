@@ -24,21 +24,29 @@ export default function OtherUser(props: Props) {
   
   const [amountConnections, setAmountConnections] = useState<number>(0)
 
-  const [aboutConnetion, setAboutConnection] = useState<eStateConnections>(eStateConnections.unrelated)
+  const [refresh, setRefresh] = useState<boolean>(false)
+  const [statusFriendship, setStatusFriendship] = useState<eStateConnections>(eStateConnections.noConnection)
+  
+
 
   useEffect(() => {
     props.setSelectedMenu(1)
+    setRefresh(false);
     getUser()
-  }, [])
+  }, [refresh])
   
   const getUser = async () => {
     if (postUserId === undefined) return
-    const userProfile: _userProfile = await apiUser.getUserProfile(postUserId, 0);  
+    const userProfile: _userProfile & { statusFriendship: number } = await apiUser.getUserProfile(postUserId, 0); 
     
     setUsername(userProfile.username)
     setListPost(userProfile.list)
     setAmountPosts(userProfile.count)
     setAmountConnections(userProfile.connections)
+    setStatusFriendship(() => (userProfile.statusFriendship === 2) ? 0
+      : userProfile.statusFriendship 
+    );
+
   }
 
   const interactions = [
@@ -67,7 +75,12 @@ export default function OtherUser(props: Props) {
         </div>
         <div className={styles.profile__OtherUser__infos}>
           <h2 className={styles.profile__OtherUser__name}>{username}</h2>
-          <ConnectionButton aboutConnetion={aboutConnetion} setAboutConnetion={setAboutConnection}/>
+          
+          <ConnectionButton
+            user_id={Number(postUserId)}
+            aboutConnection={statusFriendship}
+            refresh={setRefresh}
+          />
 
           <ul className={styles.profile__OtherUser__interactions}>
               {interactions.map((item) => (
@@ -87,12 +100,15 @@ export default function OtherUser(props: Props) {
         </div>
         <div className={styles.profile__sectionPosts_FeedPosts}>
           {listPost.map(e => <Post
+          id ={ e.postId }
           username={e.postUsername}
           conteudo={e.postContent}
-          curtidas={5}
-          comentario={10}
+          curtidas={e.postTotalLikes}
+          comentario={e.postTotalLikes*5}
+          liked={e.userLiked}
           dataPostagem={e.postDate}
           userId={e.postUserId}
+          setRefresh={setRefresh}
           key={`postOtherUser${e.postId}`}
           ></Post>)}
       </div>

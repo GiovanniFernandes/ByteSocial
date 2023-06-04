@@ -1,12 +1,3 @@
-
-/*
-interface Props {
-    err: string,
-    color?: string | "red" 
-}
-*/
-
-
 export default function SpanError({ err }: { err: string}) {
 
     const style = {

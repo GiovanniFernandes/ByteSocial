@@ -4,12 +4,13 @@
   background: $branco-destaque;
   width: 285px;
   height: 100vh;
+  position: fixed;
 
   &__closed {
     background: $branco-destaque;
     width: 125px;
     height: 100vh;
-    
+    position: fixed;
   }
   &__hideAligner {
     display: flex;
@@ -43,7 +44,6 @@
     &__pic {
       width: 81px;
       height: 81px;
-      background: $azul-botao-transparencia;
       border-radius: 13px;
       padding: 4px;
       img {
@@ -61,6 +61,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-transform: capitalize;
     }
   }
   &__list {

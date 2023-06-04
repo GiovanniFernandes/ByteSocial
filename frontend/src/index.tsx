@@ -4,6 +4,7 @@ import 'normalize.css';
 import './index.css';
 import AppRouter from './routes';
 import { AuthProvider } from 'contexts/Auth/AuthProvider';
+import { MenuProvider } from 'contexts/Menu/MenuProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <AppRouter />
+      <MenuProvider>
+        <AppRouter />
+      </MenuProvider>
     </AuthProvider>
   </React.StrictMode>
 );

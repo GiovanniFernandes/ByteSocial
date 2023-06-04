@@ -41,45 +41,59 @@ class UserController {
         }
     }
 
-    static async pegaUsuarioEspecifico (req,res){
+    static async getMyProfile (req,res){
 
-        const { id } = req.params;
+        const id  = req.user_id;
+        const { offset, limit } = req.params;
         
-        try{
-            const user = await Users.findOne({where:{id}})
+        try {
+            const user = await Users.findOne({ where: {id} })
 
-            const posts = await Posts.findAll({
-                order: [
-                    ['createdAt', 'DESC']
-                  ],
-                  where:{user_id:user.id}
-                })
+            const { count, rows } = await postService.findUsersPosts(offset, limit, id)
 
-            if(posts.length==0) return res.status(200).json({username: user.username,
-                "Criado em ": user.createdAt,
-                qtdPosts: posts.length,
-                posts: "Usuário não possui posts",
-                });
+            const countConnections = await Connections.count({
+                where:{
+                    [Op.or]:[
+                        {   user1_id: id    },
+                        {   user2_id: id    }
+                    ],
+                    isStatus: true
+                }
+            })
 
-            if(user) return res.status(200).json
-            ({
+            const countRequests = await Connections.count({
+                where: { 
+                    user2_id:id,
+                    isStatus: false
+                }
+            })
+
+            const normalizationPosts = await postService.normalizationPosts(rows, id); 
+            
+            return res.status(200).json({
+                user_id:user.id,
                 username: user.username,
-                "Criado em ": user.createdAt,
-                qtdPosts: posts.length,
-                posts,
+                count, // qtd posts
+                list: normalizationPosts,
+                connections: countConnections,
+                requests: countRequests
             });
 
-            return res.status(404).json({msg:"Usuario não encontrado"}); 
+
+            //return res.status(404).json({msg:"Usuario não encontrado"}); 
         } catch (error){
             return res.status(500).json(error.message)
         }
     }
+
+    
 
     static async pegaProfile(req,res){
         try {
 
             const userId = req.user_id;
             const { offset, id } = req.params;
+            const limit = 8;
             let status;
             
             /*
@@ -124,15 +138,9 @@ class UserController {
                 status = 3;
             }
 
-            const { count, rows } = await Posts.findAndCountAll({
-                where: {user_id: Number(id)},
-                include: "User",
-                order:[['createdAt', 'DESC']],
-                offset: Number(offset),
-                limit:8
-            });
+            const { count, rows } = await postService.findUsersPosts(offset, limit, id)
             
-            const normalizationPosts = postService.normalizationPosts(rows);
+            const normalizationPosts = postService.normalizationPosts(rows, userId);
             
             const { username } = await Users.findOne({ where: { id } });
             
@@ -264,7 +272,32 @@ class UserController {
     static async deletaUsuario (req,res) {
 
         const id = req.user_id ;
-        try{
+        try {
+            
+            await Likes.destroy({
+                where: {
+                    user_id: id
+                }
+            })
+            
+            const todosPostUser = await Posts.findAll({where:{user_id:id}})
+
+            await todosPostUser.map(e => {
+
+                Likes.destroy({
+                    where: {
+                        post_id: e.id
+                    }
+                })
+
+            })
+
+            await Posts.destroy({
+                where: {
+                    user_id: id
+                }
+            })
+
             await Connections.destroy({
                 where: {
                     [Op.or]:[
@@ -273,11 +306,7 @@ class UserController {
                     ]
                 }
             })
-            await Posts.destroy({
-                where: {
-                    user_id: id
-                }
-            })
+            /*
             await Messages.destroy({
                 where: {
                     [Op.or]:[
@@ -286,13 +315,8 @@ class UserController {
                     ]
                 }
             })
-            await Likes.destroy({
-                where: {
-                    user_id: id
-                }
-            })
-
-            await Users.destroy({where:{id}});
+            */
+            await Users.destroy({ where: { id } } );
             return res.status(200).json({msg:`id ${id} removido`});
 
         } catch (errors){
@@ -303,3 +327,5 @@ class UserController {
 }
 
 module.exports = UserController;
+
+

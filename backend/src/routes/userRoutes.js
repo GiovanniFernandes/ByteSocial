@@ -4,10 +4,12 @@ const auth = require('../middlewares/auth')
 const router = Router();
 
 router
-.get('/user/:id',auth,UserController.pegaUsuarioEspecifico)
 .get('/users', auth, UserController.pegaTodosUsuarios)
 .get('/profile/:id/:offset', auth, UserController.pegaProfile)
 
+.get('/myprofile/:offset/:limit', auth, UserController.getMyProfile)   
+    
+    
 .post('/cadastro', UserController.criaUsuario)
 
 .put('/user/change/username', auth, UserController.alteraUsername)

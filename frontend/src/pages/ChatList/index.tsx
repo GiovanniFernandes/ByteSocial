@@ -3,7 +3,7 @@ import Menu from '../../components/Menu'
 import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
-import axios from "axios"
+import { useApiMessage } from 'hooks/useApiMessage'
 
 
 interface Props {
@@ -11,9 +11,20 @@ interface Props {
   setSelectedMenu: React.Dispatch<React.SetStateAction<number>>
 }
 
+interface lastMessage {
+  id: string,
+  sender_id: string,
+  receiver_id: string,
+  message: string,
+  timestamp: string,
+  updatedAt: string,
+  createdAt: string
+}
+
 interface Contact {
   username: string,
-  id:string
+  userId: string,
+  lastMessage: lastMessage
 }
 
 export default function ContactList(props: Props){
@@ -35,8 +46,10 @@ export default function ContactList(props: Props){
       props.setSelectedMenu(3)
 
       async function getContacts(){
-        const contact = await axios.get<Array<Contact>>("http://localhost:3000/contact");
-        setList(contact.data);
+        const contact = await useApiMessage().getConversation()
+        console.log(contact);
+        
+        setList(contact);
       }
       getContacts()
     }, [])
@@ -86,7 +99,7 @@ export default function ContactList(props: Props){
           <div className={styles.chatListPrincipal__contactList}>
             <ul className={styles.chatListPrincipal__contactList__list}>
               {contactsFilter.map((item) => 
-                <li key={`chatList:${item.id}`}
+                <li key={`chatList:${item.userId}`}
                   className={styles.chatListPrincipal__contactList__contact}>
                 
                   
@@ -96,7 +109,7 @@ export default function ContactList(props: Props){
                   </div>
                   <div className={styles.chatListPrincipal__contactList__contactText}>
                     <h2 className={styles.chatListPrincipal__contactList__userName}>{item.username}</h2>
-                    <p className={styles.chatListPrincipal__contactList__userMsg}>Lorem ipsum dolor sit amet consectetur adipisicing elit vasco</p>
+                    <p className={styles.chatListPrincipal__contactList__userMsg}>{item.lastMessage.message}</p>
                   </div>
                 </li>
                 )}

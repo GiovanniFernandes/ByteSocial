@@ -1,101 +1,128 @@
 @import 'styles/variaveis';
 
-.Post{
-  width: 768px;
-  &__content{
-    padding: 37px 36px;
-    margin-top: 36px;
-    width: 768px;
-    min-height: 261px;
-    height: auto;
-    border-radius:10px;
-    background-color: white;
-    border: 1px solid #C7D7EC;
-    &__icons{
-      display:flex;
-      margin-top: 50px;
-      background-color: white;
-      
-      &__Like{
-        
-        display:flex;
-        border-radius: 10px;
-        align-items: center;
-        text-align: center;
-        justify-content:center;
-        width: 60px;
-        height: 34px;
-        
-        background-color: $azul-destaque;
-        
-        border: 1px solid #0068DF;
-        
-        &__text{
-          font-size: 14px;
-          color: white;
-          margin-left: 5px;
-        }
-        
-        
-      }
-      &__Comment{
-        border-radius: 10px;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        display:flex;
-        width: 60px;
-        height: 34px;
-        margin-left: 6px;
-        background-color: white;
-        border: 1px solid #0068DF;
-        
-        &__text{
-          color: #0068DF;
-          font-size: 14px;
-          margin-left: 5px;
-        }
-      }
-      
-    }
-    &__user {
-      display:flex;
+.Post {
 
-      &__img {
-        width: 46px;
-        height: 46px;
-        cursor: pointer;
-      }
-        
-      &__userInfo { 
-        margin-left:13px;
-        &__name{ 
-          margin: 0 0 8px;
-          font-size: 14px;
-          font-weight:500;
-          color: $preto-texto;
-          width: fit-content;
-          align-items:center;
-          line-height:21px;
-          display:flex;
-          text-decoration: none;
-          cursor: pointer;
+    &__content {
+        display: block;
+        padding: 13px 6px 37px 36px;
+        margin-top: 36px;
+        max-width: 768px;
+        width: 100%;
+        min-height: 261px;
+        height: auto;
+        border-radius: 10px;
+        background-color: white;
+        border: 1px solid #C7D7EC;
+
+        &__containerEdit {
+
+            height: 24px;
+            //left: 5.2%;
+            display: flex;
+            width: 100%;
+            justify-content: flex-end; /* alinha o conteúdo no fim do contêiner */
+            align-items: flex-start; /* alinha o conteúdo no topo do contêiner */
+            position: relative;
+
+            & button {
+                background-color: white;
+                border: none;
+                cursor: pointer;
+            }
+
+            &_menuItem_label {
+                font-size: 12px;
+                margin-left: 5px;
+                cursor: pointer;
+                height: 14px;
+            }
+
         }
-        &__PostDate{
-          margin-top:1px;
-          font-size: 10px;
-          color: $azul-destaque;
-          width: fit-content;
-  
+
+        &__icons {
+            display: flex;
+            margin-top: 50px;
+            background-color: white;
+
+            &__Like {
+
+                display: flex;
+                border-radius: 10px;
+                align-items: center;
+                text-align: center;
+                justify-content: center;
+                width: 60px;
+                height: 34px;
+                background-color: $azul-destaque;
+                border: 1px solid #0068DF;
+                cursor: pointer;
+                &__text {
+                    font-size: 14px;
+                    color: white;
+                    margin-left: 5px;
+                }
+
+            }
+            &__Comment {
+                border-radius: 10px;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                width: 60px;
+                height: 34px;
+                margin-left: 6px;
+                background-color: white;
+                border: 1px solid #0068DF;
+
+                &__text {
+                    color: #0068DF;
+                    font-size: 14px;
+                    margin-left: 5px;
+                }
+            }
+
         }
-  
-      }
-      
-  }
-    &__text p {
-      word-break: break-word;
-      white-space: pre-line;  
+        &__user {
+            display: flex;
+
+            &__img {
+                width: 46px;
+                height: 46px;
+                cursor: pointer;
+            }
+
+            &__userInfo {
+                margin-left: 13px;
+                &__name {
+                    margin: 0 0 8px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: $preto-texto;
+                    width: fit-content;
+                    align-items: center;
+                    line-height: 21px;
+                    display: flex;
+                    text-decoration: none;
+                    text-transform: capitalize;
+                    cursor: pointer;
+                }
+                &__PostDate {
+                    margin-top: 1px;
+                    font-size: 10px;
+                    color: $azul-destaque;
+                    width: fit-content;
+
+                }
+
+            }
+
+        }
+        &__text p {
+            word-break: break-word;
+            white-space: pre-line;
+        }
+
     }
-  }
-  
+
 }

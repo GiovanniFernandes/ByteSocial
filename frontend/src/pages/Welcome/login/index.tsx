@@ -24,7 +24,7 @@ export default function Login() {
     const isLogged = await auth.signin(data.email,data.password)
     
     if(isLogged === true){
-      navigate('/home')
+      navigate('/')
     }
     else {
       resetField("password")

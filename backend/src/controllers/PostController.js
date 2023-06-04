@@ -1,6 +1,7 @@
 const database = require ("../database/models");
 const Posts = database.Posts;
 const Likes = database.Likes;
+const Users = database.Users;
 const postService = require("../services/postService")
 class PostController
 {
@@ -29,8 +30,8 @@ class PostController
         if(!postProc) return res.status(404).json({msg:"Esse post não existe!"});
 
         if(postProc.user_id!=id) return res.status(401).json({msg:"Você não pode apagar um post que não é seu!"});
-        
-        const deletingPost = await Posts.destroy({where:{id:post_id}});
+        await Likes.destroy({ where: { post_id } });
+        await Posts.destroy({where:{id:post_id}});
         return res.status(200).json({msg:"Post deletado com sucesso!"});
       } catch (error) {
         return res.status(500).json({msg:error.message});
@@ -56,15 +57,11 @@ class PostController
     {
       try {
         const { offset, limit } = req.params;
+        const id = req.user_id;
 
-        const {count, rows} = await Posts.findAndCountAll ({
-          include: "User",
-          order:[['createdAt', 'DESC']],
-          offset: Number(offset),
-          limit: Number(limit)
-        });
+        const {count, rows} = await postService.findPosts(offset, limit)
 
-        const normalizationPosts = await postService.normalizationPosts(rows);  
+        const normalizationPosts = await postService.normalizationPosts(rows, id);  
 
         return res.status(200).json({
           count,
