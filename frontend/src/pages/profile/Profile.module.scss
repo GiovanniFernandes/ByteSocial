@@ -1,133 +1,227 @@
 @import 'styles/variaveis';
 
 .profile {
-  max-width: 768px;
-  width: 100%;
-
-  &__title {
-    margin: 0 0 36px;
-    font-size: 28px;
-    font-weight: 700;
-    color: $preto-texto;
-  }
-
-  &__user {
-    display: flex;
-    margin-bottom: 38px;
-    
-    &__pic {
-      width: 189px;
-      height: 189px;
-    }
-
-    &__infos {
-      margin-left: 39px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      text-transform: capitalize;
-    }
-
-    &__name {
-      margin: 0 0 8px;
-      font-size: 20px;
-      font-weight: 500;
-      color: $preto-texto;
-      width: fit-content;
-    }
-
-    &__edit {
-      font-size: 12px;
-      color: $azul-destaque;
-      text-decoration: none;
-      width: fit-content;
-    }
-
-    &__interactions {
-      display: flex;
-      padding: 0;
-      margin: 57px 0 0;
-    }
-
-    &__interaction {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0 18px 0 0;
-
-      &__count {
-        color: $azul-destaque;
-        margin: 0;
-      }
-      &__title {
-        color: $preto-texto;
-        margin: 0;
-      }
-    }
-  }
-
-  &__newPost {
+    max-width: 768px;
     width: 100%;
-    border-radius: 10px;
-    padding: 12px 20px;
-    background-color: $azul-botao-transparencia;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    border: solid 1px red;
 
-    &__input {
-      border-style: none;
-      background-color: $azul-botao-transparencia;
-      width: 100%;
-      resize: vertical;
+    &__title {
+        margin: 0 0 36px;
+        font-size: 28px;
+        font-weight: 700;
+        color: $preto-texto;
     }
 
-    &__input:focus {
-      outline: none;
-    }
-
-    &__send {
-      cursor: pointer;
-    }
-
-  }
-  &__sections {
-    display: flex;
-
-    margin-top: 46px;
-
-    &__item {
-      margin-right: 26px;
-      padding: 0 10px 7px 10px;
-      cursor: pointer;
-
-      h3 {
-        margin: 0;
-        font-size: 14px;
-        font-weight: 500;
-        color: #464646;
-      }
-
-      &__selected {
-        margin-right: 26px;
-        padding: 0 10px 7px 10px;
-        border-bottom: solid 3px $azul-destaque;
-
-        h3 {
-          margin: 0;
-          font-size: 14px;
-          font-weight: 500;
+    &__user {
+        display: flex;
+        margin-bottom: 38px;
+        border: solid 2px blue;
+        &__pic {
+            width: 189px;
+            height: 189px;
         }
-      }
+
+        &__infos {
+            margin-left: 39px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+            border: solid 1px brown;
+          text-transform: capitalize;
     }
-  }
 
-  &__list {
-    margin-bottom: 6vh;
-  }
+        &__name {
+            margin: 0 0 8px;
+            font-size: 20px;
+            font-weight: 500;
+            color: $preto-texto;
+            width: fit-content;
+        }
+
+        &__edit {
+            font-size: 12px;
+            color: $azul-destaque;
+            text-decoration: none;
+            width: fit-content;
+        }
+
+        &__interactions {
+            display: flex;
+            padding: 0;
+            margin: 57px 0 0;
+        }
+
+        &__interaction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 18px 0 0;
+
+            &__count {
+                color: $azul-destaque;
+                margin: 0;
+            }
+            &__title {
+                color: $preto-texto;
+                margin: 0;
+            }
+        }
+    }
+
+    &__newPost {
+        width: 100%;
+        border-radius: 10px;
+        padding: 12px 20px;
+        background-color: $azul-botao-transparencia;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__input {
+            border-style: none;
+            background-color: $azul-botao-transparencia;
+            width: 100%;
+            resize: vertical;
+        }
+        &__input:focus {
+            outline: none;
+        }
+
+        &__send {
+            cursor: pointer;
+        }
+
+    }
+    &__sections {
+        display: flex;
+
+        margin-top: 46px;
+
+        &__item {
+            margin-right: 26px;
+            padding: 0 10px 7px;
+            cursor: pointer;
+
+            h3 {
+                margin: 0;
+                font-size: 14px;
+                font-weight: 500;
+                color: #464646;
+            }
+
+            &__selected {
+                margin-right: 26px;
+                padding: 0 10px 7px;
+                border-bottom: solid 3px $azul-destaque;
+
+                h3 {
+                    margin: 0;
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    &__list {
+        margin-bottom: 6vh;
+    }
 }
+@media screen and (max-width: 987px) {
 
+    .profile {
 
-@media screen and (max-width: 1030px) {
+        &__user {
+
+            &__name {
+                //margin-bottom: 10%;
+
+            }
+
+            &__infos {
+                margin-left: 20px;
+            }
+
+            &__interactions {
+                flex-wrap: wrap;
+                border: solid 1px blueviolet;
+                margin-top: 10%;
+            }
+            &__interaction {
+
+                flex-grow: 1;
+            }
+
+        }
+    }
+
+}
+@media screen and (max-width: 628px) {
+
+    .profile {
+
+        &__user {
+
+            &__pic {
+                min-width: 100px;
+                min-height: 100px;
+                max-width: 150px;
+                max-height: 150px;
+                width: 100%;
+                height: 100%;
+            }
+
+            &__infos {
+                margin-left: 16px;
+            }
+
+            &__interactions {
+                //flex-wrap: nowrap;
+                //display: block;
+                border: solid 1px blueviolet;
+                margin-top: 5%;
+            }
+            &__interaction {
+
+                flex-grow: 1;
+            }
+
+        }
+    }
+
+}
+@media screen and (max-width: 575px) {
+
+    .profile {
+
+        &__user {
+            flex-direction:row;
+            //flex-wrap: wrap;
+
+            &__pic {
+                min-width: 100px;
+                min-height: 100px;
+                max-width: 150px;
+                max-height: 150px;
+                width: 100%;
+                height: 100%;
+            }
+
+            &__infos {
+                margin-left: 16px;
+            }
+
+            &__interactions {
+                border: solid 1px blueviolet;
+                margin-top: 8%;
+            }
+            &__interaction {
+
+                flex-grow: 1;
+            }
+
+        }
+    }
 
 }
