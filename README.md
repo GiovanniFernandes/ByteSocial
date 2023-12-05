@@ -10,5 +10,5 @@ Principais tecnologias frontend:
 
 Principais tecnologias backend:
 
-    Javascript, node, express, mysql, sequelize, socket.io, JWT, bcrypt, etc. 
+    Javascript, node, MVC, express, mysql, sequelize, socket.io, JWT, bcrypt, etc. 
 
